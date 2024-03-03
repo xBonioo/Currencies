@@ -33,8 +33,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Functions\User\Commands\" />
-    <Folder Include="Functions\User\Queries\" />
     <Folder Include="Functions\ExchangeRate\Commands\" />
     <Folder Include="Functions\ExchangeRate\Queries\" />
     <Folder Include="Functions\Currency\Commands\" />

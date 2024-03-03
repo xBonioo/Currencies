@@ -1,6 +1,6 @@
 ﻿namespace Currencies.Contracts.ModelDtos.User;
 
-public class UserExchangeHistoryDto
+public class UserExchangeHistoryRowDto
 {
     public int Id { get; set; }
     public int FromCurrencyId { get; set; }

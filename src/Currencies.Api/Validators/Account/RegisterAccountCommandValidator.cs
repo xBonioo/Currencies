@@ -1,9 +1,9 @@
-﻿using Currencies.Api.Functions.Account.Commands.Register;
+﻿using Currencies.Api.Functions.User.Commands.Register;
 using FluentValidation;
 
 namespace Currencies.Api.Validators.Account;
 
-public class RegisterAccountCommandValidator : AbstractValidator<RegisterAccountCommand>
+public class RegisterAccountCommandValidator : AbstractValidator<RegisterUserCommand>
 {
     public RegisterAccountCommandValidator(RegisterAccountDtoValidator validator)
     {

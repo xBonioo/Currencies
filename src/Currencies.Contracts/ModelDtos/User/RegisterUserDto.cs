@@ -1,4 +1,4 @@
-﻿namespace Currencies.Contracts.ModelDtos.Account;
+﻿namespace Currencies.Contracts.ModelDtos.User;
 
 public class RegisterUserDto
 {

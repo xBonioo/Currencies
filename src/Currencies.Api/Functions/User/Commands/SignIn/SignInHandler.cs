@@ -2,19 +2,19 @@
 using Currencies.Contracts.Interfaces;
 using Currencies.Contracts.ResponseModels;
 
-namespace Currencies.Api.Functions.Account.Commands.SignIn;
+namespace Currencies.Api.Functions.User.Commands.SignIn;
 
 public class SignInHandler : IRequestHandler<SignInCommand, RefreshTokenResponse?>
 {
-    private readonly IAccountService _accountService;
+    private readonly IUserService _userService;
 
-    public SignInHandler(IAccountService accountService)
+    public SignInHandler(IUserService userService)
     {
-        _accountService = accountService;
+        _userService = userService;
     }
 
     public async Task<RefreshTokenResponse?> Handle(SignInCommand request, CancellationToken cancellationToken)
     {
-        return await _accountService.SignInUserAsync(request.dto);
+        return await _userService.SignInUserAsync(request.dto, cancellationToken);
     }
 }

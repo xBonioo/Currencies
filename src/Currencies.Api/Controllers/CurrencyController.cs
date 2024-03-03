@@ -2,6 +2,7 @@
 using Currencies.Contracts.ModelDtos.Currency;
 using Currencies.DataAccess;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Currencies.Api.Controllers;
@@ -10,6 +11,7 @@ namespace Currencies.Api.Controllers;
 /// For information on how to use the various controllers, go to:
 /// 'https wiki-link'
 /// </summary>
+[Authorize]
 [Route("api/currency")]
 [ApiController]
 public class CurrencyController : Controller
@@ -21,6 +23,11 @@ public class CurrencyController : Controller
         _mediator = mediator;
     }
 
+    /// <summary>
+    /// Retrieves all available currencies.
+    /// </summary>
+    /// <response code="200">Returns all available currencies.</response>
+    /// <response code="500">Internal server error.</response>
     [HttpGet]
     public async Task<ActionResult<BaseResponse<PageResult<CurrencyDto>>>> GetAllCurrencies()
     {

@@ -1,4 +1,4 @@
-﻿using Currencies.Contracts.ModelDtos.Account;
+﻿using Currencies.Contracts.ModelDtos.User;
 using Currencies.Models;
 using FluentValidation;
 

@@ -13,27 +13,27 @@ public class CurrencyService : ICurrencyService
         _dbContext = dbContext;
     }
 
-    public async Task<int> CreateCurrencyAsync(CurrencyDto currencyDto)
+    public async Task<bool> CreateCurrencyAsync(CurrencyDto currencyDto, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
 
-    public async Task DeleteCurrencyAsync(int currencyId)
+    public async Task DeleteCurrencyAsync(int currencyId, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<IEnumerable<CurrencyDto>> GetAllCurrenciesAsync()
+    public async Task<IEnumerable<CurrencyDto>> GetAllCurrenciesAsync(CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<CurrencyDto> GetCurrencyByIdAsync(int currencyId)
+    public async Task<CurrencyDto> GetCurrencyByIdAsync(int currencyId, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
 
-    public async Task UpdateCurrencyAsync(int currencyId, CurrencyDto currencyDto)
+    public async Task UpdateCurrencyAsync(int currencyId, CurrencyDto currencyDto, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }

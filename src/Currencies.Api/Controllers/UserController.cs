@@ -1,13 +1,15 @@
-﻿using Currencies.Api.Functions.Account.Commands.Register;
-using Currencies.Api.Functions.Account.Commands.RefreshToken;
-using Currencies.Api.Functions.Account.Commands.SignIn;
-using Currencies.Api.Functions.Account.Commands.SignOut;
-using Currencies.Contracts.ModelDtos.Account;
+﻿using Currencies.Api.Functions.User.Commands.Register;
+using Currencies.Api.Functions.User.Commands.RefreshToken;
+using Currencies.Api.Functions.User.Commands.SignIn;
+using Currencies.Api.Functions.User.Commands.SignOut;
 using Currencies.Contracts.ResponseModels;
 using Currencies.DataAccess;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Currencies.Contracts.Helpers;
+using Currencies.Contracts.ModelDtos.Currency;
+using Currencies.Contracts.ModelDtos.User;
 
 namespace Currencies.Api.Controllers;
 
@@ -15,13 +17,14 @@ namespace Currencies.Api.Controllers;
 /// For information on how to use the various controllers, go to:
 /// 'https wiki-link'
 /// </summary>
+[Authorize]
 [Route("api/user")]
 [ApiController]
-public class AccountController : Controller
+public class UserController : Controller
 {
     private readonly IMediator _mediator;
 
-    public AccountController(IMediator mediator)
+    public UserController(IMediator mediator)
     {
         _mediator = mediator;
     }
@@ -31,18 +34,19 @@ public class AccountController : Controller
     /// </summary>
     /// <param name="registerUser">JSON object with properties defining a user to create</param>
     /// <response code="201">User was created successfully and confirmation email was sent.</response>
+    /// <response code="401">Something wrong with given tokens propably</response>
     /// <response code="500">Confirmation link could not be created.</response>
     [AllowAnonymous]
     [HttpPost("register")]
-    public async Task<ActionResult<AccountDto>> RegisterUserAsync([FromBody] RegisterUserDto registerUser)
+    public async Task<ActionResult<UserDto>> RegisterUserAsync([FromBody] RegisterUserDto registerUser)
     {
         var result = await _mediator
-            .Send(new RegisterAccountCommand
+            .Send(new RegisterUserCommand
             {
                 RegisterUserDto = registerUser
             });
 
-        return CreatedAtAction(nameof(RegisterUserAsync), new BaseResponse<AccountDto>
+        return CreatedAtAction(nameof(RegisterUserAsync), new BaseResponse<UserDto>
         {
             ResponseCode = StatusCodes.Status201Created,
             Data = result,
@@ -56,6 +60,7 @@ public class AccountController : Controller
     /// <param name="dto">JSON object with username, password and confirmed password</param>
     /// <response code="200">Successfully signed in</response>
     /// <response code="400">Username or password is not valid</response>
+    /// <response code="401">Something wrong with given tokens propably</response>
     /// <response code="500">Internal server error</response>
     [AllowAnonymous]
     [HttpPost("signin")]
@@ -85,6 +90,7 @@ public class AccountController : Controller
     /// Action to sign out the user. The user's refresh token is beeing deleted from database.
     /// </summary>
     /// <response code="200">Successfully signed out</response>
+    /// <response code="401">Something wrong with given tokens propably</response>
     /// <response code="500">Internal server error</response>
     [HttpPost("signout")]
     public async Task<ActionResult> SignOutUserAsync()
@@ -142,6 +148,32 @@ public class AccountController : Controller
             ResponseCode = StatusCodes.Status401Unauthorized,
             Data = response,
             Message = "Here is your new access token and refresh token"
+        });
+    }
+
+    /// <summary>
+    /// Retrieves the user's exchange history.
+    /// </summary>
+    /// <response code="200">Returns the user's exchange history.</response>
+    /// <response code="401">Unauthorized. The access token is invalid or expired.</response>
+    /// <response code="500">Internal server error.</response>
+    [HttpGet("get-history")]
+    public async Task<ActionResult<BaseResponse<PageResult<CurrencyDto>>>> GetAllUserExchangeHistory()
+    {
+        var result = new PageResult<CurrencyDto>(null, 1, 1, 1);
+        if (result is null)
+        {
+            return NotFound(new BaseResponse<PageResult<CurrencyDto>>
+            {
+                ResponseCode = StatusCodes.Status404NotFound,
+                Message = $"There's no user history."
+            });
+        }
+
+        return Ok(new BaseResponse<PageResult<CurrencyDto>>
+        {
+            ResponseCode = StatusCodes.Status200OK,
+            Data = result
         });
     }
 }

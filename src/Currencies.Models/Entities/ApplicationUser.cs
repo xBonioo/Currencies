@@ -2,11 +2,15 @@
 
 namespace Currencies.Models.Entities;
 
-public class User : IdentityUser
+public class ApplicationUser : IdentityUser
 {
     public string? FirstName { get; set; }
-    public string? LastName { get; set; }
+    public string? SecondName { get; set; }
     public bool IsActive { get; set; } = true;
+    public int RoleId { get; set; }
+
+    public virtual Role Role { get; set; }
+    public virtual ICollection<CurrencyAmount> CurrencyAmounts { get; set; }
     public virtual ICollection<UserExchangeHistory> UserExchangeHistory { get; set; }
 }
 

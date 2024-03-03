@@ -4,6 +4,7 @@ using Currencies.Contracts.Interfaces;
 using Currencies.DataAccess;
 using Currencies.DataAccess.Services;
 using Currencies.Models;
+using Currencies.Models.Entities;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -65,10 +66,10 @@ builder.Services.AddSwaggerGen(c =>
 
 DatabaseManager databaseManager = new(builder);
 
-builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICurrencyService, CurrencyService>();
 builder.Services.AddScoped<IExchangeRateService, ExchangeRateService>();
-builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 
 builder.Services.AddScoped<ErrorHandlingMiddleware>();

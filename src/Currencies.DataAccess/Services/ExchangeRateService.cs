@@ -12,17 +12,17 @@ public class ExchangeRateService : IExchangeRateService
         _dbContext = dbContext;
     }
 
-    public async Task<decimal> ConvertCurrencyAsync(int fromCurrencyId, int toCurrencyId, decimal amount)
+    public async Task<decimal> ConvertCurrencyAsync(int fromCurrencyId, int toCurrencyId, decimal amount, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<decimal> GetExchangeRateAsync(int fromCurrencyId, int toCurrencyId)
+    public async Task<decimal> GetExchangeRateAsync(int fromCurrencyId, int toCurrencyId, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
 
-    public async Task UpdateExchangeRatesAsync()
+    public async Task UpdateExchangeRatesAsync(CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
