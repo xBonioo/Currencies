@@ -65,6 +65,8 @@ builder.Services.AddSwaggerGen(c =>
 
 DatabaseManager databaseManager = new(builder);
 
+builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<ICurrencyService, CurrencyService>();
 builder.Services.AddScoped<IExchangeRateService, ExchangeRateService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
