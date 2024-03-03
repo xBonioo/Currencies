@@ -12,18 +12,19 @@ public class AccountService : IAccountService
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly SignInManager<ApplicationUser> _signInManager;
-    private readonly TableContext _tableContext;
+    private readonly TableContext _dbContext;
     private readonly ITokenService _tokenService;
 
     public AccountService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
-        TableContext tableContext, ITokenService tokenService)
+        TableContext dbContext, ITokenService tokenService)
     {
         _userManager = userManager;
         _signInManager = signInManager;
-        _tableContext = tableContext;
+        _dbContext = dbContext;
         _tokenService = tokenService;
     }
-    public async Task<UserDto> RegisterUserAsync(RegisterUserDto registerUserDto)
+
+    public async Task<AccountDto> RegisterUserAsync(RegisterUserDto registerUserDto)
     {
         var user = new ApplicationUser
         {
@@ -31,7 +32,7 @@ public class AccountService : IAccountService
             Email = registerUserDto.Email,
         };
 
-        using (var transaction = _tableContext.Database.BeginTransaction())
+        using (var transaction = _dbContext.Database.BeginTransaction())
         {
             var result = await _userManager.CreateAsync(user, registerUserDto.Password);
 
@@ -49,7 +50,7 @@ public class AccountService : IAccountService
 
             await transaction.CommitAsync();
 
-            return new UserDto
+            return new AccountDto
             {
                 Id = user.Id,
                 Email = user.Email,
@@ -61,14 +62,14 @@ public class AccountService : IAccountService
     public async Task<RefreshTokenResponse?> RefreshTokenAsync(string refreshToken, string accessToken)
     {
         var principal = _tokenService.GetPrincipalFromExpiredToken(accessToken);
-        var userRefreshTokenRecord = _tableContext.UserTokens.FirstOrDefault(u => u.Value == refreshToken);
+        var userRefreshTokenRecord = _dbContext.UserTokens.FirstOrDefault(u => u.Value == refreshToken);
 
         if (userRefreshTokenRecord == null)
         {
             return null;
         }
 
-        var user = _tableContext.Users.FirstOrDefault(u => u.Id == userRefreshTokenRecord.UserId);
+        var user = _dbContext.Users.FirstOrDefault(u => u.Id == userRefreshTokenRecord.UserId);
         if (user == null)
         {
             return null;
@@ -85,7 +86,7 @@ public class AccountService : IAccountService
         userRefreshTokenRecord.Value = newRefreshToken.Token;
         userRefreshTokenRecord.ValidUntil = newRefreshToken.ValidUntil;
 
-        await _tableContext.SaveChangesAsync();
+        await _dbContext.SaveChangesAsync();
 
         var response = new RefreshTokenResponse
         {
@@ -120,10 +121,10 @@ public class AccountService : IAccountService
 
         var accessToken = _tokenService.GenerateAccessToken(claims);
         var newRefreshToken = _tokenService.GenerateRefreshToken();
-        var userRefreshTokenRecord = _tableContext.UserTokens.FirstOrDefault(u => u.UserId == user.Id);
+        var userRefreshTokenRecord = _dbContext.UserTokens.FirstOrDefault(u => u.UserId == user.Id);
         if (userRefreshTokenRecord is null)
         {
-            _tableContext.UserTokens.Add(new TokenUser
+            _dbContext.UserTokens.Add(new TokenUser
             {
                 UserId = user.Id,
                 LoginProvider = "Own",
@@ -137,7 +138,7 @@ public class AccountService : IAccountService
             userRefreshTokenRecord.Value = newRefreshToken.Token;
             userRefreshTokenRecord.ValidUntil = newRefreshToken.ValidUntil;
         }
-        await _tableContext.SaveChangesAsync();
+        await _dbContext.SaveChangesAsync();
         var response = new RefreshTokenResponse
         {
             RefreshToken = newRefreshToken,
@@ -155,11 +156,11 @@ public class AccountService : IAccountService
 
         var userId = principal.Claims.Single(x => x.Type == ClaimTypes.NameIdentifier).Value;
 
-        var userRefreshTokenRecord = _tableContext.UserTokens.Single(u => u.UserId == userId);
+        var userRefreshTokenRecord = _dbContext.UserTokens.Single(u => u.UserId == userId);
 
         userRefreshTokenRecord.Value = null;
         userRefreshTokenRecord.ValidUntil = DateTime.UtcNow;
 
-        await _tableContext.SaveChangesAsync();
+        await _dbContext.SaveChangesAsync();
     }
 }

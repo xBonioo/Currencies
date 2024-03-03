@@ -1,4 +1,5 @@
 ﻿using Currencies.Common.Infrastructure;
+using Currencies.Models.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -14,7 +15,9 @@ public class TableContext : IdentityDbContext<
         IdentityRoleClaim<string>,
         TokenUser>
 {
-    //public virtual DbSet<Issue> Issues => Set<Issue>();
+    public virtual DbSet<Currency> Currencies => Set<Currency>();
+    public virtual DbSet<ExchangeRate> ExchangeRate => Set<ExchangeRate>();
+    public virtual DbSet<UserExchangeHistory> UserExchangeHistories => Set<UserExchangeHistory>();
 
     public TableContext(DbContextOptions options) : base(options)
     {
