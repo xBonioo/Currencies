@@ -1,4 +1,6 @@
-﻿using Currencies.Contracts.Interfaces;
+﻿using Currencies.Contracts.Helpers;
+using Currencies.Contracts.Interfaces;
+using Currencies.Contracts.ModelDtos.ExchangeRate;
 using Currencies.Models;
 
 namespace Currencies.DataAccess.Services;
@@ -12,17 +14,27 @@ public class ExchangeRateService : IExchangeRateService
         _dbContext = dbContext;
     }
 
-    public async Task<decimal> ConvertCurrencyAsync(int fromCurrencyId, int toCurrencyId, decimal amount, CancellationToken cancellationToken)
+    public async Task<ExchangeRateDto> CreateExchangeRateAsync(CreateExchangeRateDto createExchangeRateDto, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<decimal> GetExchangeRateAsync(int fromCurrencyId, int toCurrencyId, CancellationToken cancellationToken)
+    public async Task<bool> DeleteExchangeRateAsync(int exchangeRateId, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
 
-    public async Task UpdateExchangeRatesAsync(CancellationToken cancellationToken)
+    public async Task<PageResult<ExchangeRateDto>> GetAllExchangeRateAsync(CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<ExchangeRateDto> GetExchangeRateByIdAsync(int currencyId, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<ExchangeRateDto> UpdateExchangeRateAsync(int exchangeRateId, UpdateExchangeRateDto updateExchangeRateDto, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }

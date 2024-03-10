@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Currencies.Models.EntityConfiguration;
 
-public class CurrencyAmountEntityConfiguration : IEntityTypeConfiguration<CurrencyAmount>
+public class UserCurrencyAmountEntityConfiguration : IEntityTypeConfiguration<UserCurrencyAmount>
 {
-    public void Configure(EntityTypeBuilder<CurrencyAmount> builder)
+    public void Configure(EntityTypeBuilder<UserCurrencyAmount> builder)
     {
         builder
             .HasKey(a => a.Id);
@@ -17,8 +17,17 @@ public class CurrencyAmountEntityConfiguration : IEntityTypeConfiguration<Curren
             .HasForeignKey(uc => uc.CurrencyId);
 
         builder
+            .HasOne(u => u.User)
+            .WithMany(u => u.UserCurrencyAmounts)
+            .HasForeignKey(u => u.UserId);
+
+        builder
             .Property(u => u.Amount)
             .HasColumnType("decimal(18, 2)")
+            .IsRequired();
+
+        builder
+            .Property(u => u.IsActive)
             .IsRequired();
     }
 }

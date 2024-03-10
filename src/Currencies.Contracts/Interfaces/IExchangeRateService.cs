@@ -1,8 +1,13 @@
-﻿namespace Currencies.Contracts.Interfaces;
+﻿using Currencies.Contracts.Helpers;
+using Currencies.Contracts.ModelDtos.ExchangeRate;
+
+namespace Currencies.Contracts.Interfaces;
 
 public interface IExchangeRateService
 {
-    Task<decimal> GetExchangeRateAsync(int fromCurrencyId, int toCurrencyId, CancellationToken cancellationToken);
-    Task<decimal> ConvertCurrencyAsync(int fromCurrencyId, int toCurrencyId, decimal amount, CancellationToken cancellationToken);
-    Task UpdateExchangeRatesAsync(CancellationToken cancellationToken);
+    Task<PageResult<ExchangeRateDto>> GetAllExchangeRateAsync(CancellationToken cancellationToken);
+    Task<ExchangeRateDto> GetExchangeRateByIdAsync(int currencyId, CancellationToken cancellationToken);
+    Task<ExchangeRateDto> CreateExchangeRateAsync(CreateExchangeRateDto createExchangeRateDto, CancellationToken cancellationToken);
+    Task<ExchangeRateDto> UpdateExchangeRateAsync(int exchangeRateId, UpdateExchangeRateDto updateExchangeRateDto, CancellationToken cancellationToken);
+    Task<bool> DeleteExchangeRateAsync(int exchangeRateId, CancellationToken cancellationToken);
 }

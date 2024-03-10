@@ -24,5 +24,9 @@ public class CurrencyEntityConfiguration : IEntityTypeConfiguration<Currency>
         builder
             .Property(r => r.Description)
             .HasMaxLength(256);
+
+        builder
+            .Property(u => u.IsActive)
+            .IsRequired();
     }
 }

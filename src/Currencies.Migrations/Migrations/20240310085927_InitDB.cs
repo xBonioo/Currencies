@@ -32,6 +32,7 @@ namespace Currencies.Migrations.Migrations
                     Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     Symbol = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -46,7 +47,8 @@ namespace Currencies.Migrations.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -110,11 +112,11 @@ namespace Currencies.Migrations.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
                     SecondName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     RoleId = table.Column<int>(type: "int", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -235,7 +237,9 @@ namespace Currencies.Migrations.Migrations
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CurrencyId = table.Column<int>(type: "int", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -265,8 +269,7 @@ namespace Currencies.Migrations.Migrations
                     ToCurrencyID = table.Column<int>(type: "int", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     ExchangeRate = table.Column<decimal>(type: "decimal(18,6)", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -293,22 +296,22 @@ namespace Currencies.Migrations.Migrations
 
             migrationBuilder.InsertData(
                 table: "Currencies",
-                columns: new[] { "Id", "CreatedOn", "Description", "ModifiedOn", "Name", "Symbol" },
+                columns: new[] { "Id", "CreatedOn", "Description", "IsActive", "ModifiedOn", "Name", "Symbol" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Waluta w USA", null, "Dolar", "$" },
-                    { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Waluta w niektórych krajach UE", null, "Euro", "€" },
-                    { 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Waluta w UK", null, "Funt", "£" },
-                    { 4, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Waluta w Polsce", null, "Polska złotówka", "PLN" }
+                    { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Waluta w USA", true, null, "Dolar", "$" },
+                    { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Waluta w niektórych krajach UE", true, null, "Euro", "€" },
+                    { 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Waluta w UK", true, null, "Funt", "£" },
+                    { 4, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Waluta w Polsce", true, null, "Polska złotówka", "PLN" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Roles",
-                columns: new[] { "Id", "CreatedOn", "ModifiedOn", "Name" },
+                columns: new[] { "Id", "CreatedOn", "IsActive", "ModifiedOn", "Name" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Admin" },
-                    { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Użytkownik" }
+                    { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, null, "Admin" },
+                    { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, null, "Użytkownik" }
                 });
 
             migrationBuilder.CreateIndex(

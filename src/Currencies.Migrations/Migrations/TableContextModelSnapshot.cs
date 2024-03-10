@@ -119,6 +119,9 @@ namespace Currencies.Migrations.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
@@ -142,6 +145,7 @@ namespace Currencies.Migrations.Migrations
                             Id = 1,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Waluta w USA",
+                            IsActive = true,
                             Name = "Dolar",
                             Symbol = "$"
                         },
@@ -150,6 +154,7 @@ namespace Currencies.Migrations.Migrations
                             Id = 2,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Waluta w niektórych krajach UE",
+                            IsActive = true,
                             Name = "Euro",
                             Symbol = "€"
                         },
@@ -158,6 +163,7 @@ namespace Currencies.Migrations.Migrations
                             Id = 3,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Waluta w UK",
+                            IsActive = true,
                             Name = "Funt",
                             Symbol = "£"
                         },
@@ -166,39 +172,10 @@ namespace Currencies.Migrations.Migrations
                             Id = 4,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Waluta w Polsce",
+                            IsActive = true,
                             Name = "Polska złotówka",
                             Symbol = "PLN"
                         });
-                });
-
-            modelBuilder.Entity("Currencies.Models.Entities.CurrencyAmount", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("CurrencyId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CurrencyId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserCurrencyAmounts");
                 });
 
             modelBuilder.Entity("Currencies.Models.Entities.ExchangeRate", b =>
@@ -244,12 +221,16 @@ namespace Currencies.Migrations.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.HasKey("Id");
 
@@ -260,12 +241,14 @@ namespace Currencies.Migrations.Migrations
                         {
                             Id = 1,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
                             Name = "Admin"
                         },
                         new
                         {
                             Id = 2,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
                             Name = "Użytkownik"
                         });
                 });
@@ -292,6 +275,42 @@ namespace Currencies.Migrations.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Currencies.Models.Entities.UserCurrencyAmount", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CurrencyId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CurrencyId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserCurrencyAmounts");
+                });
+
             modelBuilder.Entity("Currencies.Models.Entities.UserExchangeHistory", b =>
                 {
                     b.Property<int>("Id")
@@ -311,9 +330,6 @@ namespace Currencies.Migrations.Migrations
 
                     b.Property<int>("FromCurrencyID")
                         .HasColumnType("int");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
 
                     b.Property<int>("ToCurrencyID")
                         .HasColumnType("int");
@@ -458,25 +474,6 @@ namespace Currencies.Migrations.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("Currencies.Models.Entities.CurrencyAmount", b =>
-                {
-                    b.HasOne("Currencies.Models.Entities.Currency", "Currency")
-                        .WithMany()
-                        .HasForeignKey("CurrencyId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Currencies.Models.Entities.ApplicationUser", "User")
-                        .WithMany("CurrencyAmounts")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Currency");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Currencies.Models.Entities.ExchangeRate", b =>
                 {
                     b.HasOne("Currencies.Models.Entities.Currency", "FromCurrency")
@@ -503,6 +500,25 @@ namespace Currencies.Migrations.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Currencies.Models.Entities.UserCurrencyAmount", b =>
+                {
+                    b.HasOne("Currencies.Models.Entities.Currency", "Currency")
+                        .WithMany()
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Currencies.Models.Entities.ApplicationUser", "User")
+                        .WithMany("UserCurrencyAmounts")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Currency");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Currencies.Models.Entities.UserExchangeHistory", b =>
@@ -576,7 +592,7 @@ namespace Currencies.Migrations.Migrations
 
             modelBuilder.Entity("Currencies.Models.Entities.ApplicationUser", b =>
                 {
-                    b.Navigation("CurrencyAmounts");
+                    b.Navigation("UserCurrencyAmounts");
 
                     b.Navigation("UserExchangeHistory");
                 });

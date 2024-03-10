@@ -1,8 +1,9 @@
-﻿namespace Currencies.Contracts.ModelDtos.User;
+﻿namespace Currencies.Contracts.ModelDtos.User.ExchangeHistory;
 
-public class UserExchangeHistoryRowDto
+public class UserExchangeHistoryDto
 {
     public int Id { get; set; }
+    public string UserId { get; set; } = null!;
     public int FromCurrencyId { get; set; }
     public int ToCurrencyId { get; set; }
     public decimal Amount { get; set; }

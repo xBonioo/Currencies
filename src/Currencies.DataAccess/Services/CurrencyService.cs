@@ -1,4 +1,5 @@
-﻿using Currencies.Contracts.Interfaces;
+﻿using Currencies.Contracts.Helpers;
+using Currencies.Contracts.Interfaces;
 using Currencies.Contracts.ModelDtos.Currency;
 using Currencies.Models;
 
@@ -13,17 +14,17 @@ public class CurrencyService : ICurrencyService
         _dbContext = dbContext;
     }
 
-    public async Task<bool> CreateCurrencyAsync(CurrencyDto currencyDto, CancellationToken cancellationToken)
+    public async Task<CurrencyDto> CreateCurrencyAsync(CreateCurrencyDto createCurrencyDto, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
 
-    public async Task DeleteCurrencyAsync(int currencyId, CancellationToken cancellationToken)
+    public async Task<bool> DeleteCurrencyAsync(int currencyId, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<IEnumerable<CurrencyDto>> GetAllCurrenciesAsync(CancellationToken cancellationToken)
+    public async Task<PageResult<CurrencyDto>> GetAllCurrenciesAsync(CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
@@ -33,7 +34,7 @@ public class CurrencyService : ICurrencyService
         throw new NotImplementedException();
     }
 
-    public async Task UpdateCurrencyAsync(int currencyId, CurrencyDto currencyDto, CancellationToken cancellationToken)
+    public async Task<CurrencyDto> UpdateCurrencyAsync(int currencyId, UpdateCurrencyDto updateCurrencyDto, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }

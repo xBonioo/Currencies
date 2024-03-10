@@ -66,11 +66,13 @@ builder.Services.AddSwaggerGen(c =>
 
 DatabaseManager databaseManager = new(builder);
 
-builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICurrencyService, CurrencyService>();
 builder.Services.AddScoped<IExchangeRateService, ExchangeRateService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IUserCurrencyAmountService, UserCurrencyAmountService>();
+builder.Services.AddScoped<IUserExchangeHistoryService, UserExchangeHistoryService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddScoped<ErrorHandlingMiddleware>();
 

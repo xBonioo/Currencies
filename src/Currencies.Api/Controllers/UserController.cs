@@ -38,7 +38,7 @@ public class UserController : Controller
     /// <response code="500">Confirmation link could not be created.</response>
     [AllowAnonymous]
     [HttpPost("register")]
-    public async Task<ActionResult<UserDto>> RegisterUserAsync([FromBody] RegisterUserDto registerUser)
+    public async Task<ActionResult<BaseResponse<PageResult<UserDto>>>> RegisterUserAsync([FromBody] RegisterUserDto registerUser)
     {
         var result = await _mediator
             .Send(new RegisterUserCommand
@@ -64,7 +64,7 @@ public class UserController : Controller
     /// <response code="500">Internal server error</response>
     [AllowAnonymous]
     [HttpPost("signin")]
-    public async Task<ActionResult> SignInUserAsync([FromBody] SignInDto dto)
+    public async Task<ActionResult<BaseResponse<RefreshTokenResponse>>> SignInUserAsync([FromBody] SignInDto dto)
     {
         var response = await _mediator.Send(new SignInCommand(dto));
 
@@ -93,7 +93,7 @@ public class UserController : Controller
     /// <response code="401">Something wrong with given tokens propably</response>
     /// <response code="500">Internal server error</response>
     [HttpPost("signout")]
-    public async Task<ActionResult> SignOutUserAsync()
+    public async Task<ActionResult<BaseResponse<bool>>> SignOutUserAsync()
     {
         HttpContext.Request.Headers.TryGetValue("Authorization", out var accessToken);
         await _mediator.Send(new SignOutCommand(accessToken.ToString().Split(' ').Last()));
@@ -115,7 +115,7 @@ public class UserController : Controller
     /// <response code="401">Something wrong with given tokens propably</response>
     /// <response code="500">Internal server error</response>
     [HttpPost("refreshtoken")]
-    public async Task<ActionResult> RefreshTokenAsync([FromBody] RefreshTokenDto refreshToken)
+    public async Task<ActionResult<BaseResponse<RefreshTokenResponse>>> RefreshTokenAsync([FromBody] RefreshTokenDto refreshToken)
     {
         var isAccessTokenGiven = HttpContext.Request.Headers.TryGetValue("Authorization", out var accessToken);
         
@@ -143,7 +143,7 @@ public class UserController : Controller
 
         }
 
-        return Ok(new BaseResponse<object>
+        return Ok(new BaseResponse<RefreshTokenResponse>
         {
             ResponseCode = StatusCodes.Status401Unauthorized,
             Data = response,
@@ -158,19 +158,19 @@ public class UserController : Controller
     /// <response code="401">Unauthorized. The access token is invalid or expired.</response>
     /// <response code="500">Internal server error.</response>
     [HttpGet("get-history")]
-    public async Task<ActionResult<BaseResponse<PageResult<CurrencyDto>>>> GetAllUserExchangeHistory()
+    public async Task<ActionResult<BaseResponse<PageResult<UserDto>>>> GetAllUserExchangeHistory()
     {
-        var result = new PageResult<CurrencyDto>(null, 1, 1, 1);
+        var result = new PageResult<UserDto>(null, 1, 1, 1);
         if (result is null)
         {
-            return NotFound(new BaseResponse<PageResult<CurrencyDto>>
+            return NotFound(new BaseResponse<PageResult<UserDto>>
             {
                 ResponseCode = StatusCodes.Status404NotFound,
                 Message = $"There's no user history."
             });
         }
 
-        return Ok(new BaseResponse<PageResult<CurrencyDto>>
+        return Ok(new BaseResponse<PageResult<UserDto>>
         {
             ResponseCode = StatusCodes.Status200OK,
             Data = result

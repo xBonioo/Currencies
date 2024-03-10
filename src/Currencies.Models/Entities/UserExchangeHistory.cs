@@ -2,7 +2,7 @@
 
 namespace Currencies.Models.Entities;
 
-public class UserExchangeHistory : ICreatable, IModifable
+public class UserExchangeHistory : ICreatable
 {
     public int Id { get; set; }
     public string UserID { get; set; }
@@ -11,7 +11,6 @@ public class UserExchangeHistory : ICreatable, IModifable
     public decimal Amount { get; set; }
     public decimal ExchangeRate { get; set; }
     public DateTime CreatedOn { get; set; }
-    public DateTime? ModifiedOn { get; set; }
 
     public virtual ApplicationUser User { get; set; }
     public virtual Currency FromCurrency { get; set; }

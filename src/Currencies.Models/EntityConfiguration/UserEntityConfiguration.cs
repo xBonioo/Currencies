@@ -22,11 +22,11 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<ApplicationUser>
 
         builder
              .Property(r => r.UserName)
-             .HasMaxLength(64)
+             .HasMaxLength(32)
              .IsRequired();
 
         builder
-            .HasMany(u => u.CurrencyAmounts)
+            .HasMany(u => u.UserCurrencyAmounts)
             .WithOne(uc => uc.User)
             .HasForeignKey(uc => uc.UserId);
 
@@ -34,10 +34,5 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<ApplicationUser>
             .HasMany(r => r.UserExchangeHistory)
             .WithOne(u => u.User)
             .HasForeignKey(u => u.UserID);
-
-        builder
-            .HasMany(u => u.UserExchangeHistory)
-            .WithOne(ueh => ueh.User)
-            .HasForeignKey(ueh => ueh.UserID);
     }
 }

@@ -7,6 +7,7 @@ using System.IdentityModel.Tokens.Jwt;
 using Currencies.Models.Entities;
 using Currencies.Contracts.ModelDtos.User;
 using Microsoft.EntityFrameworkCore;
+using Currencies.Contracts.ModelDtos.User.ExchangeHistory;
 
 namespace Currencies.DataAccess.Services;
 
@@ -39,7 +40,6 @@ public class UserService : IUserService
 
         using (var transaction = _dbContext.Database.BeginTransaction())
         {
-
             var result = await _userManager.CreateAsync(user, registerUserDto.Password);
 
             if (!result.Succeeded)
@@ -60,7 +60,8 @@ public class UserService : IUserService
             {
                 Id = user.Id,
                 Email = user.Email,
-                UserName = user.UserName
+                UserName = user.UserName,
+                IsActive = user.IsActive
             };
         }
     }
@@ -157,7 +158,7 @@ public class UserService : IUserService
         return response;
     }
 
-    public async Task SignOutUserAsync(string accessToken, CancellationToken cancellationToken)
+    public async Task<bool> SignOutUserAsync(string accessToken, CancellationToken cancellationToken)
     {
         await _signInManager.SignOutAsync();
 
@@ -171,15 +172,7 @@ public class UserService : IUserService
         userRefreshTokenRecord.ValidUntil = DateTime.UtcNow;
 
         await _dbContext.SaveChangesAsync();
-    }
 
-    public async Task AddUserExchangeHistoryAsync(UserExchangeHistoryRowDto history, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task<IEnumerable<UserExchangeHistoryRowDto>> GetUserExchangeHistoryAsync(string userId, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
+        return true;
     }
 }

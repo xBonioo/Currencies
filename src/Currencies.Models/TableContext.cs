@@ -18,7 +18,7 @@ public class TableContext : IdentityDbContext<
     public virtual DbSet<Currency> Currencies => Set<Currency>();
     public virtual DbSet<ExchangeRate> ExchangeRate => Set<ExchangeRate>();
     public virtual DbSet<UserExchangeHistory> UserExchangeHistories => Set<UserExchangeHistory>();
-    public virtual DbSet<CurrencyAmount> UserCurrencyAmounts => Set<CurrencyAmount>();
+    public virtual DbSet<UserCurrencyAmount> UserCurrencyAmounts => Set<UserCurrencyAmount>();
     public virtual DbSet<Role> Roles => Set<Role>();
 
     public TableContext(DbContextOptions options) : base(options)

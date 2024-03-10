@@ -10,7 +10,7 @@ public class ApplicationUser : IdentityUser
     public int RoleId { get; set; }
 
     public virtual Role Role { get; set; }
-    public virtual ICollection<CurrencyAmount> CurrencyAmounts { get; set; }
+    public virtual ICollection<UserCurrencyAmount> UserCurrencyAmounts { get; set; }
     public virtual ICollection<UserExchangeHistory> UserExchangeHistory { get; set; }
 }
 

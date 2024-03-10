@@ -1,4 +1,5 @@
-﻿using Currencies.Contracts.Interfaces;
+﻿using Currencies.Contracts.Helpers;
+using Currencies.Contracts.Interfaces;
 using Currencies.Contracts.ModelDtos.Role;
 using Currencies.Models;
 
@@ -13,17 +14,17 @@ public class RoleService : IRoleService
         _dbContext = dbContext;
     }
 
-    public async Task<bool> CreateRoleAsync(RoleDto roleDto, CancellationToken cancellationToken)
+    public async Task<RoleDto> CreateRoleAsync(CreateRoleDto roleDto, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
 
-    public async Task DeleteRoleAsync(int roleId, CancellationToken cancellationToken)
+    public async Task<bool> DeleteRoleAsync(int roleId, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<IEnumerable<RoleDto>> GetAllCurrenciesAsync(CancellationToken cancellationToken)
+    public async Task<PageResult<RoleDto>> GetAllCurrenciesAsync(CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
@@ -33,7 +34,7 @@ public class RoleService : IRoleService
         throw new NotImplementedException();
     }
 
-    public async Task UpdateRoleAsync(int roleId, RoleDto roleDto, CancellationToken cancellationToken)
+    public async Task<RoleDto> UpdateRoleAsync(int roleId, UpdateRoleDto updateRoleDto, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
