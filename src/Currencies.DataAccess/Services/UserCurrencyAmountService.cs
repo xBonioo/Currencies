@@ -34,6 +34,11 @@ public class UserCurrencyAmountService : IUserCurrencyAmountService
         throw new NotImplementedException();
     }
 
+    public async Task<UserCurrencyAmountDto> AddUserCurrencyAmountAsync(int userCurrencyAmountId, UpdateUserCurrencyAmountDto userCurrencyAmountDto, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<UserCurrencyAmountDto> UpdateUserCurrencyAmountAsync(int userCurrencyAmountId, UpdateUserCurrencyAmountDto userCurrencyAmountDto, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();

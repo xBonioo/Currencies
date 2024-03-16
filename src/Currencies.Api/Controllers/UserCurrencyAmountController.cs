@@ -68,6 +68,13 @@ public class UserCurrencyAmountController : Controller
         return Ok();
     }
 
+    [HttpPost("{id}/add")]
+    public async Task<ActionResult<BaseResponse<UserCurrencyAmountDto>>> AddUserCurrencyAmount(int id, [FromBody] UpdateUserCurrencyAmountDto dto)
+    {
+
+        return NoContent();
+    }
+
     [HttpPost("{id}/edit")]
     public async Task<ActionResult<BaseResponse<UserCurrencyAmountDto>>> UpdateUserCurrencyAmount(int id, [FromBody] UpdateUserCurrencyAmountDto dto)
     {
