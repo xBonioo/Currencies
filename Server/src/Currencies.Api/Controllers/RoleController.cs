@@ -57,7 +57,7 @@ public class RoleController : Controller
     }
 
     [HttpPost]
-    public async Task<ActionResult<BaseResponse<RoleDto>>> CreateCurrency([FromBody] CreateRoleDto dto)
+    public async Task<ActionResult<BaseResponse<RoleDto>>> CreateCurrency([FromBody] BaseRoleDto dto)
     {
 
         return Ok();
@@ -71,7 +71,7 @@ public class RoleController : Controller
     }
 
     [HttpPost("{id}/edit")]
-    public async Task<ActionResult<BaseResponse<RoleDto>>> UpdateCurrency(int id, [FromBody] UpdateRoleDto dto)
+    public async Task<ActionResult<BaseResponse<RoleDto>>> UpdateCurrency(int id, [FromBody] BaseRoleDto dto)
     {
 
         return NoContent();

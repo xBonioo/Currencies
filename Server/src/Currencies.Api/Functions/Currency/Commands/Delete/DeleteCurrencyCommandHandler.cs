@@ -14,6 +14,6 @@ public class DeleteCurrencyCommandHandler : IRequestHandler<DeleteCurrencyComman
 
     public async Task<bool> Handle(DeleteCurrencyCommand request, CancellationToken cancellationToken)
     {
-        return await _currencyService.DeleteCurrencyAsync(request.Id, cancellationToken);
+        return await _currencyService.DeleteAsync(request.Id, cancellationToken);
     }
 }

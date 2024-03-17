@@ -13,8 +13,8 @@ public class UpdateCurrencyCommandHandler : IRequestHandler<UpdateCurrencyComman
         _currencyService = currencyService;
     }
 
-    public async Task<CurrencyDto> Handle(UpdateCurrencyCommand request, CancellationToken cancellationToken)
+    public async Task<CurrencyDto?> Handle(UpdateCurrencyCommand request, CancellationToken cancellationToken)
     {
-        return await _currencyService.UpdateCurrencyAsync(request.Id, request.Dto, cancellationToken);
+        return await _currencyService.UpdateAsync(request.Id, request.Dto, cancellationToken);
     }
 }

@@ -20,15 +20,14 @@ public class CurrencyService : ICurrencyService
         _mapper = mapper;
     }
 
-    public async Task<CurrencyDto?> CreateCurrencyAsync(BaseCurrencyDto createCurrencyDto, CancellationToken cancellationToken)
+    public async Task<CurrencyDto?> CreateAsync(BaseCurrencyDto dto, CancellationToken cancellationToken)
     {
-        if (createCurrencyDto == null)
+        if (dto == null)
         {
             return null;
         }
 
-        var currency = _mapper.Map<Currency>(createCurrencyDto);
-
+        var currency = _mapper.Map<Currency>(dto);
         _dbContext.Currencies.Add(currency);
 
         if (await _dbContext.SaveChangesAsync() > 0)
@@ -36,12 +35,25 @@ public class CurrencyService : ICurrencyService
             return _mapper.Map<CurrencyDto>(currency);
         }
 
-        throw new DbUpdateException($"Could not save changes to database at: {nameof(CreateCurrencyAsync)}");
+        throw new DbUpdateException($"Could not save changes to database at: {nameof(CreateAsync)}");
     }
 
-    public async Task<bool> DeleteCurrencyAsync(int currencyId, CancellationToken cancellationToken)
+    public async Task<bool> DeleteAsync(int id, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var currency = await GetByIdAsync(id, cancellationToken);
+        if (currency == null || !currency.IsActive)
+        {
+            return false;
+        }
+
+        currency.IsActive = false;
+
+        if ((await _dbContext.SaveChangesAsync()) > 0)
+        {
+            return true;
+        }
+
+        throw new DbUpdateException($"Could not save changes to database at: {nameof(DeleteAsync)}");
     }
 
     public async Task<PageResult<CurrencyDto>> GetAllCurrenciesAsync(FilterCurrencyDto filter, CancellationToken cancellationToken)
@@ -72,17 +84,33 @@ public class CurrencyService : ICurrencyService
         return new PageResult<CurrencyDto>(itemsDto, totalItemCount, filter.PageSize, filter.PageNumber);
     }
 
-    public async Task<CurrencyDto?> GetCurrencyByIdAsync(int currencyId, CancellationToken cancellationToken)
+    public async Task<CurrencyDto?> UpdateAsync(int id, BaseCurrencyDto dto, CancellationToken cancellationToken)
+    {
+        var currency = await GetByIdAsync(id, cancellationToken);
+        if (currency == null || !currency.IsActive)
+        {
+            return null;
+        }
+
+        currency.Name = dto.Name;
+        currency.Symbol = dto.Symbol;
+        currency.Description = dto.Description;
+        currency.IsActive = dto.IsActive;
+
+        if ((await _dbContext.SaveChangesAsync()) > 0)
+        {
+            return _mapper.Map<CurrencyDto>(currency);
+        }
+
+        throw new DbUpdateException($"Could not save changes to database at: {nameof(UpdateAsync)}");
+    }
+
+    public async Task<Currency?> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
         var result = await _dbContext
             .Currencies
-            .FirstOrDefaultAsync(x => x.Id == currencyId);
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
-        return _mapper.Map<CurrencyDto>(result);
-    }
-
-    public async Task<CurrencyDto> UpdateCurrencyAsync(int currencyId, BaseCurrencyDto updateCurrencyDto, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
+        return result;
     }
 }

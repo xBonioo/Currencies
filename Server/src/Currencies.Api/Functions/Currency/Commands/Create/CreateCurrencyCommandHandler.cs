@@ -15,6 +15,6 @@ public class CreateCurrencyCommandHandler : IRequestHandler<CreateCurrencyComman
 
     public async Task<CurrencyDto?> Handle(CreateCurrencyCommand request, CancellationToken cancellationToken)
     {
-        return await _currencyService.CreateCurrencyAsync(request.Data, cancellationToken);
+        return await _currencyService.CreateAsync(request.Data, cancellationToken);
     }
 }
