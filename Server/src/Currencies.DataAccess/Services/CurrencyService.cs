@@ -24,7 +24,7 @@ public class CurrencyService : ICurrencyService
         throw new NotImplementedException();
     }
 
-    public async Task<PageResult<CurrencyDto>> GetAllCurrenciesAsync(CancellationToken cancellationToken)
+    public async Task<PageResult<CurrencyDto>> GetAllCurrenciesAsync(FilterCurrencyDto filterDto, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
