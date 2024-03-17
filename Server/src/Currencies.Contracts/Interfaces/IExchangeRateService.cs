@@ -7,7 +7,7 @@ public interface IExchangeRateService
 {
     Task<PageResult<ExchangeRateDto>> GetAllExchangeRateAsync(CancellationToken cancellationToken);
     Task<ExchangeRateDto> GetExchangeRateByIdAsync(int currencyId, CancellationToken cancellationToken);
-    Task<ExchangeRateDto> CreateExchangeRateAsync(CreateExchangeRateDto createExchangeRateDto, CancellationToken cancellationToken);
-    Task<ExchangeRateDto> UpdateExchangeRateAsync(int exchangeRateId, UpdateExchangeRateDto updateExchangeRateDto, CancellationToken cancellationToken);
+    Task<ExchangeRateDto> CreateExchangeRateAsync(BaseExchangeRateDto createExchangeRateDto, CancellationToken cancellationToken);
+    Task<ExchangeRateDto> UpdateExchangeRateAsync(int exchangeRateId, BaseExchangeRateDto updateExchangeRateDto, CancellationToken cancellationToken);
     Task<bool> DeleteExchangeRateAsync(int exchangeRateId, CancellationToken cancellationToken);
 }

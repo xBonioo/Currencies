@@ -55,7 +55,7 @@ public class ExchangeRateController : Controller
     }
 
     [HttpPost]
-    public async Task<ActionResult<BaseResponse<ExchangeRateDto>>> CreateExchangeRate([FromBody] CreateExchangeRateDto dto)
+    public async Task<ActionResult<BaseResponse<ExchangeRateDto>>> CreateExchangeRate([FromBody] BaseExchangeRateDto dto)
     {
 
         return Ok();
@@ -69,7 +69,7 @@ public class ExchangeRateController : Controller
     }
 
     [HttpPost("{id}/edit")]
-    public async Task<ActionResult<BaseResponse<ExchangeRateDto>>> UpdateExchangeRate(int id, [FromBody] UpdateExchangeRateDto dto)
+    public async Task<ActionResult<BaseResponse<ExchangeRateDto>>> UpdateExchangeRate(int id, [FromBody] BaseExchangeRateDto dto)
     {
 
         return NoContent();

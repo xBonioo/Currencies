@@ -14,7 +14,7 @@ public class ExchangeRateService : IExchangeRateService
         _dbContext = dbContext;
     }
 
-    public async Task<ExchangeRateDto> CreateExchangeRateAsync(CreateExchangeRateDto createExchangeRateDto, CancellationToken cancellationToken)
+    public async Task<ExchangeRateDto> CreateExchangeRateAsync(BaseExchangeRateDto dto, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
@@ -34,7 +34,7 @@ public class ExchangeRateService : IExchangeRateService
         throw new NotImplementedException();
     }
 
-    public async Task<ExchangeRateDto> UpdateExchangeRateAsync(int exchangeRateId, UpdateExchangeRateDto updateExchangeRateDto, CancellationToken cancellationToken)
+    public async Task<ExchangeRateDto> UpdateExchangeRateAsync(int exchangeRateId, BaseExchangeRateDto dto, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }

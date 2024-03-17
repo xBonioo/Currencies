@@ -1,6 +1,6 @@
 ﻿namespace Currencies.Contracts.ModelDtos.Currency;
 
-public class CreateCurrencyDto
+public class BaseCurrencyDto
 {
     public string Name { get; set; } = null!;
     public string Symbol { get; set; } = null!;

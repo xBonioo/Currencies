@@ -17,7 +17,7 @@ namespace Currencies.Api.Controllers;
 /// For information on how to use the various controllers, go to:
 /// 'https wiki-link'
 /// </summary>
-[Authorize]
+//[Authorize]
 [Route("api/currency")]
 [ApiController]
 public class CurrencyController : Controller
@@ -118,7 +118,7 @@ public class CurrencyController : Controller
     /// <response code="400">Please insert correct JSON object with parameters.</response>
     /// <response code="404">Currency not found.</response>
     [HttpPost("{id}/edit")]
-    public async Task<ActionResult<BaseResponse<CurrencyDto>>> UpdateCurrency(int id, [FromBody] UpdateCurrencyDto dto)
+    public async Task<ActionResult<BaseResponse<CurrencyDto>>> UpdateCurrency(int id, [FromBody] BaseCurrencyDto dto)
     {
         var result = await _mediator.Send(new UpdateCurrencyCommand(id, dto));
         if (result != null)
