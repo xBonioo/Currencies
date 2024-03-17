@@ -1,6 +1,6 @@
 ﻿namespace Currencies.Contracts.ModelDtos.ExchangeRate;
 
-public class CreateExchangeRateDto
+public class BaseExchangeRateDto
 {
     public int FromCurrencyId { get; set; }
     public int ToCurrencyId { get; set; }
