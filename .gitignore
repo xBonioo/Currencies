@@ -454,3 +454,35 @@ $RECYCLE.BIN/
 !.vscode/extensions.json
 Docker-run/mssql/data/Entropy.bin
 mssql/data/Entropy.bin
+
+
+#
+# FE ignore
+#
+
+# Node
+/node_modules
+npm-debug.log
+yarn-error.log
+
+# Compiled output
+/dist
+/tmp
+/out-tsc
+/bazel-out
+
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Miscellaneous
+/.angular/cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+testem.log
+/typings
+.angular/
