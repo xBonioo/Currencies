@@ -1,6 +1,7 @@
 ﻿using Currencies.Api.Functions.Currency.Commands.Create;
 using Currencies.Api.Functions.Currency.Commands.Delete;
 using Currencies.Api.Functions.Currency.Commands.Update;
+using Currencies.Api.Functions.Currency.Queries.GetAll;
 using Currencies.Api.Functions.Currency.Queries.GetSingle;
 using Currencies.Contracts.Helpers;
 using Currencies.Contracts.Helpers.Forms;
