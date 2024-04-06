@@ -2,6 +2,7 @@
 using Currencies.Contracts.Interfaces;
 using Currencies.Contracts.ModelDtos.User.CurrencyAmount;
 using Currencies.Models;
+using Currencies.Models.Entities;
 
 namespace Currencies.DataAccess.Services;
 
@@ -14,12 +15,12 @@ public class UserCurrencyAmountService : IUserCurrencyAmountService
         _dbContext = dbContext;
     }
 
-    public async Task<UserCurrencyAmountDto> ConvertCurrencyAsync(ConvertUserCurrencyAmountDto convertUserCurrencyAmountDto, CancellationToken cancellationToken)
+    public async Task<UserCurrencyAmountDto?> ConvertAsync(ConvertUserCurrencyAmountDto dto, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<bool> DeleteUserCurrencyAmountAsync(int userCurrencyAmountId, CancellationToken cancellationToken)
+    public async Task<bool> DeleteAsync(int id, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
@@ -29,17 +30,17 @@ public class UserCurrencyAmountService : IUserCurrencyAmountService
         throw new NotImplementedException();
     }
 
-    public async Task<UserCurrencyAmountDto> GetUserCurrencyAmountByIdAsync(int userCurrencyAmountId, CancellationToken cancellationToken)
+    public async Task<UserCurrencyAmountDto> AddAsync(int id, BaseUserCurrencyAmountDto dto, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<UserCurrencyAmountDto> AddUserCurrencyAmountAsync(int userCurrencyAmountId, UpdateUserCurrencyAmountDto userCurrencyAmountDto, CancellationToken cancellationToken)
+    public async Task<UserCurrencyAmountDto> UpdateAsync(int id, BaseUserCurrencyAmountDto dto, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<UserCurrencyAmountDto> UpdateUserCurrencyAmountAsync(int userCurrencyAmountId, UpdateUserCurrencyAmountDto userCurrencyAmountDto, CancellationToken cancellationToken)
+    public async Task<UserCurrencyAmount?> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }

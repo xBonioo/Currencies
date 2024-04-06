@@ -19,7 +19,7 @@ public class GetSingleCurrencyQueryHandler : IRequestHandler<GetSingleCurrencyQu
 
     public async Task<CurrencyDto?> Handle(GetSingleCurrencyQuery request, CancellationToken cancellationToken)
     {
-        var result = await _currencyService.GetCurrencyByIdAsync(request.id, cancellationToken);
+        var result = await _currencyService.GetByIdAsync(request.id, cancellationToken);
         if (result == null || !result.IsActive)
         {
             return null;

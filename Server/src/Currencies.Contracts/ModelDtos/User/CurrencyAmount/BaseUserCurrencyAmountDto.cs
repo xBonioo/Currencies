@@ -1,6 +1,6 @@
 ﻿namespace Currencies.Contracts.ModelDtos.User.CurrencyAmount;
 
-public class UpdateUserCurrencyAmountDto
+public class BaseUserCurrencyAmountDto
 {
     public string UserId { get; set; } = null!;
     public decimal Amount { get; set; }

@@ -10,5 +10,6 @@ public class AutoMapperProfile : Profile
     {
         CreateMap<CurrencyDto, Currency>();
         CreateMap<Currency, CurrencyDto>();
+        CreateMap<Currency, BaseCurrencyDto>();
     }
 }

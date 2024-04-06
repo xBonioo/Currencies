@@ -137,7 +137,7 @@ namespace Currencies.Migrations.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Currencies");
+                    b.ToTable("Currencies", (string)null);
 
                     b.HasData(
                         new
@@ -207,7 +207,7 @@ namespace Currencies.Migrations.Migrations
 
                     b.HasIndex("ToCurrencyID");
 
-                    b.ToTable("ExchangeRate");
+                    b.ToTable("ExchangeRate", (string)null);
                 });
 
             modelBuilder.Entity("Currencies.Models.Entities.Role", b =>
@@ -234,7 +234,7 @@ namespace Currencies.Migrations.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Roles", (string)null);
 
                     b.HasData(
                         new
@@ -308,7 +308,7 @@ namespace Currencies.Migrations.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserCurrencyAmounts");
+                    b.ToTable("UserCurrencyAmounts", (string)null);
                 });
 
             modelBuilder.Entity("Currencies.Models.Entities.UserExchangeHistory", b =>
@@ -346,7 +346,7 @@ namespace Currencies.Migrations.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("UserExchangeHistories");
+                    b.ToTable("UserExchangeHistories", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

@@ -5,9 +5,9 @@ namespace Currencies.Api.Functions.Currency.Commands.Create;
 
 public class CreateCurrencyCommand : IRequest<CurrencyDto>
 {
-    public CreateCurrencyDto Data { get; set; } = null!;
+    public BaseCurrencyDto Data { get; set; } = null!;
 
-    public CreateCurrencyCommand(CreateCurrencyDto dto)
+    public CreateCurrencyCommand(BaseCurrencyDto dto)
     {
         Data = dto;
     }

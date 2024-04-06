@@ -1,13 +1,13 @@
 ﻿using Currencies.Contracts.Helpers;
 using Currencies.Contracts.ModelDtos.ExchangeRate;
+using Currencies.Models.Entities;
 
 namespace Currencies.Contracts.Interfaces;
 
-public interface IExchangeRateService
+public interface IExchangeRateService : IEntityService<ExchangeRate>
 {
     Task<PageResult<ExchangeRateDto>> GetAllExchangeRateAsync(CancellationToken cancellationToken);
-    Task<ExchangeRateDto> GetExchangeRateByIdAsync(int currencyId, CancellationToken cancellationToken);
-    Task<ExchangeRateDto> CreateExchangeRateAsync(CreateExchangeRateDto createExchangeRateDto, CancellationToken cancellationToken);
-    Task<ExchangeRateDto> UpdateExchangeRateAsync(int exchangeRateId, UpdateExchangeRateDto updateExchangeRateDto, CancellationToken cancellationToken);
-    Task<bool> DeleteExchangeRateAsync(int exchangeRateId, CancellationToken cancellationToken);
+    Task<ExchangeRateDto?> CreateAsync(BaseExchangeRateDto dto, CancellationToken cancellationToken);
+    Task<ExchangeRateDto?> UpdateAsync(int id, BaseExchangeRateDto dto, CancellationToken cancellationToken);
+    Task<bool> DeleteAsync(int id, CancellationToken cancellationToken);
 }
