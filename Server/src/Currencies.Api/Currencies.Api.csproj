@@ -36,8 +36,6 @@
     <Folder Include="Functions\UserExchangeHistory\Queries\" />
     <Folder Include="Functions\UserCurrencyAmount\Commands\" />
     <Folder Include="Functions\UserCurrencyAmount\Queries\" />
-    <Folder Include="Functions\Role\Commands\" />
-    <Folder Include="Functions\Role\Queries\" />
     <Folder Include="Functions\ExchangeRate\Commands\" />
     <Folder Include="Functions\ExchangeRate\Queries\" />
     <Folder Include="Validators\Exchange\" />

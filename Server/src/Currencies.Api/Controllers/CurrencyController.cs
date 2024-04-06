@@ -81,7 +81,7 @@ public class CurrencyController : Controller
     }
 
     /// <summary>
-    /// Creates Currency.
+    /// Creates currency.
     /// </summary>
     /// <response code="201">Currency correctly created.</response>
     /// <response code="400">Please insert correct JSON object with parameters.</response>
@@ -105,6 +105,10 @@ public class CurrencyController : Controller
         });
     }
 
+    /// <summary>
+    /// Get create/edit form of currency.
+    /// </summary>
+    /// <response code="200">Currency edit form correctly response.</response>
     [HttpGet("{id}/edit-form")]
     public async Task<ActionResult<BaseResponse<CurrencyEditForm>>> GetCurrencyEditForm(int id)
     {
@@ -137,7 +141,7 @@ public class CurrencyController : Controller
         var result = await _mediator.Send(new UpdateCurrencyCommand(id, dto));
         if (result == null)
         {
-            return NotFound(new BaseResponse<bool>
+            return NotFound(new BaseResponse<CurrencyDto>
             {
                 ResponseCode = StatusCodes.Status404NotFound,
                 Message = $"There's no currency with Id: {id}"

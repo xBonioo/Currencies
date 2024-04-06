@@ -1,5 +1,4 @@
 ﻿using Currencies.Contracts.Helpers;
-using Currencies.Contracts.ModelDtos.Currency;
 using Currencies.Contracts.ModelDtos.Role;
 using Currencies.Models.Entities;
 

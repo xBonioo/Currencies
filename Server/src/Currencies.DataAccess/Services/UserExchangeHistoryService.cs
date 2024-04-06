@@ -1,7 +1,5 @@
 ﻿using Currencies.Contracts.Helpers;
 using Currencies.Contracts.Interfaces;
-using Currencies.Contracts.ModelDtos.Currency;
-using Currencies.Contracts.ModelDtos.User.CurrencyAmount;
 using Currencies.Contracts.ModelDtos.User.ExchangeHistory;
 using Currencies.Models;
 using Currencies.Models.Entities;
@@ -22,7 +20,7 @@ public class UserExchangeHistoryService : IUserExchangeHistoryService
         throw new NotImplementedException();
     }
 
-    public async Task<PageResult<UserExchangeHistoryDto>> GetAllUserExchangeHistoryServiceiesAsync(FilterRoleDto filter, CancellationToken cancellationToken)
+    public async Task<PageResult<UserExchangeHistoryDto>> GetAllUserExchangeHistoryServiceiesAsync(FilterUserExchangeHistoryDto filter, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }

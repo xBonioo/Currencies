@@ -1,6 +1,6 @@
-﻿namespace Currencies.Contracts.ModelDtos.Currency;
+﻿namespace Currencies.Contracts.ModelDtos.User.ExchangeHistory;
 
-public class FilterRoleDto : FilterDto
+public class FilterUserExchangeHistoryDto : FilterDto
 {
     public DateTime From { get; set; }
     public DateTime To { get; set; }
