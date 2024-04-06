@@ -27,7 +27,13 @@ public class CurrencyService : ICurrencyService
             return null;
         }
 
-        var currency = _mapper.Map<Currency>(dto);
+        var currency = new Currency()
+        {
+            Name = dto.Name,
+            Symbol = dto.Symbol,
+            Description = dto.Description
+        };
+
         _dbContext.Currencies.Add(currency);
 
         if (await _dbContext.SaveChangesAsync() > 0)
@@ -70,7 +76,11 @@ public class CurrencyService : ICurrencyService
 
         if (!string.IsNullOrEmpty(filter.SearchPhrase))
         {
-            baseQuery = baseQuery.Where(x => x.Name.Contains(filter.SearchPhrase) || x.Symbol.Contains(filter.SearchPhrase) || x.Description!.Contains(filter.SearchPhrase));
+            baseQuery = baseQuery.Where(x => x.Name.Contains(filter.SearchPhrase) || x.Symbol.Contains(filter.SearchPhrase) || (!string.IsNullOrEmpty(x.Description) && x.Description.Contains(filter.SearchPhrase)));
+        }
+        if (filter.IsActive != null)
+        {
+            baseQuery = baseQuery.Where(x => x.IsActive == filter.IsActive);
         }
 
         var totalItemCount = baseQuery.Count();

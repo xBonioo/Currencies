@@ -2,6 +2,7 @@
 using Currencies.Api.Functions.Currency.Commands.Delete;
 using Currencies.Api.Functions.Currency.Commands.Update;
 using Currencies.Api.Functions.Currency.Queries.GetAll;
+using Currencies.Api.Functions.Currency.Queries.GetEditForm;
 using Currencies.Api.Functions.Currency.Queries.GetSingle;
 using Currencies.Contracts.Helpers;
 using Currencies.Contracts.Helpers.Forms;
@@ -38,7 +39,7 @@ public class CurrencyController : Controller
     public async Task<ActionResult<BaseResponse<PageResult<CurrencyDto>>>> GetAllCurrencies([FromQuery] FilterCurrencyDto filter)
     {
         var result = await _mediator.Send(new GetCurrenciesListQuery(filter));
-        if (result is null)
+        if (result == null)
         {
             return NotFound(new BaseResponse<PageResult<CurrencyDto>>
             {
@@ -63,7 +64,7 @@ public class CurrencyController : Controller
     public async Task<ActionResult<BaseResponse<CurrencyDto>>> GetCurrencyById(int id)
     {
         var result = await _mediator.Send(new GetSingleCurrencyQuery(id));
-        if (result is null)
+        if (result == null)
         {
             return NotFound(new BaseResponse<CurrencyDto>
             {
@@ -85,10 +86,10 @@ public class CurrencyController : Controller
     /// <response code="201">Currency correctly created.</response>
     /// <response code="400">Please insert correct JSON object with parameters.</response>
     [HttpPost]
-    public async Task<ActionResult<BaseResponse<CurrencyDto>>> CreateCurrency([FromBody] CreateCurrencyCommand command)
+    public async Task<ActionResult<BaseResponse<CurrencyDto>>> CreateCurrency([FromBody] BaseCurrencyDto dto)
     {
-        var result = await _mediator.Send(command);
-        if (result is null)
+        var result = await _mediator.Send(new CreateCurrencyCommand(dto));
+        if (result == null)
         {
             return BadRequest(new BaseResponse<CurrencyDto>
             {
@@ -107,8 +108,21 @@ public class CurrencyController : Controller
     [HttpGet("{id}/edit-form")]
     public async Task<ActionResult<BaseResponse<CurrencyEditForm>>> GetCurrencyEditForm(int id)
     {
+        var result = await _mediator.Send(new GetCurrencyEditFormQuery(id));
+        if (result == null)
+        {
+            return NotFound(new BaseResponse<CurrencyEditForm>
+            {
+                ResponseCode = StatusCodes.Status404NotFound,
+                Message = $"There's no currency with Id: {id}"
+            });
+        }
 
-        return Ok();
+        return Ok(new BaseResponse<CurrencyEditForm>
+        {
+            ResponseCode = StatusCodes.Status200OK,
+            Data = result
+        });
     }
 
     /// <summary>
@@ -121,7 +135,7 @@ public class CurrencyController : Controller
     public async Task<ActionResult<BaseResponse<CurrencyDto>>> UpdateCurrency(int id, [FromBody] BaseCurrencyDto dto)
     {
         var result = await _mediator.Send(new UpdateCurrencyCommand(id, dto));
-        if (result != null)
+        if (result == null)
         {
             return NotFound(new BaseResponse<bool>
             {

@@ -6,16 +6,12 @@ namespace Currencies.Api.Validators.Currency;
 
 public class CurrencyDtoValidator : AbstractValidator<BaseCurrencyDto>
 {
-    private readonly TableContext _dbContext;
-
     public CurrencyDtoValidator(TableContext dbContext)
     {
-        _dbContext = dbContext;
-
         RuleFor(x => x.Name)
             .NotNull()
             .NotEmpty()
-            .MaximumLength(1024)
+            .MaximumLength(64)
             .Custom((value, context) =>
             {
                 var isNameAlreadyTaken = dbContext.Currencies.Any(p => p.Name == value);
