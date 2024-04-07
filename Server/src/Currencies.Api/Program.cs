@@ -17,13 +17,13 @@ using System.Text;
 using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
-var envConfig = new ConfigurationBuilder();
-var envSettings = envConfig.AddJsonFile("appsettings.json",
-                       optional: false,
-                       reloadOnChange: true)
-                       .AddEnvironmentVariables()
-                       .Build();
-builder.Configuration.AddConfiguration(envSettings);
+var envConfig = new ConfigurationBuilder()
+    //.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile("appsettings.Development.json", optional: false, reloadOnChange: true)
+    .AddEnvironmentVariables()
+    .Build();
+
+builder.Configuration.AddConfiguration(envConfig);
 
 builder.Services.AddControllers(options =>
 {
