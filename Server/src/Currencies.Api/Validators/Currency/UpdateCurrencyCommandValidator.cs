@@ -22,7 +22,6 @@ public class UpdateCurrencyCommandValidator : AbstractValidator<UpdateCurrencyCo
                 }
             });
 
-
         RuleFor(x => x.Dto.Symbol)
             .NotNull()
             .NotEmpty()

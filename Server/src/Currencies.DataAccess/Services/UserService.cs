@@ -7,7 +7,6 @@ using System.IdentityModel.Tokens.Jwt;
 using Currencies.Models.Entities;
 using Currencies.Contracts.ModelDtos.User;
 using Microsoft.EntityFrameworkCore;
-using Currencies.Contracts.ModelDtos.User.ExchangeHistory;
 
 namespace Currencies.DataAccess.Services;
 
