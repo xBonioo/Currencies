@@ -80,7 +80,7 @@ W tej sekcji przedstawiamy strukturę oraz funkcje bazy danych, która będzie w
 
 #### Tabela: ExchangeRate
 - Przechowuje dane o wysokości kursów walut
-- Tabela jest updatowana codziennie i przechowuje informacje historyczne 
+- Tabela jest aktualizowana codziennie i przechowuje informacje historyczne 
 - **Kolumny:**
   1. `Id`: Klucz główny identyfikujący kurs wymiany.
   2. `FromCurrencyID`: Identyfikator waluty źródłowej (Klucz obcy).
@@ -101,6 +101,7 @@ W tej sekcji przedstawiamy strukturę oraz funkcje bazy danych, która będzie w
   5. `ModifiedOn`: Data ostatniej modyfikacji rekordu.
 
 #### Tabela: UserCurrencyAmount
+- Przechowuje informacje o ilości poszczególnych walut i stanie konta użytkowników.
 - **Kolumny:**
   1. `Id`: Klucz główny identyfikujący ilość waluty użytkownika.
   2. `UserId`: Identyfikator użytkownika (Klucz obcy).
@@ -111,6 +112,8 @@ W tej sekcji przedstawiamy strukturę oraz funkcje bazy danych, która będzie w
   7. `ModifiedOn`: Data ostatniej modyfikacji rekordu.
 
 #### Tabela: UserExchangeHistory
+- Przechowuje historię transakcji wymiany walut użytkowników.
+- Nowy rekord dodawany jest przy każdej wymianie waluty
 - **Kolumny:**
   1. `Id`: Klucz główny identyfikujący historię wymiany użytkownika.
   2. `UserID`: Identyfikator użytkownika (Klucz obcy).
