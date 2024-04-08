@@ -1,4 +1,5 @@
 ﻿using Currencies.Common.Infrastructure;
+using Currencies.Common.Infrastucture;
 
 namespace Currencies.Models.Entities;
 
