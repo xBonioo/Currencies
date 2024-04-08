@@ -58,7 +58,7 @@ W tej sekcji przedstawiamy strukturę oraz funkcje bazy danych, która będzie w
   15. `IDIssueDate`: Data wydania dokumentu tożsamości.
   16. `PasswordHash`: Skrócona wartość hasła użytkownika.
   17. `SecurityStamp`: Unikalny znacznik zabezpieczeń.
-  18. `CurrencyStamp`: Znacznik waluty.
+  18. `ConcurrencyStamp`: Znacznik waluty.
   19. `PhoneNumber`: Numer telefonu użytkownika.
   20. `PhoneNumberConfirmed`: Określa czy numer telefonu użytkownika został potwierdzony.
   21. `TwoFactorEnabled`: Określa czy uwierzytelnianie dwuskładnikowe jest włączone dla użytkownika.
