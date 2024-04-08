@@ -35,3 +35,100 @@ W tej sekcji przedstawiamy strukturę oraz funkcje bazy danych, która będzie w
 #### Model bazy danych 
 
 ![Model bazy danych](Documentation/Images/database_model.png)
+
+### Opis tabel
+
+#### Tabela: ApplicationUser
+- Przechowuje informacje o użytkownikach aplikacji.
+- **Kolumny:**
+  1. `Id`: Klucz główny identyfikujący użytkownika.
+  2. `UserName`: Nazwa użytkownika.
+  3. `FirstName`: Imię użytkownika.
+  4. `SecondName`: Nazwisko użytkownika.
+  5. `IsActive`: Określa czy konto użytkownika jest aktywne.
+  6. `RoleId`: Identyfikator roli przypisanej do użytkownika (Klucz obcy).
+  7. `NormalizedUserName`: Znormalizowana nazwa użytkownika.
+  8. `Email`: Adres e-mail użytkownika.
+  9. `NormalizedEmail`: Znormalizowany adres e-mail użytkownika.
+  10. `EmailConfirmed`: Określa czy adres e-mail użytkownika został potwierdzony.
+  11. `Adres`: Adres zamieszkania użytkownika.
+  12. `IdentityNumber`: Numer pesel użytkownika.
+  13. `IDNumber`:  Numer dokumentu tożsamości użytkownika.
+  14. `IDExpiryDate`: Data wygaśnięcia dokumentu tożsamości.
+  15. `IDIssueDate`: Data wydania dokumentu tożsamości.
+  16. `PasswordHash`: Skrócona wartość hasła użytkownika.
+  17. `SecurityStamp`: Unikalny znacznik zabezpieczeń.
+  18. `CurrencyStamp`: Znacznik waluty.
+  19. `PhoneNumber`: Numer telefonu użytkownika.
+  20. `PhoneNumberConfirmed`: Określa czy numer telefonu użytkownika został potwierdzony.
+  21. `TwoFactorEnabled`: Określa czy uwierzytelnianie dwuskładnikowe jest włączone dla użytkownika.
+  22. `LockoutEnabled`: Określa czy blokada konta użytkownika jest włączona.
+  23. `AccessFailedCount`: Licznik nieudanych prób logowania.
+  24. `CreatedOn`: Data utworzenia rekordu w bazie danych.
+  25. `ModifiedOn`: Data ostatniej modyfikacji rekordu.
+
+#### Tabela: Currency
+- Przechowuje informacje o dostępnych walutach.
+- **Kolumny:**
+  1. `Id`: Klucz główny identyfikujący walutę.
+  2. `Name`: Nazwa waluty.
+  3. `Symbol`: Symbol waluty.
+  4. `Description`: Opis waluty.
+  5. `IsActive`: Określa czy waluta jest aktywna.
+  6. `CreatedOn`: Data utworzenia rekordu w bazie danych.
+  7. `ModifiedOn`: Data ostatniej modyfikacji rekordu.
+
+#### Tabela: ExchangeRate
+- Przechowuje dane o wysokości kursów walut
+- Tabela jest updatowana codziennie i przechowuje informacje historyczne 
+- **Kolumny:**
+  1. `Id`: Klucz główny identyfikujący kurs wymiany.
+  2. `FromCurrencyID`: Identyfikator waluty źródłowej (Klucz obcy).
+  3. `ToCurrencyID`: Identyfikator waluty docelowej (Klucz obcy).
+  4. `Rate`: Kurs wymiany między walutami.
+  5. `Direction`: Określa kierunek wymiany (kupno lub sprzedaż).
+  6. `IsActive`: Określa czy kurs wymiany jest aktywny.
+  7. `CreatedOn`: Data utworzenia rekordu w bazie danych.
+  8. `ModifiedOn`: Data ostatniej modyfikacji rekordu.
+
+#### Tabela: Role
+- Przechowuje informacje o rolach użytkowników.
+- **Kolumny:**
+  1. `Id`: Klucz główny identyfikujący rolę.
+  2. `Name`: Nazwa roli.
+  3. `IsActive`: Określa czy rola jest aktywna.
+  4. `CreatedOn`: Data utworzenia rekordu w bazie danych.
+  5. `ModifiedOn`: Data ostatniej modyfikacji rekordu.
+
+#### Tabela: UserCurrencyAmount
+- **Kolumny:**
+  1. `Id`: Klucz główny identyfikujący ilość waluty użytkownika.
+  2. `UserId`: Identyfikator użytkownika (Klucz obcy).
+  3. `CurrencyId`: Identyfikator waluty (Klucz obcy).
+  4. `Amount`: Ilość danej waluty w posiadaniu użytkownika.
+  5. `IsActive`: Określa czy ilość waluty jest aktywna.
+  6. `CreatedOn`: Data utworzenia rekordu w bazie danych.
+  7. `ModifiedOn`: Data ostatniej modyfikacji rekordu.
+
+#### Tabela: UserExchangeHistory
+- **Kolumny:**
+  1. `Id`: Klucz główny identyfikujący historię wymiany użytkownika.
+  2. `UserID`: Identyfikator użytkownika (Klucz obcy).
+  3. `RateID`: Identyfikator kursu wymiany (Klucz obcy).
+  4. `Amount`: Ilość wymienionej waluty.
+  5. `ExchangeTime`: Data i czas wymiany waluty.
+  6. `AccountID`: Identyfikator konta użytkownika.
+  7. `PaymentStatus`: Status płatności.
+  8. `PaymentType`: Typ płatności.
+  9. `CreatedOn`: Data utworzenia rekordu w bazie danych.
+  10. `ModifiedOn`: Data ostatniej modyfikacji rekordu.
+
+#### Tabela: TokenUser
+- Przechowuje dane tokenu użytkownika oraz datę jego ważności.
+- **Kolumny:**
+  1. `Id`: Klucz główny identyfikujący token użytkownika.
+  2. `UserId`: Identyfikator użytkownika.
+  3. `LoginProvider`: Dostawca logowania, który wygenerował token.
+  4. `Name`: Nazwa tokenu.
+  5. `ValidUntil`: Data ważności tokenu użytkownika.
+  6. `Value`: Wartość tokenu.
