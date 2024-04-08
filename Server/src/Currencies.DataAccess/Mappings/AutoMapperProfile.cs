@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Currencies.Contracts.ModelDtos.Currency;
+using Currencies.Contracts.ModelDtos.ExchangeRate;
 using Currencies.Models.Entities;
 
 namespace Currencies.DataAccess.Mappings;
@@ -11,5 +12,6 @@ public class AutoMapperProfile : Profile
         CreateMap<CurrencyDto, Currency>();
         CreateMap<Currency, CurrencyDto>();
         CreateMap<Currency, BaseCurrencyDto>();
+        CreateMap<ExchangeRate, ExchangeRateDto>();
     }
 }
