@@ -28,13 +28,12 @@ public class ExchangeRateEntityConfiguration : IEntityTypeConfiguration<Exchange
             .IsRequired();
 
         builder
-            .HasOne(er => er.FromCurrency)
-            .WithMany()
-            .HasForeignKey(er => er.FromCurrencyID);
+            .Property(r => r.Direction)
+            .IsRequired();
 
         builder
-            .HasOne(er => er.ToCurrency)
-            .WithMany()
-            .HasForeignKey(er => er.ToCurrencyID);
+            .Property(r => r.IsActive)
+            .IsRequired();
+
     }
 }

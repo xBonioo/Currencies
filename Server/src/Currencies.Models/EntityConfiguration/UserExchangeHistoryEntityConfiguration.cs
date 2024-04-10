@@ -1,4 +1,5 @@
-﻿using Currencies.Models.Entities;
+﻿using Currencies.Common.Infrastructure;
+using Currencies.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -17,14 +18,9 @@ public class UserExchangeHistoryEntityConfiguration : IEntityTypeConfiguration<U
             .HasForeignKey(u => u.UserID);
 
         builder
-            .HasOne(u => u.FromCurrency)
-            .WithMany()
-            .HasForeignKey(u => u.FromCurrencyID);
-
-        builder
-            .HasOne(u => u.ToCurrency)
-            .WithMany()
-            .HasForeignKey(u => u.ToCurrencyID);
+           .HasOne(u => u.Rate)
+           .WithMany()
+           .HasForeignKey(u => u.RateID);
 
         builder
             .Property(u => u.Amount)
@@ -32,8 +28,21 @@ public class UserExchangeHistoryEntityConfiguration : IEntityTypeConfiguration<U
             .IsRequired();
 
         builder
-            .Property(u => u.ExchangeRate)
-            .HasColumnType("decimal(18, 6)") 
-            .IsRequired();
+          .Property(u => u.ExchangeTime)
+          .IsRequired();
+
+        builder
+          .HasOne(u => u.Account)
+          .WithMany()
+          .HasForeignKey(u => u.AccountID);
+
+        builder
+           .Property(u => u.PaymentType)
+           .IsRequired();
+
+        builder
+          .Property(u => u.PaymentStatus)
+          .IsRequired();
+
     }
 }
