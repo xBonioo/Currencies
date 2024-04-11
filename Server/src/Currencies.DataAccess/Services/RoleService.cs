@@ -63,16 +63,61 @@ public class RoleService : IRoleService
 
     public async Task<PageResult<RoleDto>?> GetAllRolesAsync(FilterRoleDto filter, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var baseQuery = _dbContext
+           .Roles
+           .AsQueryable()
+           .Where(x => x.IsActive == true);
+
+        if (!baseQuery.Any())
+        {
+            return null;
+        }
+
+        if (!string.IsNullOrEmpty(filter.SearchPhrase))
+        {
+            baseQuery = baseQuery.Where(x => x.Name.Contains(filter.SearchPhrase));
+        }
+        if (filter.IsActive != null)
+        {
+            baseQuery = baseQuery.Where(x => x.IsActive == filter.IsActive);
+        }
+
+        var totalItemCount = baseQuery.Count();
+
+        var itemsDto = await baseQuery
+            .Skip(filter.PageSize * (filter.PageNumber - 1))
+            .Take(filter.PageSize)
+            .ProjectTo<RoleDto>(_mapper.ConfigurationProvider)
+            .ToListAsync(cancellationToken);
+
+        return new PageResult<RoleDto>(itemsDto, totalItemCount, filter.PageSize, filter.PageNumber);
     }
 
     public async Task<RoleDto?> UpdateAsync(int id, BaseRoleDto dto, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var role = await GetByIdAsync(id, cancellationToken);
+        if (role == null || !role.IsActive)
+        {
+            return null;
+        }
+
+        role.Name = dto.Name;
+        role.IsActive = dto.IsActive;
+
+        if ((await _dbContext.SaveChangesAsync()) > 0)
+        {
+            return _mapper.Map<RoleDto>(role);
+        }
+
+        throw new DbUpdateException($"Could not save changes to database at: {nameof(UpdateAsync)}");
     }
 
     public async Task<Role?> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var result = await _dbContext
+            .Roles
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+
+        return result;
     }
 }
