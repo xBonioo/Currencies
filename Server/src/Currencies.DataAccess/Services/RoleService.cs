@@ -65,8 +65,7 @@ public class RoleService : IRoleService
     {
         var baseQuery = _dbContext
            .Roles
-           .AsQueryable()
-           .Where(x => x.IsActive == true);
+           .AsQueryable();
 
         if (!baseQuery.Any())
         {

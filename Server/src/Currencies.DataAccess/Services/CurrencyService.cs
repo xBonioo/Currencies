@@ -66,8 +66,7 @@ public class CurrencyService : ICurrencyService
     {
         var baseQuery = _dbContext
             .Currencies
-            .AsQueryable()
-            .Where(x => x.IsActive == true);
+            .AsQueryable();
 
         if (!baseQuery.Any())
         {
