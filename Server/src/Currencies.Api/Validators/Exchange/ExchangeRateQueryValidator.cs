@@ -2,7 +2,7 @@
 using Currencies.Contracts.Helpers;
 using FluentValidation;
 
-namespace Currencies.Api.Validators.Currency;
+namespace Currencies.Api.Validators.ExchangeRate;
 
 public class ExchangeRateQueryValidator : AbstractValidator<GetCurrenciesListQuery>
 {

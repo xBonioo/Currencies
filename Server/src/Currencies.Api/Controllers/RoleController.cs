@@ -63,7 +63,7 @@ public class RoleController : Controller
     [HttpGet("{id}")]
     public async Task<ActionResult<BaseResponse<RoleDto>>> GetRoleById(int id)
     {
-        var result = await _mediator.Send(new GetSingleRoleQuery(id));
+        var result = await _mediator.Send(new GetSingleExchangeRateQuery(id));
         if (result == null)
         {
             return NotFound(new BaseResponse<RoleDto>

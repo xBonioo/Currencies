@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Currencies.Api.Functions.Role.Queries.GetSingle;
 
-public class GetSinglRoleQueryHandler : IRequestHandler<GetSingleRoleQuery, RoleDto?>
+public class GetSinglRoleQueryHandler : IRequestHandler<GetSingleExchangeRateQuery, RoleDto?>
 {
     private readonly IRoleService _roleService;
     private readonly IMapper _mapper;
@@ -16,7 +16,7 @@ public class GetSinglRoleQueryHandler : IRequestHandler<GetSingleRoleQuery, Role
         _mapper = mapper;
     }
 
-    public async Task<RoleDto?> Handle(GetSingleRoleQuery request, CancellationToken cancellationToken)
+    public async Task<RoleDto?> Handle(GetSingleExchangeRateQuery request, CancellationToken cancellationToken)
     {
         var result = await _roleService.GetByIdAsync(request.id, cancellationToken);
         if (result == null || !result.IsActive)

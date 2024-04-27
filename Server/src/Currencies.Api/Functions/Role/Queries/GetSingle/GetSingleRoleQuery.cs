@@ -3,4 +3,4 @@ using MediatR;
 
 namespace Currencies.Api.Functions.Role.Queries.GetSingle;
 
-public record GetSingleRoleQuery(int id) : IRequest<RoleDto>;
+public record GetSingleExchangeRateQuery(int id) : IRequest<RoleDto>;
