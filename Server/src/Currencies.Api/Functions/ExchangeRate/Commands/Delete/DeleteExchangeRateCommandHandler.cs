@@ -1,7 +1,7 @@
 ﻿using Currencies.Contracts.Interfaces;
 using MediatR;
 
-namespace Currencies.Api.Functions.Role.Commands.Delete;
+namespace Currencies.Api.Functions.ExchangeRate.Commands.Delete;
 
 public class DeleteExchangeRateCommandHandler : IRequestHandler<DeleteExchangeRateCommand, bool>
 {
