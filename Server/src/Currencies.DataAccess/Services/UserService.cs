@@ -35,7 +35,12 @@ public class UserService : IUserService
             Email = registerUserDto.Email,
             EmailConfirmed = true,
             RoleId = 2,
-            IsActive = true
+            IsActive = true,
+            Adres = registerUserDto.Adres,
+            IdentityNumber = registerUserDto.IdentityNumber,
+            IDNumber = registerUserDto.IDNumber,
+            IDExpiryDate = registerUserDto.IDExpiryDate,
+            IDIssueDate = registerUserDto.IDIssueDate
         };
 
         using (var transaction = _dbContext.Database.BeginTransaction())
