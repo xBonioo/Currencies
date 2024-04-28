@@ -4,6 +4,7 @@ using Currencies.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Currencies.Migrations.Migrations
 {
     [DbContext(typeof(TableContext))]
-    partial class TableContextModelSnapshot : ModelSnapshot
+    [Migration("20240406164242_UpdateUser")]
+    partial class UpdateUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -162,7 +164,7 @@ namespace Currencies.Migrations.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Currencies", (string)null);
+                    b.ToTable("Currencies");
 
                     b.HasData(
                         new
@@ -214,14 +216,8 @@ namespace Currencies.Migrations.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Direction")
-                        .HasColumnType("int");
-
                     b.Property<int>("FromCurrencyID")
                         .HasColumnType("int");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
@@ -238,7 +234,7 @@ namespace Currencies.Migrations.Migrations
 
                     b.HasIndex("ToCurrencyID");
 
-                    b.ToTable("ExchangeRate", (string)null);
+                    b.ToTable("ExchangeRate");
                 });
 
             modelBuilder.Entity("Currencies.Models.Entities.Role", b =>
@@ -265,7 +261,7 @@ namespace Currencies.Migrations.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles", (string)null);
+                    b.ToTable("Roles");
 
                     b.HasData(
                         new
@@ -339,7 +335,7 @@ namespace Currencies.Migrations.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserCurrencyAmounts", (string)null);
+                    b.ToTable("UserCurrencyAmounts");
                 });
 
             modelBuilder.Entity("Currencies.Models.Entities.UserExchangeHistory", b =>
@@ -350,28 +346,19 @@ namespace Currencies.Migrations.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("AccountID")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("ExchangeTime")
-                        .HasColumnType("datetime2");
+                    b.Property<decimal>("ExchangeRate")
+                        .HasColumnType("decimal(18,6)");
 
-                    b.Property<DateTime>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("PaymentStatus")
+                    b.Property<int>("FromCurrencyID")
                         .HasColumnType("int");
 
-                    b.Property<int>("PaymentType")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RateID")
+                    b.Property<int>("ToCurrencyID")
                         .HasColumnType("int");
 
                     b.Property<string>("UserID")
@@ -380,13 +367,13 @@ namespace Currencies.Migrations.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AccountID");
+                    b.HasIndex("FromCurrencyID");
 
-                    b.HasIndex("RateID");
+                    b.HasIndex("ToCurrencyID");
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("UserExchangeHistories", (string)null);
+                    b.ToTable("UserExchangeHistories");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -563,15 +550,15 @@ namespace Currencies.Migrations.Migrations
 
             modelBuilder.Entity("Currencies.Models.Entities.UserExchangeHistory", b =>
                 {
-                    b.HasOne("Currencies.Models.Entities.UserCurrencyAmount", "Account")
+                    b.HasOne("Currencies.Models.Entities.Currency", "FromCurrency")
                         .WithMany()
-                        .HasForeignKey("AccountID")
+                        .HasForeignKey("FromCurrencyID")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Currencies.Models.Entities.ExchangeRate", "Rate")
+                    b.HasOne("Currencies.Models.Entities.Currency", "ToCurrency")
                         .WithMany()
-                        .HasForeignKey("RateID")
+                        .HasForeignKey("ToCurrencyID")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -581,9 +568,9 @@ namespace Currencies.Migrations.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Account");
+                    b.Navigation("FromCurrency");
 
-                    b.Navigation("Rate");
+                    b.Navigation("ToCurrency");
 
                     b.Navigation("User");
                 });

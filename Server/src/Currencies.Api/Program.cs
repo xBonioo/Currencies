@@ -25,6 +25,13 @@ var envConfig = new ConfigurationBuilder()
 
 builder.Configuration.AddConfiguration(envConfig);
 
+builder.Services.AddCors(config =>
+{
+    config.AddPolicy("CurrenciesCorsPolicy", policy => policy.AllowAnyOrigin()
+        .AllowAnyHeader()
+        .AllowAnyMethod());
+});
+
 builder.Services.AddControllers(options =>
 {
     options.SuppressAsyncSuffixInActionNames = false;
@@ -170,6 +177,8 @@ if (app.Environment.IsDevelopment())
 app.UseRouting();
 
 app.UseMiddleware<ErrorHandlingMiddleware>();
+
+app.UseCors("CurrenciesCorsPolicy");
 
 app.UseHttpsRedirection();
 

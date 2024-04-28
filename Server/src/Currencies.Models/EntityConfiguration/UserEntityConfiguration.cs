@@ -26,6 +26,27 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<ApplicationUser>
              .IsRequired();
 
         builder
+            .Property(r => r.Adres)
+            .HasMaxLength(64);
+
+        builder
+            .Property(r => r.IdentityNumber)
+            .IsRequired();
+
+        builder
+            .Property(r => r.IDNumber)
+            .HasMaxLength(64)
+            .IsRequired();
+
+        builder
+            .Property(r => r.IDExpiryDate)
+            .IsRequired();
+
+        builder
+            .Property(r => r.IDIssueDate)
+            .IsRequired();
+
+        builder
             .HasMany(u => u.UserCurrencyAmounts)
             .WithOne(uc => uc.User)
             .HasForeignKey(uc => uc.UserId);

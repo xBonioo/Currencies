@@ -4,6 +4,7 @@ using Currencies.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Currencies.Migrations.Migrations
 {
     [DbContext(typeof(TableContext))]
-    partial class TableContextModelSnapshot : ModelSnapshot
+    [Migration("20240408174028_update-ExchangeRate")]
+    partial class updateExchangeRate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -162,7 +164,7 @@ namespace Currencies.Migrations.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Currencies", (string)null);
+                    b.ToTable("Currencies");
 
                     b.HasData(
                         new
@@ -238,7 +240,7 @@ namespace Currencies.Migrations.Migrations
 
                     b.HasIndex("ToCurrencyID");
 
-                    b.ToTable("ExchangeRate", (string)null);
+                    b.ToTable("ExchangeRate");
                 });
 
             modelBuilder.Entity("Currencies.Models.Entities.Role", b =>
@@ -265,7 +267,7 @@ namespace Currencies.Migrations.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles", (string)null);
+                    b.ToTable("Roles");
 
                     b.HasData(
                         new
@@ -339,7 +341,7 @@ namespace Currencies.Migrations.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserCurrencyAmounts", (string)null);
+                    b.ToTable("UserCurrencyAmounts");
                 });
 
             modelBuilder.Entity("Currencies.Models.Entities.UserExchangeHistory", b =>
@@ -386,7 +388,7 @@ namespace Currencies.Migrations.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("UserExchangeHistories", (string)null);
+                    b.ToTable("UserExchangeHistories");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
