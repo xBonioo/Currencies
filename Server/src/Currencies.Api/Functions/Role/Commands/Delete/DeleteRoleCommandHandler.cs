@@ -3,16 +3,16 @@ using MediatR;
 
 namespace Currencies.Api.Functions.Role.Commands.Delete;
 
-public class DeleteExchangeRateCommandHandler : IRequestHandler<DeleteExchangeRateCommand, bool>
+public class DeleteRoleCommandHandler : IRequestHandler<DeleteRoleCommand, bool>
 {
     private readonly IRoleService _roleService;
 
-    public DeleteExchangeRateCommandHandler(IRoleService roleService)
+    public DeleteRoleCommandHandler(IRoleService roleService)
     {
         _roleService = roleService;
     }
 
-    public async Task<bool> Handle(DeleteExchangeRateCommand request, CancellationToken cancellationToken)
+    public async Task<bool> Handle(DeleteRoleCommand request, CancellationToken cancellationToken)
     {
         return await _roleService.DeleteAsync(request.Id, cancellationToken);
     }

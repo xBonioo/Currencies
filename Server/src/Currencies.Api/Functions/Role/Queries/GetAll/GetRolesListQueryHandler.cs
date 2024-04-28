@@ -5,16 +5,16 @@ using MediatR;
 
 namespace Currencies.Api.Functions.Role.Queries.GetAll;
 
-public class GetExchangeRateListQueryHandler : IRequestHandler<GetExchangeRateListQuery, PageResult<RoleDto>?>
+public class GetRoleListQueryHandler : IRequestHandler<GetRoleListQuery, PageResult<RoleDto>?>
 {
     private readonly IRoleService _roleService;
 
-    public GetExchangeRateListQueryHandler(IRoleService roleService)
+    public GetRoleListQueryHandler(IRoleService roleService)
     {
         _roleService = roleService;
     }
 
-    public async Task<PageResult<RoleDto>?> Handle(GetExchangeRateListQuery request, CancellationToken cancellationToken)
+    public async Task<PageResult<RoleDto>?> Handle(GetRoleListQuery request, CancellationToken cancellationToken)
     {
         return await _roleService.GetAllRolesAsync(request.Filter, cancellationToken);
     }

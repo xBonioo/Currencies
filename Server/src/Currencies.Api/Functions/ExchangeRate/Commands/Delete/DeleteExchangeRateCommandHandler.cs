@@ -1,19 +1,20 @@
 ﻿using Currencies.Contracts.Interfaces;
+using Currencies.Models.Entities;
 using MediatR;
 
 namespace Currencies.Api.Functions.ExchangeRate.Commands.Delete;
 
 public class DeleteExchangeRateCommandHandler : IRequestHandler<DeleteExchangeRateCommand, bool>
 {
-    private readonly IRoleService _roleService;
+    private readonly IExchangeRateService _exchangeRateService;
 
-    public DeleteExchangeRateCommandHandler(IRoleService roleService)
+    public DeleteExchangeRateCommandHandler(IExchangeRateService exchangeRateService)
     {
-        _roleService = roleService;
+        _exchangeRateService = exchangeRateService;
     }
 
     public async Task<bool> Handle(DeleteExchangeRateCommand request, CancellationToken cancellationToken)
     {
-        return await _roleService.DeleteAsync(request.Id, cancellationToken);
+        return await _exchangeRateService.DeleteAsync(request.Id, cancellationToken);
     }
 }

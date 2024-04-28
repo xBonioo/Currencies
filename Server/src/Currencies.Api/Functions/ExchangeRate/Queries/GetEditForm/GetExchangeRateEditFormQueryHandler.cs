@@ -34,22 +34,22 @@ public class GetExchangeRateEditFormQueryHandler : IRequestHandler<GetExchangeRa
                 {
                     IsRequired = true,
                     Value = 0,
-                    MinLenght = 1,
-                    MaxLenght = 15
+                    MinValue = 1,
+                    MaxValue = 15
                 },
                 ToCurrencyID = new IntegerControl()
                 {
                     IsRequired = true,
                     Value = 0,
-                    MinLenght = 1,
-                    MaxLenght = 15
+                    MinValue = 1,
+                    MaxValue = 15
                 },
                 Rate = new DecimalControl()
                 {
                     IsRequired = true,
-                    Value = 0.0,
-                    MinLenght = 1,
-                    MaxLenght = 24
+                    Value = 0,
+                    MinValue = 0.1m,
+                    MaxValue = 24
                 },
                 //Direction = new EnumControl()
                 //{

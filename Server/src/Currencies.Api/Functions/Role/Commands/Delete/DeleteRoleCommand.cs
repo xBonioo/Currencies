@@ -2,11 +2,11 @@
 
 namespace Currencies.Api.Functions.Role.Commands.Delete;
 
-public class DeleteExchangeRateCommand : IRequest<bool>
+public class DeleteRoleCommand : IRequest<bool>
 {
     public int Id { get; set; }
 
-    public DeleteExchangeRateCommand(int id)
+    public DeleteRoleCommand(int id)
     {
         Id = id;
     }

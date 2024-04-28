@@ -4,11 +4,11 @@ using Currencies.Contracts.ModelDtos.Role;
 
 namespace Currencies.Api.Functions.Role.Queries.GetAll;
 
-public class GetExchangeRateListQuery : IRequest<PageResult<RoleDto>>
+public class GetRoleListQuery : IRequest<PageResult<RoleDto>>
 {
     public FilterRoleDto Filter;
 
-    public GetExchangeRateListQuery(FilterRoleDto filter)
+    public GetRoleListQuery(FilterRoleDto filter)
     {
         Filter = filter;
     }
