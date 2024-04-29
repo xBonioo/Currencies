@@ -1,10 +1,11 @@
 ﻿using Currencies.Api.Functions.Currency.Queries.GetAll;
+using Currencies.Api.Functions.ExchangeRate.Queries.GetAll;
 using Currencies.Contracts.Helpers;
 using FluentValidation;
 
 namespace Currencies.Api.Validators.ExchangeRate;
 
-public class ExchangeRateQueryValidator : AbstractValidator<GetCurrenciesListQuery>
+public class ExchangeRateQueryValidator : AbstractValidator<GetExchangeRateListQuery>
 {
     public ExchangeRateQueryValidator()
     {

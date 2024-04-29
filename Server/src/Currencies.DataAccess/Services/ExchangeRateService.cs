@@ -36,6 +36,7 @@ public class ExchangeRateService : IExchangeRateService
             Rate = dto.Rate,
             FromCurrencyID = dto.FromCurrencyId,
             ToCurrencyID= dto.ToCurrencyId,
+            Direction = dto.Direction
         };
 
         _dbContext.ExchangeRate.Add(exchangeRate);
@@ -56,7 +57,7 @@ public class ExchangeRateService : IExchangeRateService
             return false;
         }
 
-        _dbContext.ExchangeRate.Remove(exchangeRate);
+        exchangeRate.IsActive = false;
 
         if ((await _dbContext.SaveChangesAsync()) > 0)
         {
@@ -94,7 +95,7 @@ public class ExchangeRateService : IExchangeRateService
         exchangeRate.FromCurrencyID = dto.FromCurrencyId;
         exchangeRate.ToCurrencyID = dto.ToCurrencyId;
         exchangeRate.Rate = dto.Rate;
-        exchangeRate.ModifiedOn = DateTime.UtcNow;
+        exchangeRate.Direction = dto.Direction;
 
         if ((await _dbContext.SaveChangesAsync()) > 0)
         {

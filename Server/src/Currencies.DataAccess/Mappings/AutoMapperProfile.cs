@@ -16,6 +16,8 @@ public class AutoMapperProfile : Profile
         CreateMap<RoleDto, Role>();
         CreateMap<Role, RoleDto>();
         CreateMap<Role, BaseRoleDto>();
+        CreateMap<ExchangeRateDto, ExchangeRate>();
         CreateMap<ExchangeRate, ExchangeRateDto>();
+        CreateMap<ExchangeRate, BaseExchangeRateDto>();
     }
 }

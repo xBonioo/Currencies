@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Currencies.Api.Functions.Role.Queries.GetEditForm;
+using Currencies.Common.Infrastucture;
 using Currencies.Contracts.Helpers.Controls;
 using Currencies.Contracts.Helpers.Forms;
 using Currencies.Contracts.Interfaces;
@@ -30,14 +31,14 @@ public class GetExchangeRateEditFormQueryHandler : IRequestHandler<GetExchangeRa
         {
             var createForm = new ExchangeRateEditForm()
             {
-                FromCurrencyID = new IntegerControl()
+                FromCurrencyId = new IntegerControl()
                 {
                     IsRequired = true,
                     Value = 0,
                     MinValue = 1,
                     MaxValue = 15
                 },
-                ToCurrencyID = new IntegerControl()
+                ToCurrencyId = new IntegerControl()
                 {
                     IsRequired = true,
                     Value = 0,
@@ -51,11 +52,11 @@ public class GetExchangeRateEditFormQueryHandler : IRequestHandler<GetExchangeRa
                     MinValue = 0.1m,
                     MaxValue = 24
                 },
-                //Direction = new EnumControl()
-                //{
-                //    IsRequired = true,
-                //    Value = 0
-                //},
+                Direction = new EnumControl<Direction>()
+                {
+                    IsRequired = true,
+                    Value = 0
+                },
                 IsActive = new BoolControl()
                 {
                     IsRequired = true,
@@ -66,19 +67,38 @@ public class GetExchangeRateEditFormQueryHandler : IRequestHandler<GetExchangeRa
             return createForm;
         }
 
-        var editForm = new RoleEditForm()
+        var editForm = new ExchangeRateEditForm()
         {
-            Name = new StringControl()
+            FromCurrencyId = new IntegerControl()
             {
                 IsRequired = true,
-                Value = role.Name,
-                MinLenght = 1,
-                MaxLenght = 64
+                Value = exchangeRate.FromCurrencyID,
+                MinValue = 1,
+                MaxValue = 15
+            },
+            ToCurrencyId = new IntegerControl()
+            {
+                IsRequired = true,
+                Value = exchangeRate.ToCurrencyID,
+                MinValue = 1,
+                MaxValue = 15
+            },
+            Rate = new DecimalControl()
+            {
+                IsRequired = true,
+                Value = exchangeRate.Rate,
+                MinValue = 0.1m,
+                MaxValue = 24
+            },
+            Direction = new EnumControl<Direction>()
+            {
+                IsRequired = true,
+                Value = exchangeRate.Direction
             },
             IsActive = new BoolControl()
             {
                 IsRequired = true,
-                Value = role.IsActive
+                Value = exchangeRate.IsActive
             }
         };
 
