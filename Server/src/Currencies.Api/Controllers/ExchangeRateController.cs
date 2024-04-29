@@ -12,6 +12,12 @@ using Currencies.Api.Functions.ExchangeRate.Queries.GetEditForm;
 using Currencies.Api.Functions.Role.Commands.Update;
 using Currencies.Api.Functions.ExchangeRate.Commands.Update;
 using Currencies.Api.Functions.Role.Commands.Delete;
+using Currencies.Api.Functions.Role.Queries.GetAll;
+using Currencies.Api.Functions.ExchangeRate.Queries.GetAll;
+using Currencies.Api.Functions.Role.Queries.GetSingle;
+using Currencies.Api.Functions.ExchangeRate.Queries.GetSingle;
+using Currencies.Api.Functions.ExchangeRate.Commands.Create;
+using Currencies.Api.Functions.ExchangeRate.Commands.Delete;
 
 namespace Currencies.Api.Controllers;
 
@@ -58,17 +64,17 @@ public class ExchangeRateController : Controller
     [HttpGet("{id}")]
     public async Task<ActionResult<BaseResponse<ExchangeRateDto>>> GetExchangeRateById(int id)
     {
-        var result = new PageResult<ExchangeRateDto>(null, 1, 1, 1);
-
-        if (result is null)
+        var result = await _mediator.Send(new GetSingleExchangeRateQuery(id));
+        if (result == null)
         {
-            return NotFound(new BaseResponse<PageResult<ExchangeRateDto>>
+            return NotFound(new BaseResponse<ExchangeRateDto>
             {
                 ResponseCode = StatusCodes.Status404NotFound,
                 Message = $"There's no exchange rate"
             });
         }
-        return Ok(new BaseResponse<PageResult<ExchangeRateDto>>
+
+        return Ok(new BaseResponse<ExchangeRateDto>
         {
             ResponseCode = StatusCodes.Status200OK,
             Data = result

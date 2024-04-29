@@ -1,4 +1,5 @@
-﻿using Currencies.Api.Functions.Role.Commands.Create;
+﻿using Currencies.Api.Functions.Currency.Queries.GetAll;
+using Currencies.Api.Functions.Role.Commands.Create;
 using Currencies.Api.Functions.Role.Commands.Delete;
 using Currencies.Api.Functions.Role.Commands.Update;
 using Currencies.Api.Functions.Role.Queries.GetAll;
@@ -38,7 +39,7 @@ public class RoleController : Controller
     [HttpGet]
     public async Task<ActionResult<BaseResponse<PageResult<RoleDto>>>> GetAllRoles([FromQuery] FilterRoleDto filter)
     {
-        var result = await _mediator.Send(new GetRolesListQuery(filter));
+        var result = await _mediator.Send(new GetRolesListQuery(filter));   
         if (result == null)
         {
             return NotFound(new BaseResponse<PageResult<RoleDto>>
@@ -63,7 +64,7 @@ public class RoleController : Controller
     [HttpGet("{id}")]
     public async Task<ActionResult<BaseResponse<RoleDto>>> GetRoleById(int id)
     {
-        var result = await _mediator.Send(new GetSingleExchangeRateQuery(id));
+        var result = await _mediator.Send(new GetSingleRoleQuery(id));
         if (result == null)
         {
             return NotFound(new BaseResponse<RoleDto>

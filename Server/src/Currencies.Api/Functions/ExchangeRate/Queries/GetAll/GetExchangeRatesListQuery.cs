@@ -5,11 +5,11 @@ using Currencies.Contracts.ModelDtos.ExchangeRate;
 
 namespace Currencies.Api.Functions.ExchangeRate.Queries.GetAll;
 
-public class GetExchangeRateListQuery : IRequest<PageResult<ExchangeRateDto>>
+public class GetExchangeRatesListQuery : IRequest<PageResult<ExchangeRateDto>>
 {
     public FilterExchangeRateDto Filter;
 
-    public GetExchangeRateListQuery(FilterExchangeRateDto filter)
+    public GetExchangeRatesListQuery(FilterExchangeRateDto filter)
     {
         Filter = filter;
     }

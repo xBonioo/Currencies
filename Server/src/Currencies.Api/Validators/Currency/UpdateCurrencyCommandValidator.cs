@@ -4,9 +4,9 @@ using FluentValidation;
 
 namespace Currencies.Api.Validators.Currency;
 
-public class UpdateExchangeRateCommandValidator : AbstractValidator<UpdateCurrencyCommand>
+public class UpdateCurrencyCommandValidator : AbstractValidator<UpdateCurrencyCommand>
 {
-    public UpdateExchangeRateCommandValidator(TableContext dbContext)
+    public UpdateCurrencyCommandValidator(TableContext dbContext)
     {
         RuleFor(x => x.Dto.Name)
             .NotNull()

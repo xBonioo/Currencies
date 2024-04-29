@@ -5,7 +5,7 @@ using FluentValidation;
 
 namespace Currencies.Api.Validators.ExchangeRate;
 
-public class ExchangeRateQueryValidator : AbstractValidator<GetExchangeRateListQuery>
+public class ExchangeRateQueryValidator : AbstractValidator<GetExchangeRatesListQuery>
 {
     public ExchangeRateQueryValidator()
     {

@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace Currencies.Api.Validators.Role
 {
-    public class RoleQueryValidator : AbstractValidator<GetRoleListQuery>
+    public class RoleQueryValidator : AbstractValidator<GetRolesListQuery>
     {
         public RoleQueryValidator()
         {

@@ -6,7 +6,7 @@ namespace Currencies.Api.Validators.Currency;
 
 public class CreateCurrencyValidator : AbstractValidator<CreateCurrencyCommand>
 {
-    public CreateCurrencyValidator(ExchangeRateDtoValidator currencyValidator)
+    public CreateCurrencyValidator(CurrencyDtoValidator currencyValidator)
     {
         RuleFor(x => x.Data).SetValidator(currencyValidator);
     }

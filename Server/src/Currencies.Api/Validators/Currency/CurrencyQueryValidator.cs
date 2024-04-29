@@ -4,9 +4,9 @@ using FluentValidation;
 
 namespace Currencies.Api.Validators.Currency;
 
-public class ExchangeRateQueryValidator : AbstractValidator<GetCurrenciesListQuery>
+public class CurrencyQueryValidator : AbstractValidator<GetCurrenciesListQuery>
 {
-    public ExchangeRateQueryValidator()
+    public CurrencyQueryValidator()
     {
         RuleFor(r => r.Filter.PageNumber).GreaterThanOrEqualTo(1);
         RuleFor(r => r.Filter.PageSize).Custom((value, context) =>
