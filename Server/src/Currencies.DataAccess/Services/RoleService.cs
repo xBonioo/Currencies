@@ -29,7 +29,8 @@ public class RoleService : IRoleService
 
         var role = new Role()
         {
-            Name = dto.Name        
+            Name = dto.Name,
+            IsActive = true
         };
 
         _dbContext.Roles.Add(role);

@@ -42,9 +42,9 @@ public class ExchangeRateController : Controller
     /// <response code="200">Returns all available exchange rates.</response>
     /// <response code="500">Internal server error.</response>
     [HttpGet]
-    public async Task<ActionResult<BaseResponse<PageResult<ExchangeRateDto>>>> GetAllExchangeRates()
+    public async Task<ActionResult<BaseResponse<PageResult<ExchangeRateDto>>>> GetAllExchangeRates([FromQuery] FilterExchangeRateDto filter)
     {
-        var result = new PageResult<ExchangeRateDto>(null, 1, 1, 1);
+        var result = await _mediator.Send(new GetExchangeRatesListQuery(filter));
         if (result is null)
         {
             return NotFound(new BaseResponse<PageResult<ExchangeRateDto>>
