@@ -68,7 +68,7 @@ public class ExchangeRateService : IExchangeRateService
         throw new DbUpdateException($"Could not save changes to database at: {nameof(DeleteAsync)}");
     }
 
-    public async Task<PageResult<ExchangeRateDto>> GetAllExchangeRateAsync(FilterDto filter,CancellationToken cancellationToken)
+    public async Task<PageResult<ExchangeRateDto>> GetAllExchangeRateAsync(FilterExchangeRateDto filter,CancellationToken cancellationToken)
     {
         var baseQuery = _dbContext
             .ExchangeRate
