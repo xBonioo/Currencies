@@ -1,4 +1,5 @@
-﻿using Currencies.Api.Functions.Role.Commands.Create;
+﻿using Currencies.Api.Functions.Currency.Queries.GetAll;
+using Currencies.Api.Functions.Role.Commands.Create;
 using Currencies.Api.Functions.Role.Commands.Delete;
 using Currencies.Api.Functions.Role.Commands.Update;
 using Currencies.Api.Functions.Role.Queries.GetAll;
@@ -18,7 +19,7 @@ namespace Currencies.Api.Controllers;
 /// For information on how to use the various controllers, go to:
 /// 'https wiki-link'
 /// </summary>
-[Authorize]
+//[Authorize]
 [Route("api/role")]
 [ApiController]
 public class RoleController : Controller
@@ -38,7 +39,7 @@ public class RoleController : Controller
     [HttpGet]
     public async Task<ActionResult<BaseResponse<PageResult<RoleDto>>>> GetAllRoles([FromQuery] FilterRoleDto filter)
     {
-        var result = await _mediator.Send(new GetRolesListQuery(filter));
+        var result = await _mediator.Send(new GetRolesListQuery(filter));   
         if (result == null)
         {
             return NotFound(new BaseResponse<PageResult<RoleDto>>
