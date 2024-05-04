@@ -5,7 +5,7 @@ namespace Currencies.Models.Entities;
 public class UserCurrencyAmount : ICreatable, IModifable
 {
     public int Id { get; set; }
-    public string UserId { get; set; }
+    public string UserId { get; set; } = null!;
     public int CurrencyId { get; set; }
     public decimal Amount { get; set; }
     public bool IsActive { get; set; }
