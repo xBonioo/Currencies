@@ -122,10 +122,10 @@ public class UserCurrencyAmountController : Controller
     /// <response code="201">User currency amount correctly added.</response>
     /// <response code="400">Please insert correct JSON object with parameters.</response>
     [HttpPost("{id}/add")]
-    public async Task<ActionResult<BaseResponse<UserCurrencyAmountDto>>> AddUserCurrencyAmount(int id, [FromBody] BaseUserCurrencyAmountDto dto)
+    public async Task<ActionResult<BaseResponse<UserCurrencyAmountDto>>> AddUserCurrencyAmount([FromBody] BaseUserCurrencyAmountDto dto)
     {
 
-        var result = await _mediator.Send(new CreateUserCurrencyAmountCommand(id, dto));
+        var result = await _mediator.Send(new CreateUserCurrencyAmountCommand(dto));
         if (result == null)
         {
             return BadRequest(new BaseResponse<UserCurrencyAmountDto>

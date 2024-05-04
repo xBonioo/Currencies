@@ -36,7 +36,7 @@ public class UserCurrencyAmountService : IUserCurrencyAmountService
 
         user_currency_amount.IsActive = false;
 
-        if ((await _dbContext.SaveChangesAsync()) > 0)
+        if ((await _dbContext.SaveChangesAsync(cancellationToken)) > 0)
         {
             return true;
         }
@@ -44,7 +44,7 @@ public class UserCurrencyAmountService : IUserCurrencyAmountService
         throw new DbUpdateException($"Could not save changes to database at: {nameof(DeleteAsync)}");
     }
 
-    public async Task<PageResult<UserCurrencyAmountDto>> GetAllUserCurrencyAmountsAsync(FilterUserCurrencyAmountDto filter, CancellationToken cancellationToken)
+    public async Task<PageResult<UserCurrencyAmountDto>?> GetAllUserCurrencyAmountsAsync(FilterUserCurrencyAmountDto filter, CancellationToken cancellationToken)
     {
         var baseQuery = _dbContext
           .UserCurrencyAmounts
@@ -75,7 +75,7 @@ public class UserCurrencyAmountService : IUserCurrencyAmountService
         return new PageResult<UserCurrencyAmountDto>(itemsDto, totalItemCount, filter.PageSize, filter.PageNumber);
     }
 
-    public async Task<UserCurrencyAmountDto> AddAsync(int id, BaseUserCurrencyAmountDto dto, CancellationToken cancellationToken)
+    public async Task<UserCurrencyAmountDto?> AddAsync(BaseUserCurrencyAmountDto dto, CancellationToken cancellationToken)
     {
         if (dto == null)
         {
@@ -90,9 +90,9 @@ public class UserCurrencyAmountService : IUserCurrencyAmountService
             IsActive = true
         };
 
-        _dbContext.UserCurrencyAmounts.Add(user_currency_amount);
+        await _dbContext.UserCurrencyAmounts.AddAsync(user_currency_amount, cancellationToken);
 
-        if (await _dbContext.SaveChangesAsync() > 0)
+        if (await _dbContext.SaveChangesAsync(cancellationToken) > 0)
         {
             return _mapper.Map<UserCurrencyAmountDto>(user_currency_amount);
         }
@@ -100,7 +100,7 @@ public class UserCurrencyAmountService : IUserCurrencyAmountService
         throw new DbUpdateException($"Could not save changes to database at: {nameof(AddAsync)}");
     }
 
-    public async Task<UserCurrencyAmountDto> UpdateAsync(int id, BaseUserCurrencyAmountDto dto, CancellationToken cancellationToken)
+    public async Task<UserCurrencyAmountDto?> UpdateAsync(int id, BaseUserCurrencyAmountDto dto, CancellationToken cancellationToken)
     {
         var user_currency_amount = await GetByIdAsync(id, cancellationToken);
         if (user_currency_amount == null || !user_currency_amount.IsActive)
@@ -113,7 +113,7 @@ public class UserCurrencyAmountService : IUserCurrencyAmountService
         user_currency_amount.Amount = dto.Amount;
         user_currency_amount.IsActive = dto.IsActive;
 
-        if ((await _dbContext.SaveChangesAsync()) > 0)
+        if ((await _dbContext.SaveChangesAsync(cancellationToken)) > 0)
         {
             return _mapper.Map<UserCurrencyAmountDto>(user_currency_amount);
         }

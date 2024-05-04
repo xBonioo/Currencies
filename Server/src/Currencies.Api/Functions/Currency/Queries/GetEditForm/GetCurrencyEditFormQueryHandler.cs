@@ -23,7 +23,7 @@ public class GetCurrencyEditFormQueryHandler : IRequestHandler<GetCurrencyEditFo
         _dbContext = dbContext;
     }
 
-    public async Task<CurrencyEditForm> Handle(GetCurrencyEditFormQuery request, CancellationToken cancellationToken)
+    public async Task<CurrencyEditForm?> Handle(GetCurrencyEditFormQuery request, CancellationToken cancellationToken)
     {
         var currency = await _currencyService.GetByIdAsync(request.id, cancellationToken);
         if (currency == null || !currency.IsActive)

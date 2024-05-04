@@ -35,7 +35,7 @@ public class RoleService : IRoleService
 
         _dbContext.Roles.Add(role);
 
-        if (await _dbContext.SaveChangesAsync() > 0)
+        if (await _dbContext.SaveChangesAsync(cancellationToken) > 0)
         {
             return _mapper.Map<RoleDto>(role);
         }
@@ -54,7 +54,7 @@ public class RoleService : IRoleService
 
         role.IsActive = false;
 
-        if ((await _dbContext.SaveChangesAsync()) > 0)
+        if ((await _dbContext.SaveChangesAsync(cancellationToken)) > 0)
         {
             return true;
         }
@@ -104,7 +104,7 @@ public class RoleService : IRoleService
         role.Name = dto.Name;
         role.IsActive = dto.IsActive;
 
-        if ((await _dbContext.SaveChangesAsync()) > 0)
+        if ((await _dbContext.SaveChangesAsync(cancellationToken)) > 0)
         {
             return _mapper.Map<RoleDto>(role);
         }

@@ -17,6 +17,6 @@ public class CreateUserCurrencyAmountCommandHandler : IRequestHandler<CreateUser
 
     public async Task<UserCurrencyAmountDto?> Handle(CreateUserCurrencyAmountCommand request, CancellationToken cancellationToken)
     {
-        return await _userCurrencyAmountService.AddAsync(request.Id, request.Data, cancellationToken);
+        return await _userCurrencyAmountService.AddAsync(request.Data, cancellationToken);
     }
 }

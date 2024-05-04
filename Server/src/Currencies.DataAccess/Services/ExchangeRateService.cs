@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Currencies.Common.Infrastucture;
 using Currencies.Contracts.Helpers;
 using Currencies.Contracts.Interfaces;
 using Currencies.Contracts.ModelDtos;
@@ -22,29 +23,52 @@ public class ExchangeRateService : IExchangeRateService
         _mapper = mapper;
     }
 
-    public async Task<ExchangeRateDto?> CreateAsync(BaseExchangeRateDto dto, CancellationToken cancellationToken)
+    public async Task<List<ExchangeRateDto?>> CreateAsync(List<CurrencyExchangeRateDto> currencyExchangeRateList, CancellationToken cancellationToken)
     {
-        if (dto == null)
+        if (currencyExchangeRateList == null || !currencyExchangeRateList.Any())
         {
             return null;
         }
 
-        var exchangeRate = new ExchangeRate()
+        Dictionary<string, int> currencyCodeToIdMap = new Dictionary<string, int>
         {
-            CreatedOn = DateTime.UtcNow,
-            ModifiedOn = DateTime.UtcNow,
-            Rate = dto.Rate,
-            FromCurrencyID = dto.FromCurrencyId,
-            ToCurrencyID= dto.ToCurrencyId,
-            Direction = dto.Direction,
-            IsActive = true
+            { "USD", 1 },
+            { "EUR", 2 },
+            { "GBP", 3 },
+            { "PLN", 4 }
         };
-
-        _dbContext.ExchangeRate.Add(exchangeRate);
-
-        if (await _dbContext.SaveChangesAsync() > 0)
+        var result = new List<ExchangeRate>();
+        foreach (var item in currencyExchangeRateList)
         {
-            return _mapper.Map<ExchangeRateDto>(exchangeRate);
+            if (currencyCodeToIdMap.TryGetValue(item.Code, out int toCurrencyId))
+            {
+                var buyRate = new ExchangeRate
+                {
+                    Rate = item.Ask,
+                    FromCurrencyID = 4,
+                    ToCurrencyID = toCurrencyId,
+                    Direction = Direction.Buy,
+                    IsActive = true
+                };
+                result.Add(buyRate);
+
+                var sellRate = new ExchangeRate
+                {
+                    Rate = item.Bid,
+                    FromCurrencyID = 4,
+                    ToCurrencyID = toCurrencyId,
+                    Direction = Direction.Sell,
+                    IsActive = true
+                };
+                result.Add(sellRate);
+            }
+        }
+
+        await _dbContext.AddRangeAsync(result, cancellationToken);
+
+        if (await _dbContext.SaveChangesAsync(cancellationToken) > 0)
+        {
+            return _mapper.Map<List<ExchangeRateDto>>(result);
         }
 
         throw new DbUpdateException($"Could not save changes to database at: {nameof(CreateAsync)}");
@@ -60,7 +84,7 @@ public class ExchangeRateService : IExchangeRateService
 
         exchangeRate.IsActive = false;
 
-        if ((await _dbContext.SaveChangesAsync()) > 0)
+        if ((await _dbContext.SaveChangesAsync(cancellationToken)) > 0)
         {
             return true;
         }
@@ -99,7 +123,7 @@ public class ExchangeRateService : IExchangeRateService
         exchangeRate.Direction = dto.Direction;
         exchangeRate.IsActive = dto.IsActive;
 
-        if ((await _dbContext.SaveChangesAsync()) > 0)
+        if ((await _dbContext.SaveChangesAsync(cancellationToken)) > 0)
         {
             return _mapper.Map<ExchangeRateDto>(exchangeRate);
         }

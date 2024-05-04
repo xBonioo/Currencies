@@ -35,7 +35,7 @@ public class ErrorHandlingMiddleware : IMiddleware
             context.Response.StatusCode = StatusCodes.Status422UnprocessableEntity;
             await context.Response.WriteAsync(JsonSerializer.Serialize(response));
         }
-        catch (BadRequestException badRequestException)
+        catch (BadRequestException)
         {
             var response = new BaseResponse<IEnumerable<string>>
             {
@@ -46,7 +46,7 @@ public class ErrorHandlingMiddleware : IMiddleware
             context.Response.StatusCode = StatusCodes.Status400BadRequest;
             await context.Response.WriteAsync(JsonSerializer.Serialize(response));
         }
-        catch (NotFoundException notFoundException)
+        catch (NotFoundException)
         {
             var response = new BaseResponse<IEnumerable<string>>
             {
@@ -68,7 +68,7 @@ public class ErrorHandlingMiddleware : IMiddleware
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
             await context.Response.WriteAsync(JsonSerializer.Serialize(response));
         }
-        catch (Exception e)
+        catch (Exception)
         {
             var response = new BaseResponse<string>
             {

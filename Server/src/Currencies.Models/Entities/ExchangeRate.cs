@@ -14,6 +14,6 @@ public class ExchangeRate : ICreatable, IModifable
     public DateTime CreatedOn { get; set; }
     public DateTime? ModifiedOn { get; set; }
 
-    public virtual Currency FromCurrency { get; set; }
-    public virtual Currency ToCurrency { get; set; }
+    public virtual Currency FromCurrency { get; set; } = null!;
+    public virtual Currency ToCurrency { get; set; } = null!;
 }

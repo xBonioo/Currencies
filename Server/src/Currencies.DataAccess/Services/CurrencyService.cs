@@ -36,7 +36,7 @@ public class CurrencyService : ICurrencyService
 
         _dbContext.Currencies.Add(currency);
 
-        if (await _dbContext.SaveChangesAsync() > 0)
+        if (await _dbContext.SaveChangesAsync(cancellationToken) > 0)
         {
             return _mapper.Map<CurrencyDto>(currency);
         }
@@ -54,7 +54,7 @@ public class CurrencyService : ICurrencyService
 
         currency.IsActive = false;
 
-        if ((await _dbContext.SaveChangesAsync()) > 0)
+        if ((await _dbContext.SaveChangesAsync(cancellationToken)) > 0)
         {
             return true;
         }
@@ -62,7 +62,7 @@ public class CurrencyService : ICurrencyService
         throw new DbUpdateException($"Could not save changes to database at: {nameof(DeleteAsync)}");
     }
 
-    public async Task<PageResult<CurrencyDto>> GetAllCurrenciesAsync(FilterCurrencyDto filter, CancellationToken cancellationToken)
+    public async Task<PageResult<CurrencyDto>?> GetAllCurrenciesAsync(FilterCurrencyDto filter, CancellationToken cancellationToken)
     {
         var baseQuery = _dbContext
             .Currencies
@@ -106,7 +106,7 @@ public class CurrencyService : ICurrencyService
         currency.Description = dto.Description;
         currency.IsActive = dto.IsActive;
 
-        if ((await _dbContext.SaveChangesAsync()) > 0)
+        if ((await _dbContext.SaveChangesAsync(cancellationToken)) > 0)
         {
             return _mapper.Map<CurrencyDto>(currency);
         }
