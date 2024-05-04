@@ -22,7 +22,6 @@ export class CurrenciesComponent implements OnInit {
 
   ngOnInit(): void {
     this.currenciesService.getCurrencies().subscribe(x=>{
-      console.log(x)
       this.currencies = x.data.items;
     })
   }

@@ -10,11 +10,13 @@ import { CurrenciesComponent } from './currencies/currencies.component';
 import { TableModule } from 'primeng/table';
 import { FormsModule } from '@angular/forms'; 
 import { HttpClientModule } from '@angular/common/http';
-import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
+import { LoginComponent } from './userAuth/login.component';
+import { RegisterComponent } from './userAuth/register.component';
 import { InputTextModule } from 'primeng/inputtext';
 import { CurrencyDetailsComponent } from './currency-details/currency-details.component';
-
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { AuthService } from './services/auth.service';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,14 @@ import { CurrencyDetailsComponent } from './currency-details/currency-details.co
     HttpClientModule,
     InputTextModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
+    AuthService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
