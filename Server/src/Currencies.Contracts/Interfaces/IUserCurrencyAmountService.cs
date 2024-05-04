@@ -6,7 +6,7 @@ namespace Currencies.Contracts.Interfaces;
 
 public interface IUserCurrencyAmountService : IEntityService<UserCurrencyAmount>
 {
-    Task<PageResult<UserCurrencyAmountDto>> GetAllUserCurrencyAmountsAsync(CancellationToken cancellationToken);
+    Task<PageResult<UserCurrencyAmountDto>> GetAllUserCurrencyAmountsAsync(FilterUserCurrencyAmountDto filter, CancellationToken cancellationToken);
     Task<UserCurrencyAmountDto?> ConvertAsync(ConvertUserCurrencyAmountDto dto, CancellationToken cancellationToken);
     Task<bool> DeleteAsync(int id, CancellationToken cancellationToken);
     Task<UserCurrencyAmountDto?> AddAsync(int id, BaseUserCurrencyAmountDto dto, CancellationToken cancellationToken);

@@ -33,9 +33,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Functions\ExchangeRate\" />
     <Folder Include="Functions\UserExchangeHistory\Queries\" />
     <Folder Include="Functions\UserCurrencyAmount\Commands\" />
     <Folder Include="Functions\UserCurrencyAmount\Queries\" />
+    <Folder Include="Functions\ExchangeRate\Commands\" />
+    <Folder Include="Functions\ExchangeRate\Queries\" />
+    <Folder Include="Validators\Exchange\" />
   </ItemGroup>
 
   <ItemGroup>
