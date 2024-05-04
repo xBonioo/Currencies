@@ -1,5 +1,4 @@
-﻿using Currencies.Api.Functions.Currency.Commands.Update;
-using Currencies.Api.Functions.Role.Commands.Update;
+﻿using Currencies.Api.Functions.UserCurrencyAmount.Commands.Update;
 using Currencies.Models;
 using FluentValidation;
 

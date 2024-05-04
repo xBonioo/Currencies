@@ -1,6 +1,4 @@
-﻿using Currencies.Api.Functions.Currency.Commands.Create;
-using Currencies.Api.Functions.UserCurrencyAmount.Commands.Create;
-using Currencies.Api.Validators.UserCurrencyAmount;
+﻿using Currencies.Api.Functions.UserCurrencyAmount.Commands.Create;
 using Currencies.Api.Validators.UserCurrencyAmounts;
 using FluentValidation;
 

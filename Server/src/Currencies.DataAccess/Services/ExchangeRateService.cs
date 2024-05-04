@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Currencies.Common.Infrastucture;
+using Currencies.Common.Enum;
 using Currencies.Contracts.Helpers;
+using Currencies.Contracts.Helpers.Exceptions;
 using Currencies.Contracts.Interfaces;
-using Currencies.Contracts.ModelDtos;
 using Currencies.Contracts.ModelDtos.ExchangeRate;
 using Currencies.Models;
 using Currencies.Models.Entities;
@@ -16,8 +16,7 @@ public class ExchangeRateService : IExchangeRateService
     private readonly TableContext _dbContext;
     private readonly IMapper _mapper;
 
-    public ExchangeRateService(TableContext dbContext,
-                               IMapper mapper)
+    public ExchangeRateService(TableContext dbContext, IMapper mapper)
     {
         _dbContext = dbContext;
         _mapper = mapper;
@@ -30,45 +29,43 @@ public class ExchangeRateService : IExchangeRateService
             return null;
         }
 
-        Dictionary<string, int> currencyCodeToIdMap = new Dictionary<string, int>
-        {
-            { "USD", 1 },
-            { "EUR", 2 },
-            { "GBP", 3 },
-            { "PLN", 4 }
-        };
+        var currencies = await _dbContext
+           .Currencies.ToListAsync(cancellationToken);
+
         var result = new List<ExchangeRate>();
         foreach (var item in currencyExchangeRateList)
         {
-            if (currencyCodeToIdMap.TryGetValue(item.Code, out int toCurrencyId))
+            var buyRate = new ExchangeRate
             {
-                var buyRate = new ExchangeRate
-                {
-                    Rate = item.Ask,
-                    FromCurrencyID = 4,
-                    ToCurrencyID = toCurrencyId,
-                    Direction = Direction.Buy,
-                    IsActive = true
-                };
-                result.Add(buyRate);
+                Rate = item.Ask,
+                FromCurrencyID = 4,
+                ToCurrencyID = currencies.FirstOrDefault(x => x.Symbol.Contains(item.Code))!.Id,
+                Direction = Direction.Buy,
+                IsActive = true
+            };
+            result.Add(buyRate);
 
-                var sellRate = new ExchangeRate
-                {
-                    Rate = item.Bid,
-                    FromCurrencyID = 4,
-                    ToCurrencyID = toCurrencyId,
-                    Direction = Direction.Sell,
-                    IsActive = true
-                };
-                result.Add(sellRate);
-            }
+            var sellRate = new ExchangeRate
+            {
+                Rate = item.Bid,
+                FromCurrencyID = 4,
+                ToCurrencyID = currencies.FirstOrDefault(x => x.Symbol.Contains(item.Code))!.Id,
+                Direction = Direction.Sell,
+                IsActive = true
+            };
+            result.Add(sellRate);
+        }
+
+        if (!result.Any())
+        {
+            return null;
         }
 
         await _dbContext.AddRangeAsync(result, cancellationToken);
 
         if (await _dbContext.SaveChangesAsync(cancellationToken) > 0)
         {
-            return _mapper.Map<List<ExchangeRateDto>>(result);
+            return _mapper.Map<List<ExchangeRateDto?>>(result);
         }
 
         throw new DbUpdateException($"Could not save changes to database at: {nameof(CreateAsync)}");
@@ -79,7 +76,7 @@ public class ExchangeRateService : IExchangeRateService
         var exchangeRate = await GetByIdAsync(id, cancellationToken);
         if (exchangeRate == null)
         {
-            return false;
+            throw new NotFoundException("Exchange rate not found");
         }
 
         exchangeRate.IsActive = false;
@@ -114,7 +111,7 @@ public class ExchangeRateService : IExchangeRateService
         var exchangeRate = await GetByIdAsync(id, cancellationToken);
         if (exchangeRate == null)
         {
-            return null;
+            throw new NotFoundException("Exchange rate not found");
         }
 
         exchangeRate.FromCurrencyID = dto.FromCurrencyId;
@@ -134,7 +131,7 @@ public class ExchangeRateService : IExchangeRateService
     public async Task<ExchangeRate?> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
        return await _dbContext
-                        .ExchangeRate
-                        .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+                    .ExchangeRate
+                    .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 }

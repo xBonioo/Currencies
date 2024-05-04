@@ -1,5 +1,4 @@
-﻿using Currencies.Api.Functions.Role.Commands.Update;
-using Currencies.Contracts.Interfaces;
+﻿using Currencies.Contracts.Interfaces;
 using Currencies.Contracts.ModelDtos.User.CurrencyAmount;
 using MediatR;
 

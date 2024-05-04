@@ -1,9 +1,7 @@
-﻿using Currencies.Api.Functions.UserCurrencyAmount.Queries.GetAll;
-using Currencies.Contracts.Helpers;
+﻿using Currencies.Contracts.Helpers;
 using Currencies.Contracts.Interfaces;
 using Currencies.Contracts.ModelDtos.User.CurrencyAmount;
 using MediatR;
-using Currencies.DataAccess.Services;
 
 namespace Currencies.Api.Functions.UserCurrencyAmount.Queries.GetAll;
 

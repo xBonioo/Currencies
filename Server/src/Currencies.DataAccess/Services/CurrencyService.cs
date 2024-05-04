@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Currencies.Contracts.Helpers;
+using Currencies.Contracts.Helpers.Exceptions;
 using Currencies.Contracts.Interfaces;
 using Currencies.Contracts.ModelDtos.Currency;
 using Currencies.Models;
@@ -49,7 +50,7 @@ public class CurrencyService : ICurrencyService
         var currency = await GetByIdAsync(id, cancellationToken);
         if (currency == null || !currency.IsActive)
         {
-            return false;
+            throw new NotFoundException("Currency not found");
         }
 
         currency.IsActive = false;
@@ -98,7 +99,7 @@ public class CurrencyService : ICurrencyService
         var currency = await GetByIdAsync(id, cancellationToken);
         if (currency == null || !currency.IsActive)
         {
-            return null;
+            throw new NotFoundException("Currency not found");
         }
 
         currency.Name = dto.Name;

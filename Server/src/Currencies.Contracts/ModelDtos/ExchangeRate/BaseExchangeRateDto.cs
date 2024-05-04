@@ -1,4 +1,4 @@
-﻿using Currencies.Common.Infrastucture;
+﻿using Currencies.Common.Enum;
 
 namespace Currencies.Contracts.ModelDtos.ExchangeRate;
 

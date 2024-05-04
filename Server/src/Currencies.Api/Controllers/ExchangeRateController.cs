@@ -4,20 +4,13 @@ using Currencies.Contracts.ModelDtos.ExchangeRate;
 using Currencies.DataAccess;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Currencies.Contracts.ModelDtos.User.CurrencyAmount;
-using Currencies.Api.Functions.Role.Commands.Create;
-using Currencies.Contracts.ModelDtos.Role;
-using Currencies.Api.Functions.Role.Queries.GetEditForm;
 using Currencies.Api.Functions.ExchangeRate.Queries.GetEditForm;
-using Currencies.Api.Functions.Role.Commands.Update;
 using Currencies.Api.Functions.ExchangeRate.Commands.Update;
-using Currencies.Api.Functions.Role.Commands.Delete;
-using Currencies.Api.Functions.Role.Queries.GetAll;
 using Currencies.Api.Functions.ExchangeRate.Queries.GetAll;
-using Currencies.Api.Functions.Role.Queries.GetSingle;
 using Currencies.Api.Functions.ExchangeRate.Queries.GetSingle;
 using Currencies.Api.Functions.ExchangeRate.Commands.Create;
 using Currencies.Api.Functions.ExchangeRate.Commands.Delete;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Currencies.Api.Controllers;
 
@@ -25,6 +18,7 @@ namespace Currencies.Api.Controllers;
 /// For information on how to use the various controllers, go to:
 /// 'https wiki-link'
 /// </summary>
+//[Authorize]
 [Route("api/exchange")]
 [ApiController]
 public class ExchangeRateController : Controller

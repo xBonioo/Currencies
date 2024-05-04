@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Currencies.Contracts.Helpers;
+using Currencies.Contracts.Helpers.Exceptions;
 using Currencies.Contracts.Interfaces;
 using Currencies.Contracts.ModelDtos.Role;
 using Currencies.Models;
@@ -49,7 +50,7 @@ public class RoleService : IRoleService
         var role = await GetByIdAsync(id, cancellationToken);
         if (role == null || !role.IsActive)
         {
-            return false;
+            throw new NotFoundException("Role not found");
         }
 
         role.IsActive = false;
@@ -98,7 +99,7 @@ public class RoleService : IRoleService
         var role = await GetByIdAsync(id, cancellationToken);
         if (role == null || !role.IsActive)
         {
-            return null;
+            throw new NotFoundException("Role not found");
         }
 
         role.Name = dto.Name;

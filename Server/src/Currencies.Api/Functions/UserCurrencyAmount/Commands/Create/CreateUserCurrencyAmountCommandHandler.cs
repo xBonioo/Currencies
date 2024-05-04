@@ -1,7 +1,5 @@
 ﻿using Currencies.Contracts.Interfaces;
-using Currencies.Contracts.ModelDtos.Role;
 using Currencies.Contracts.ModelDtos.User.CurrencyAmount;
-using Currencies.DataAccess.Services;
 using MediatR;
 
 namespace Currencies.Api.Functions.UserCurrencyAmount.Commands.Create;

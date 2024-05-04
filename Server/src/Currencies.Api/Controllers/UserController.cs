@@ -8,8 +8,8 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Currencies.Contracts.Helpers;
-using Currencies.Contracts.ModelDtos.Currency;
 using Currencies.Contracts.ModelDtos.User;
+using Currencies.Contracts.ModelDtos.User.ExchangeHistory;
 
 namespace Currencies.Api.Controllers;
 
@@ -158,9 +158,9 @@ public class UserController : Controller
     /// <response code="401">Unauthorized. The access token is invalid or expired.</response>
     /// <response code="500">Internal server error.</response>
     [HttpGet("get-history")]
-    public async Task<ActionResult<BaseResponse<PageResult<UserDto>>>> GetAllUserExchangeHistory()
+    public async Task<ActionResult<BaseResponse<PageResult<UserExchangeHistoryDto>>>> GetAllUserExchangeHistory()
     {
-        var result = new PageResult<UserDto>(null, 1, 1, 1);
+        var result = new PageResult<UserExchangeHistoryDto>(null, 1, 1, 1);
         if (result is null)
         {
             return NotFound(new BaseResponse<PageResult<UserDto>>
@@ -170,10 +170,17 @@ public class UserController : Controller
             });
         }
 
-        return Ok(new BaseResponse<PageResult<UserDto>>
+        return Ok(new BaseResponse<PageResult<UserExchangeHistoryDto>>
         {
             ResponseCode = StatusCodes.Status200OK,
             Data = result
         });
+    }
+
+    [HttpGet("get-history/{id}")]
+    public async Task<ActionResult<BaseResponse<UserExchangeHistoryDto>>> GetUserExchangeHistoryById(int id)
+    {
+
+        return Ok();
     }
 }

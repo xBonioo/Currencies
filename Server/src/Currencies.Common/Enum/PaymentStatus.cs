@@ -1,4 +1,4 @@
-﻿namespace Currencies.Common.Infrastructure
+﻿namespace Currencies.Common.Enum
 {
     public enum PaymentStatus
     {

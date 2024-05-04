@@ -1,12 +1,9 @@
 ﻿using AutoMapper;
-using Currencies.Api.Functions.UserCurrencyAmount.Queries.GetEditForm;
 using Currencies.Contracts.Helpers.Controls;
 using Currencies.Contracts.Helpers.Forms;
 using Currencies.Contracts.Interfaces;
-using Currencies.DataAccess.Services;
 using Currencies.Models;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace Currencies.Api.Functions.UserCurrencyAmount.Queries.GetEditForm;
 

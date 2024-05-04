@@ -1,8 +1,8 @@
 ﻿using Currencies.Contracts.Interfaces;
 using Currencies.Contracts.ModelDtos.ExchangeRate;
-using Currencies.Contracts.ModelDtos.Role;
-using Currencies.Models.Entities;
+using Currencies.Models;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 
 namespace Currencies.Api.Functions.ExchangeRate.Commands.Create;
@@ -10,21 +10,26 @@ namespace Currencies.Api.Functions.ExchangeRate.Commands.Create;
 public class CreateExchangeRateCommandHandler : IRequestHandler<CreateExchangeRateCommand, List<ExchangeRateDto>?>
 {
     private readonly IExchangeRateService _exchangeRate;
+    private readonly TableContext _dbContext;
 
-    public CreateExchangeRateCommandHandler(IExchangeRateService exchangeRate)
+    public CreateExchangeRateCommandHandler(IExchangeRateService exchangeRate, TableContext dbContext)
     {
         _exchangeRate = exchangeRate;
+        _dbContext = dbContext;
     }
 
     public async Task<List<ExchangeRateDto?>> Handle(CreateExchangeRateCommand request, CancellationToken cancellationToken)
     {
         var currencyExchangeRateList = new List<CurrencyExchangeRateDto>();
-        string[] currencies = { "USD", "EUR", "GBP", "PLN" };
+        var currencies = await _dbContext.Currencies
+            .AsQueryable()
+            .ToListAsync(cancellationToken);
+
         var httpClient = new HttpClient();
 
         foreach (var currency in currencies)
         {
-            var apiUrl = $"https://api.nbp.pl/api/exchangerates/rates/c/{currency}/{request.Date:yyyy-MM-dd}/?format=json";
+            var apiUrl = $"https://api.nbp.pl/api/exchangerates/rates/c/{currency.Symbol}/{request.Date:yyyy-MM-dd}/?format=json";
             try
             {
                 var response = await httpClient.GetAsync(apiUrl);

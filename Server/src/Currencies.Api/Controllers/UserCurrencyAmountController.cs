@@ -7,13 +7,10 @@ using Currencies.Contracts.ModelDtos.User.CurrencyAmount;
 using Currencies.Api.Functions.UserCurrencyAmount.Queries.GetSingle;
 using Currencies.Api.Functions.UserCurrencyAmount.Queries.GetEditForm;
 using Currencies.Api.Functions.UserCurrencyAmount.Commands.Create;
-using Currencies.Api.Functions.Role.Commands.Update;
-using Currencies.Contracts.ModelDtos.Role;
-using Currencies.Api.Functions.Role.Commands.Delete;
 using Currencies.Api.Functions.UserCurrencyAmount.Commands.Delete;
-using Currencies.Api.Functions.Currency.Queries.GetAll;
-using Currencies.Contracts.ModelDtos.Currency;
 using Currencies.Api.Functions.UserCurrencyAmount.Queries.GetAll;
+using Microsoft.AspNetCore.Authorization;
+using Currencies.Api.Functions.UserCurrencyAmount.Commands.Update;
 
 namespace Currencies.Api.Controllers;
 
@@ -21,6 +18,7 @@ namespace Currencies.Api.Controllers;
 /// For information on how to use the various controllers, go to:
 /// 'https wiki-link'
 /// </summary>
+//[Authorize]
 [Route("api/user-amount")]
 [ApiController]
 public class UserCurrencyAmountController : Controller
@@ -85,11 +83,26 @@ public class UserCurrencyAmountController : Controller
     /// <summary>
     /// Convert currency.
     /// </summary>
+    /// <response code="200">Convert user currency amount.</response>
+    /// <response code="404">User currency amount not found or something problem.</response>
     [HttpPost]
     public async Task<ActionResult<BaseResponse<UserCurrencyAmountDto>>> ConvertUserCurrencyAmount([FromBody] ConvertUserCurrencyAmountDto dto)
     {
+        var result = await _mediator.Send(new ConvertUserCurrencyAmountCommand(dto));
+        if (result == null)
+        {
+            return NotFound(new BaseResponse<UserCurrencyAmountDto>
+            {
+                ResponseCode = StatusCodes.Status404NotFound,
+                Message = $"There's something problem with convert."
+            });
+        }
 
-        return Ok();
+        return Ok(new BaseResponse<UserCurrencyAmountDto>
+        {
+            ResponseCode = StatusCodes.Status200OK,
+            Data = result
+        });
     }
 
     /// <summary>

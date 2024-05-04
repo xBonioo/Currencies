@@ -1,26 +1,17 @@
-﻿using AutoMapper;
-using Currencies.Contracts.Helpers.Controls;
+﻿using Currencies.Contracts.Helpers.Controls;
 using Currencies.Contracts.Helpers.Forms;
 using Currencies.Contracts.Interfaces;
-using Currencies.Contracts.ModelDtos.Currency;
-using Currencies.DataAccess.Services;
-using Currencies.Models;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace Currencies.Api.Functions.Currency.Queries.GetEditForm;
 
 public class GetCurrencyEditFormQueryHandler : IRequestHandler<GetCurrencyEditFormQuery, CurrencyEditForm?>
 {
     private readonly ICurrencyService _currencyService;
-    private readonly IMapper _mapper;
-    private readonly TableContext _dbContext;
 
-    public GetCurrencyEditFormQueryHandler(ICurrencyService currencyService, IMapper mapper, TableContext dbContext)
+    public GetCurrencyEditFormQueryHandler(ICurrencyService currencyService)
     {
         _currencyService = currencyService;
-        _mapper = mapper;
-        _dbContext = dbContext;
     }
 
     public async Task<CurrencyEditForm?> Handle(GetCurrencyEditFormQuery request, CancellationToken cancellationToken)
