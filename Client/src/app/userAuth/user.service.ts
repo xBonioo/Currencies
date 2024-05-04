@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../services/auth.service';
+import { UserRegister } from './register/register.model';
 
 class Data {
   data: any;
@@ -22,6 +23,14 @@ export class UserService {
       })
       .subscribe((x) => {
         this.authService.setToken(x.data.accessToken);
+      });
+  }
+
+  registerUser(registerForm: UserRegister) {
+    return this.http.post<Data>(`${this.apiUrl}user/register`, registerForm)
+      .subscribe((x) => {
+        //toastr todo
+        console.log(x)
       });
   }
 }
