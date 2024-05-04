@@ -4,7 +4,6 @@ using Currencies.Contracts.Helpers;
 using Currencies.Contracts.Helpers.Exceptions;
 using Currencies.Contracts.Interfaces;
 using Currencies.Contracts.ModelDtos.User.CurrencyAmount;
-
 using Currencies.Models;
 using Currencies.Models.Entities;
 using Microsoft.EntityFrameworkCore;

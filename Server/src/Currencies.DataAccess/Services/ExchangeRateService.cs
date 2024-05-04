@@ -29,8 +29,9 @@ public class ExchangeRateService : IExchangeRateService
             return null;
         }
 
-        var currencies = await _dbContext
-           .Currencies.ToListAsync(cancellationToken);
+        var currencies = await _dbContext.Currencies
+            .AsQueryable()
+            .ToListAsync(cancellationToken);
 
         var result = new List<ExchangeRate>();
         foreach (var item in currencyExchangeRateList)
