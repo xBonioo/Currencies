@@ -33,17 +33,20 @@ public class UserCurrencyAmountService : IUserCurrencyAmountService
         }
 
         var exchangeRateTo = new ExchangeRate();
+        int? rateId = null;
         if (dto.FromCurrencyId == 4)  // From PLN to foreign currency
         {
             exchangeRateTo = await _dbContext.ExchangeRate
                 .OrderByDescending(x => x.CreatedOn)
                 .FirstOrDefaultAsync(x => x.FromCurrencyID == dto.FromCurrencyId && x.ToCurrencyID == dto.ToCurrencyId && x.Direction == Direction.Buy, cancellationToken);
+            rateId = exchangeRateTo!.Id;
         }
         else if (dto.ToCurrencyId == 4)  // From foreign currency to PLN
         {
             exchangeRateTo = await _dbContext.ExchangeRate
                 .OrderByDescending(x => x.CreatedOn)
                 .FirstOrDefaultAsync(x => x.ToCurrencyID == dto.FromCurrencyId && x.FromCurrencyID == dto.ToCurrencyId && x.Direction == Direction.Sell, cancellationToken);
+            rateId = exchangeRateTo!.Id;
         }
         else  // From one foreign currency to another via PLN
         {
@@ -86,11 +89,13 @@ public class UserCurrencyAmountService : IUserCurrencyAmountService
             };
             await _dbContext.UserCurrencyAmounts.AddAsync(currencyAmount, cancellationToken);
             result = _mapper.Map<UserCurrencyAmountDto>(currencyAmount);
+            result.RateId = rateId;
         }
         else
         {
             accountTo.Amount += convertedAmount;
             result = _mapper.Map<UserCurrencyAmountDto>(accountTo);
+            result.RateId = rateId;
         }
 
         accountFrom.Amount -= dto.Amount;

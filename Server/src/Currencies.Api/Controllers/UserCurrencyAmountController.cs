@@ -11,6 +11,9 @@ using Currencies.Api.Functions.UserCurrencyAmount.Commands.Delete;
 using Currencies.Api.Functions.UserCurrencyAmount.Queries.GetAll;
 using Microsoft.AspNetCore.Authorization;
 using Currencies.Api.Functions.UserCurrencyAmount.Commands.Update;
+using Currencies.Contracts.ModelDtos.User.ExchangeHistory;
+using Currencies.Common.Enum;
+using System;
 
 namespace Currencies.Api.Controllers;
 
@@ -98,6 +101,25 @@ public class UserCurrencyAmountController : Controller
             });
         }
 
+        var history = await _mediator.Send(new AddUserExchangeHistoryCommand(new UserExchangeHistoryDto()
+        {
+            UserID = dto.UserId,
+            RateID = result.RateId,
+            Amount = dto.Amount,
+            AccountID = result.Id,
+            PaymentStatus = PaymentStatus.Completed,
+            PaymentType = null
+        }));
+
+        if (!history)
+        {
+            return BadRequest(new BaseResponse<UserCurrencyAmountDto>
+            {
+                ResponseCode = StatusCodes.Status404NotFound,
+                Message = $"There's something wrong with add user exchange history."
+            });
+        }
+
         return Ok(new BaseResponse<UserCurrencyAmountDto>
         {
             ResponseCode = StatusCodes.Status200OK,
@@ -137,7 +159,6 @@ public class UserCurrencyAmountController : Controller
     [HttpPost("add")]
     public async Task<ActionResult<BaseResponse<UserCurrencyAmountDto>>> AddUserCurrencyAmount([FromBody] BaseUserCurrencyAmountDto dto)
     {
-
         var result = await _mediator.Send(new CreateUserCurrencyAmountCommand(dto));
         if (result == null)
         {
@@ -145,6 +166,37 @@ public class UserCurrencyAmountController : Controller
             {
                 ResponseCode = StatusCodes.Status400BadRequest,
             });
+        }
+
+        // random payment type xd
+        var random = new Random();
+        Array values = Enum.GetValues(typeof(PaymentType));
+        PaymentType randomPaymentType = (PaymentType)values.GetValue(random.Next(values.Length));
+
+        try
+        {
+            var history = await _mediator.Send(new AddUserExchangeHistoryCommand(new UserExchangeHistoryDto()
+            {
+                UserID = dto.UserId,
+                RateID = result.RateId,
+                Amount = dto.Amount,
+                AccountID = result.Id,
+                PaymentStatus = PaymentStatus.Completed,
+                PaymentType = randomPaymentType
+            }));
+
+            if (!history)
+            {
+                return BadRequest(new BaseResponse<UserCurrencyAmountDto>
+                {
+                    ResponseCode = StatusCodes.Status404NotFound,
+                    Message = $"There's something wrong with add user exchange history."
+                });
+            }
+        }
+        catch (Exception ex)
+        {
+
         }
 
         return CreatedAtAction(nameof(AddUserCurrencyAmount), new BaseResponse<UserCurrencyAmountDto>

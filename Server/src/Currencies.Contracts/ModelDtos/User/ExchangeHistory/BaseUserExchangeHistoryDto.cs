@@ -1,10 +1,13 @@
-﻿namespace Currencies.Contracts.ModelDtos.User.ExchangeHistory;
+﻿using Currencies.Common.Enum;
+
+namespace Currencies.Contracts.ModelDtos.User.ExchangeHistory;
 
 public class BaseUserExchangeHistoryDto
 {
-    public string UserId { get; set; } = null!;
-    public int FromCurrencyId { get; set; }
-    public int ToCurrencyId { get; set; }
+    public string UserID { get; set; } = null!;
+    public int? RateID { get; set; }
     public decimal Amount { get; set; }
-    public decimal ExchangeRate { get; set; }
+    public int AccountID { get; set; }
+    public PaymentStatus PaymentStatus { get; set; }
+    public PaymentType? PaymentType { get; set; }
 }

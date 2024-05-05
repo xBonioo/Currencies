@@ -1,12 +1,11 @@
-﻿namespace Currencies.Common.Enum
+﻿namespace Currencies.Common.Enum;
+
+public enum PaymentType
 {
-    public enum PaymentType
-    {
-        Blik,
-        Karta,
-        PayPal,
-        Przelewy24,
-        PrzelewBankowy,
-        GooglePay
-    }
+    Blik,
+    Karta,
+    PayPal,
+    Przelewy24,
+    PrzelewBankowy,
+    GooglePay
 }

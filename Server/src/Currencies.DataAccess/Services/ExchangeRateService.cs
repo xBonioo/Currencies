@@ -57,7 +57,7 @@ public class ExchangeRateService : IExchangeRateService
 
         if (!result.Any())
         {
-            return null;
+            throw new NotFoundException("Exchange rates not found");
         }
 
         await _dbContext.AddRangeAsync(result, cancellationToken);
