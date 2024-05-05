@@ -1,4 +1,4 @@
-﻿using Currencies.Common.Infrastucture;
+﻿using Currencies.Common.Enum;
 using Currencies.Contracts.Helpers.Controls;
 
 namespace Currencies.Contracts.Helpers.Forms;

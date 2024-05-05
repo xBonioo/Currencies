@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Currencies.Contracts.Helpers;
+using Currencies.Contracts.Helpers.Exceptions;
 using Currencies.Contracts.Interfaces;
 using Currencies.Contracts.ModelDtos.Role;
 using Currencies.Models;
@@ -29,13 +30,12 @@ public class RoleService : IRoleService
 
         var role = new Role()
         {
-            Name = dto.Name,
-            IsActive = true
+            Name = dto.Name
         };
 
         _dbContext.Roles.Add(role);
 
-        if (await _dbContext.SaveChangesAsync() > 0)
+        if (await _dbContext.SaveChangesAsync(cancellationToken) > 0)
         {
             return _mapper.Map<RoleDto>(role);
         }
@@ -49,12 +49,12 @@ public class RoleService : IRoleService
         var role = await GetByIdAsync(id, cancellationToken);
         if (role == null || !role.IsActive)
         {
-            return false;
+            throw new NotFoundException("Role not found");
         }
 
         role.IsActive = false;
 
-        if ((await _dbContext.SaveChangesAsync()) > 0)
+        if ((await _dbContext.SaveChangesAsync(cancellationToken)) > 0)
         {
             return true;
         }
@@ -70,7 +70,7 @@ public class RoleService : IRoleService
 
         if (!baseQuery.Any())
         {
-            return null;
+            throw new NotFoundException("Roles not found");
         }
 
         if (!string.IsNullOrEmpty(filter.SearchPhrase))
@@ -98,13 +98,13 @@ public class RoleService : IRoleService
         var role = await GetByIdAsync(id, cancellationToken);
         if (role == null || !role.IsActive)
         {
-            return null;
+            throw new NotFoundException("Role not found");
         }
 
         role.Name = dto.Name;
         role.IsActive = dto.IsActive;
 
-        if ((await _dbContext.SaveChangesAsync()) > 0)
+        if ((await _dbContext.SaveChangesAsync(cancellationToken)) > 0)
         {
             return _mapper.Map<RoleDto>(role);
         }

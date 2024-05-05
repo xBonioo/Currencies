@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using Currencies.Contracts.Interfaces;
 using Currencies.Contracts.ModelDtos.ExchangeRate;
-using Currencies.Contracts.ModelDtos.Role;
-using Currencies.DataAccess.Services;
 using MediatR;
 
 namespace Currencies.Api.Functions.ExchangeRate.Queries.GetSingle;

@@ -1,5 +1,4 @@
-﻿using Currencies.Api.Functions.Currency.Queries.GetAll;
-using Currencies.Api.Functions.Role.Commands.Create;
+﻿using Currencies.Api.Functions.Role.Commands.Create;
 using Currencies.Api.Functions.Role.Commands.Delete;
 using Currencies.Api.Functions.Role.Commands.Update;
 using Currencies.Api.Functions.Role.Queries.GetAll;
