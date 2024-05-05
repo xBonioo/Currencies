@@ -35,23 +35,23 @@ public class ErrorHandlingMiddleware : IMiddleware
             context.Response.StatusCode = StatusCodes.Status422UnprocessableEntity;
             await context.Response.WriteAsync(JsonSerializer.Serialize(response));
         }
-        catch (BadRequestException)
+        catch (BadRequestException badRequestException)
         {
             var response = new BaseResponse<IEnumerable<string>>
             {
                 ResponseCode = StatusCodes.Status400BadRequest,
-                Message = $"Some server error has occurred."
+                Message = $"Some server error has occurred. {badRequestException.Message}"
             };
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = StatusCodes.Status400BadRequest;
             await context.Response.WriteAsync(JsonSerializer.Serialize(response));
         }
-        catch (NotFoundException)
+        catch (NotFoundException notFoundException)
         {
             var response = new BaseResponse<IEnumerable<string>>
             {
                 ResponseCode = StatusCodes.Status404NotFound,
-                Message = $"The item you were looking for was not found."
+                Message = $"The item you were looking for was not found. {notFoundException.Message}"
             };
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = StatusCodes.Status404NotFound;
