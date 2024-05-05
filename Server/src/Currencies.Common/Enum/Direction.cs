@@ -1,9 +1,8 @@
-namespace Currencies.Common.Enum
-{
-    public enum Direction
+namespace Currencies.Common.Enum;
 
-    {
-        Buy,
-        Sell
-    }
+public enum Direction
+
+{
+    Buy,
+    Sell
 }

@@ -1,9 +1,8 @@
-﻿namespace Currencies.Common.Enum
+﻿namespace Currencies.Common.Enum;
+
+public enum PaymentStatus
 {
-    public enum PaymentStatus
-    {
-        Completed,
-        Pending,
-        Rejected
-    }
+    Completed,
+    Pending,
+    Rejected
 }

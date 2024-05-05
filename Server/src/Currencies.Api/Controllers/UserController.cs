@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 using Currencies.Contracts.Helpers;
 using Currencies.Contracts.ModelDtos.User;
 using Currencies.Contracts.ModelDtos.User.ExchangeHistory;
+using Currencies.Api.Functions.UserExchangeHistory.Queries.GetAll;
+using Currencies.Api.Functions.UserExchangeHistory.Queries.GetSingle;
 
 namespace Currencies.Api.Controllers;
 
@@ -152,21 +154,20 @@ public class UserController : Controller
     }
 
     /// <summary>
-    /// Retrieves the user's exchange history.
+    /// Retrieves all available user exchange histories
     /// </summary>
-    /// <response code="200">Returns the user's exchange history.</response>
-    /// <response code="401">Unauthorized. The access token is invalid or expired.</response>
+    /// <response code="200">Returns all available user exchange histories.</response>
     /// <response code="500">Internal server error.</response>
     [HttpGet("get-history")]
-    public async Task<ActionResult<BaseResponse<PageResult<UserExchangeHistoryDto>>>> GetAllUserExchangeHistory()
+    public async Task<ActionResult<BaseResponse<PageResult<UserExchangeHistoryDto>>>> GetAllUserExchangeHistories([FromQuery] FilterUserExchangeHistoryDto filter)
     {
-        var result = new PageResult<UserExchangeHistoryDto>(null, 1, 1, 1);
+        var result = await _mediator.Send(new GetUserExchangeHistoryListQuery(filter));
         if (result is null)
         {
-            return NotFound(new BaseResponse<PageResult<UserDto>>
+            return NotFound(new BaseResponse<PageResult<UserExchangeHistoryDto>>
             {
                 ResponseCode = StatusCodes.Status404NotFound,
-                Message = $"There's no user history."
+                Message = $"There's no user exchange histories"
             });
         }
 
@@ -177,10 +178,29 @@ public class UserController : Controller
         });
     }
 
+    /// <summary>
+    /// Returns user exchange histories by id.
+    /// </summary>
+    /// <response code="200">Searched user exchange histories.</response>
+    /// <response code="404">User exchange histories not found.</response>
     [HttpGet("get-history/{id}")]
     public async Task<ActionResult<BaseResponse<UserExchangeHistoryDto>>> GetUserExchangeHistoryById(int id)
     {
 
-        return Ok();
+        var result = await _mediator.Send(new GetSingleUserExchangeHistoryQuery(id));
+        if (result == null)
+        {
+            return NotFound(new BaseResponse<UserExchangeHistoryDto>
+            {
+                ResponseCode = StatusCodes.Status404NotFound,
+                Message = $"There's no user exchange histories with Id: {id}"
+            });
+        }
+
+        return Ok(new BaseResponse<UserExchangeHistoryDto>
+        {
+            ResponseCode = StatusCodes.Status200OK,
+            Data = result
+        });
     }
 }
