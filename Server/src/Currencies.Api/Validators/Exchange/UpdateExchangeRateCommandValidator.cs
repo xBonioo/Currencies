@@ -1,5 +1,4 @@
-﻿using Currencies.Api.Functions.Currency.Commands.Update;
-using Currencies.Api.Functions.ExchangeRate.Commands.Update;
+﻿using Currencies.Api.Functions.ExchangeRate.Commands.Update;
 using Currencies.Models;
 using FluentValidation;
 

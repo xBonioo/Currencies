@@ -1,4 +1,4 @@
-namespace Currencies.Common.Infrastucture
+namespace Currencies.Common.Enum
 {
     public enum Direction
 

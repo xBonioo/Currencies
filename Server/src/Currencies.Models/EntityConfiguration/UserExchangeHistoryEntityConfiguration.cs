@@ -28,10 +28,6 @@ public class UserExchangeHistoryEntityConfiguration : IEntityTypeConfiguration<U
             .IsRequired();
 
         builder
-          .Property(u => u.ExchangeTime)
-          .IsRequired();
-
-        builder
           .HasOne(u => u.Account)
           .WithMany()
           .HasForeignKey(u => u.AccountID);

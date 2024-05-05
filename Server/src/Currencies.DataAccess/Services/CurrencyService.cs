@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Currencies.Contracts.Helpers;
+using Currencies.Contracts.Helpers.Exceptions;
 using Currencies.Contracts.Interfaces;
 using Currencies.Contracts.ModelDtos.Currency;
 using Currencies.Models;
@@ -36,7 +37,7 @@ public class CurrencyService : ICurrencyService
 
         _dbContext.Currencies.Add(currency);
 
-        if (await _dbContext.SaveChangesAsync() > 0)
+        if (await _dbContext.SaveChangesAsync(cancellationToken) > 0)
         {
             return _mapper.Map<CurrencyDto>(currency);
         }
@@ -49,12 +50,12 @@ public class CurrencyService : ICurrencyService
         var currency = await GetByIdAsync(id, cancellationToken);
         if (currency == null || !currency.IsActive)
         {
-            return false;
+            throw new NotFoundException("Currencies not found");
         }
 
         currency.IsActive = false;
 
-        if ((await _dbContext.SaveChangesAsync()) > 0)
+        if ((await _dbContext.SaveChangesAsync(cancellationToken)) > 0)
         {
             return true;
         }
@@ -62,7 +63,7 @@ public class CurrencyService : ICurrencyService
         throw new DbUpdateException($"Could not save changes to database at: {nameof(DeleteAsync)}");
     }
 
-    public async Task<PageResult<CurrencyDto>> GetAllCurrenciesAsync(FilterCurrencyDto filter, CancellationToken cancellationToken)
+    public async Task<PageResult<CurrencyDto>?> GetAllCurrenciesAsync(FilterCurrencyDto filter, CancellationToken cancellationToken)
     {
         var baseQuery = _dbContext
             .Currencies
@@ -70,7 +71,7 @@ public class CurrencyService : ICurrencyService
 
         if (!baseQuery.Any())
         {
-            return null;
+            throw new NotFoundException("Currency not found");
         }
 
         if (!string.IsNullOrEmpty(filter.SearchPhrase))
@@ -98,7 +99,7 @@ public class CurrencyService : ICurrencyService
         var currency = await GetByIdAsync(id, cancellationToken);
         if (currency == null || !currency.IsActive)
         {
-            return null;
+            throw new NotFoundException("Currency not found");
         }
 
         currency.Name = dto.Name;
@@ -106,7 +107,7 @@ public class CurrencyService : ICurrencyService
         currency.Description = dto.Description;
         currency.IsActive = dto.IsActive;
 
-        if ((await _dbContext.SaveChangesAsync()) > 0)
+        if ((await _dbContext.SaveChangesAsync(cancellationToken)) > 0)
         {
             return _mapper.Map<CurrencyDto>(currency);
         }

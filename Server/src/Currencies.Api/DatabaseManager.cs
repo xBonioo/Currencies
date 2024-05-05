@@ -1,4 +1,5 @@
-﻿using Currencies.Models;
+﻿using Currencies.Contracts.Helpers.Exceptions;
+using Currencies.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Currencies.Api;
@@ -44,9 +45,9 @@ public class DatabaseManager
                 db.Migrate();
             }
         }
-        catch (Exception ex)
+        catch (Exception e)
         {
-            // Handle exception
+            throw new BadRequestException(e.Message);
         }
     }
 }

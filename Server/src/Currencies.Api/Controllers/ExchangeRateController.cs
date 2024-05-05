@@ -4,20 +4,13 @@ using Currencies.Contracts.ModelDtos.ExchangeRate;
 using Currencies.DataAccess;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Currencies.Contracts.ModelDtos.User.CurrencyAmount;
-using Currencies.Api.Functions.Role.Commands.Create;
-using Currencies.Contracts.ModelDtos.Role;
-using Currencies.Api.Functions.Role.Queries.GetEditForm;
 using Currencies.Api.Functions.ExchangeRate.Queries.GetEditForm;
-using Currencies.Api.Functions.Role.Commands.Update;
 using Currencies.Api.Functions.ExchangeRate.Commands.Update;
-using Currencies.Api.Functions.Role.Commands.Delete;
-using Currencies.Api.Functions.Role.Queries.GetAll;
 using Currencies.Api.Functions.ExchangeRate.Queries.GetAll;
-using Currencies.Api.Functions.Role.Queries.GetSingle;
 using Currencies.Api.Functions.ExchangeRate.Queries.GetSingle;
 using Currencies.Api.Functions.ExchangeRate.Commands.Create;
 using Currencies.Api.Functions.ExchangeRate.Commands.Delete;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Currencies.Api.Controllers;
 
@@ -25,6 +18,7 @@ namespace Currencies.Api.Controllers;
 /// For information on how to use the various controllers, go to:
 /// 'https wiki-link'
 /// </summary>
+//[Authorize]
 [Route("api/exchange")]
 [ApiController]
 public class ExchangeRateController : Controller
@@ -61,6 +55,11 @@ public class ExchangeRateController : Controller
         });
     }
 
+    /// <summary>
+    /// Returns exchange rate by id.
+    /// </summary>
+    /// <response code="200">Searched exchange rate.</response>
+    /// <response code="404">Exchange rate not found.</response>
     [HttpGet("{id}")]
     public async Task<ActionResult<BaseResponse<ExchangeRateDto>>> GetExchangeRateById(int id)
     {
@@ -81,10 +80,19 @@ public class ExchangeRateController : Controller
         });
     }
 
+    /// <summary>
+    /// Retrieves exchange rates from the National Bank of Poland (NBP) API for specified currency and date.
+    /// </summary>
+    /// <param name="date">The date for which exchange rates are requested in the format YYYY-MM-DD. (Only working days)</param>
+    /// <returns>Returns a list of currency exchange rates from the NBP API or an error message if something goes wrong.</returns>
+    /// <response code="201">Returns the list of exchange rates for the requested currency and date.</response>
+    /// <response code="400">Bad request - the input parameters are invalid (e.g., wrong date format or unsupported currency code).</response>
+    /// <response code="404">Not found - no exchange rates found for the provided currency and date.</response>
+    /// <response code="500">Internal server error - error during processing the request.</response>
     [HttpPost]
-    public async Task<ActionResult<BaseResponse<ExchangeRateDto>>> CreateExchangeRate([FromBody] BaseExchangeRateDto dto)
+    public async Task<ActionResult<BaseResponse<List<ExchangeRateDto>>>> CreateExchangeRate([FromBody] DateTime date)
     {
-        var result = await _mediator.Send(new CreateExchangeRateCommand(dto));
+        var result = await _mediator.Send(new CreateExchangeRateCommand(date));
         if (result == null)
         {
             return BadRequest(new BaseResponse<ExchangeRateDto>
@@ -93,21 +101,25 @@ public class ExchangeRateController : Controller
             });
         }
 
-        return CreatedAtAction(nameof(CreateExchangeRate), new BaseResponse<ExchangeRateDto>
+        return CreatedAtAction(nameof(CreateExchangeRate), new BaseResponse<List<ExchangeRateDto>>
         {
-            Message = "Role was created successfully",
+            Message = "ExchangeRates were created successfully",
             ResponseCode = StatusCodes.Status201Created,
             Data = result
         });
     }
 
+    /// <summary>
+    /// Get edit form of exchange rate.
+    /// </summary>
+    /// <response code="200">Exchange rate edit form correctly response.</response>
     [HttpGet("{id}/edit-form")]
-    public async Task<ActionResult<BaseResponse<ExchangeRateEditForm>>> GetExchangeRateEditForm(int id)
+    public async Task<ActionResult<BaseResponse<ExchangeRateEditForm?>>> GetExchangeRateEditForm(int id)
     {
         var result = await _mediator.Send(new GetExchangeRateEditFormQuery(id));
         if (result == null)
         {
-            return NotFound(new BaseResponse<ExchangeRateEditForm>
+            return NotFound(new BaseResponse<ExchangeRateEditForm?>
             {
                 ResponseCode = StatusCodes.Status404NotFound,
                 Message = $"There's no exchange rate with Id: {id}"
@@ -121,6 +133,12 @@ public class ExchangeRateController : Controller
         });
     }
 
+    /// <summary>
+    /// Updates exchange rate - it's all properties.
+    /// </summary>
+    /// <response code="200">Exchange rate correctly updated.</response>
+    /// <response code="400">Please insert correct JSON object with parameters.</response>
+    /// <response code="404">Exchange rate not found.</response>
     [HttpPost("{id}/edit")]
     public async Task<ActionResult<BaseResponse<ExchangeRateDto>>> UpdateExchangeRate(int id, [FromBody] BaseExchangeRateDto dto)
     {
@@ -142,6 +160,11 @@ public class ExchangeRateController : Controller
         });
     }
 
+    /// <summary>
+    /// Deletes exchange rate. (Changes flag "IsActive" to false - Soft delete))
+    /// </summary>
+    /// <response code="200">Exchange rate correctly deleted.</response>
+    /// <response code="404">Exchange rate not found.</response>
     [HttpDelete("{id}/delete")]
     public async Task<ActionResult<BaseResponse<bool>>> DeleteExchangeRate(int id)
     {

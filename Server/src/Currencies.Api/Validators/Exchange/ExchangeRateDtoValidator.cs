@@ -1,5 +1,4 @@
-﻿using Currencies.Contracts.ModelDtos.Currency;
-using Currencies.Contracts.ModelDtos.ExchangeRate;
+﻿using Currencies.Contracts.ModelDtos.ExchangeRate;
 using Currencies.Models;
 using FluentValidation;
 

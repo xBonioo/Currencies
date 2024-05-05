@@ -98,7 +98,7 @@ public class UserService : IUserService
         userRefreshTokenRecord.Value = newRefreshToken.Token;
         userRefreshTokenRecord.ValidUntil = newRefreshToken.ValidUntil;
 
-        await _dbContext.SaveChangesAsync();
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         var response = new RefreshTokenResponse
         {
@@ -153,7 +153,7 @@ public class UserService : IUserService
             userRefreshTokenRecord.Value = newRefreshToken.Token;
             userRefreshTokenRecord.ValidUntil = newRefreshToken.ValidUntil;
         }
-        await _dbContext.SaveChangesAsync();
+        await _dbContext.SaveChangesAsync(cancellationToken);
         var response = new RefreshTokenResponse
         {
             RefreshToken = newRefreshToken,
@@ -176,7 +176,7 @@ public class UserService : IUserService
         userRefreshTokenRecord.Value = null;
         userRefreshTokenRecord.ValidUntil = DateTime.UtcNow;
 
-        await _dbContext.SaveChangesAsync();
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         return true;
     }

@@ -1,14 +1,17 @@
-﻿using Currencies.Api.Functions.Currency.Commands.Create;
-using Currencies.Api.Functions.ExchangeRate.Commands.Create;
-using Currencies.Api.Validators.Currency;
+﻿using Currencies.Api.Functions.ExchangeRate.Commands.Create;
+using Currencies.Models;
 using FluentValidation;
 
 namespace Currencies.Api.Validators.ExchangeRate;
 
 public class CreateExchangeRateValidator : AbstractValidator<CreateExchangeRateCommand>
 {
-    public CreateExchangeRateValidator(ExchangeRateDtoValidator exchangeRateValidator)
+    public CreateExchangeRateValidator(TableContext dbContext)
     {
-        RuleFor(x => x.Data).SetValidator(exchangeRateValidator);
+        RuleFor(x => x.Date)
+            .NotNull()
+            .NotEmpty()
+            .GreaterThanOrEqualTo(DateTime.Today.AddDays(-3)).WithMessage("Date cannot be in the past.")
+            .LessThan(DateTime.Today.AddYears(1)).WithMessage("Date cannot be more than one year in the future.");
     }
 }

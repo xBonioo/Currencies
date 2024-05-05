@@ -1,5 +1,4 @@
-﻿using Currencies.Api.Functions.Currency.Queries.GetAll;
-using Currencies.Api.Functions.ExchangeRate.Queries.GetAll;
+﻿using Currencies.Api.Functions.ExchangeRate.Queries.GetAll;
 using Currencies.Contracts.Helpers;
 using FluentValidation;
 
