@@ -94,7 +94,7 @@ public class UserCurrencyAmountController : Controller
             return NotFound(new BaseResponse<UserCurrencyAmountDto>
             {
                 ResponseCode = StatusCodes.Status404NotFound,
-                Message = $"There's something problem with convert."
+                Message = $"There's something wrong with convert."
             });
         }
 
