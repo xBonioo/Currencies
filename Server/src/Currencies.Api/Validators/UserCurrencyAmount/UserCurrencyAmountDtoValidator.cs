@@ -30,7 +30,7 @@ public class UserCurrencyAmountDtoValidator : AbstractValidator<BaseUserCurrency
 
                     bool existsCurrency = dbContext.Currencies
                         .Any(x => x.Id == dto.CurrencyId && x.IsActive);
-                    if (existsCurrency)
+                    if (!existsCurrency)
                     {
                         context.AddFailure("CurrencyId", "CurrencyId doen't exist.");
                     }
