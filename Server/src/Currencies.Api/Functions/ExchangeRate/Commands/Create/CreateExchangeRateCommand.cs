@@ -4,12 +4,12 @@ using MediatR;
 
 namespace Currencies.Api.Functions.ExchangeRate.Commands.Create;
 
-public class CreateExchangeRateCommand : IRequest<ExchangeRateDto>
+public class CreateExchangeRateCommand : IRequest<List<ExchangeRateDto>>
 {
-    public BaseExchangeRateDto Data { get; set; } = null!;
+    public DateTime Date { get; set; }
 
-    public CreateExchangeRateCommand(BaseExchangeRateDto dto)
+    public CreateExchangeRateCommand(DateTime date)
     {
-        Data = dto;
+        Date = date;
     }
 }

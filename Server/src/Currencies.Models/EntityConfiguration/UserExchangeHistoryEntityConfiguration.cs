@@ -20,7 +20,8 @@ public class UserExchangeHistoryEntityConfiguration : IEntityTypeConfiguration<U
         builder
            .HasOne(u => u.Rate)
            .WithMany()
-           .HasForeignKey(u => u.RateID);
+           .HasForeignKey(u => u.RateID)
+           .IsRequired(false);
 
         builder
             .Property(u => u.Amount)
@@ -28,17 +29,9 @@ public class UserExchangeHistoryEntityConfiguration : IEntityTypeConfiguration<U
             .IsRequired();
 
         builder
-          .Property(u => u.ExchangeTime)
-          .IsRequired();
-
-        builder
           .HasOne(u => u.Account)
           .WithMany()
           .HasForeignKey(u => u.AccountID);
-
-        builder
-           .Property(u => u.PaymentType)
-           .IsRequired();
 
         builder
           .Property(u => u.PaymentStatus)

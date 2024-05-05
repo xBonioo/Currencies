@@ -162,7 +162,7 @@ namespace Currencies.Migrations.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Currencies", (string)null);
+                    b.ToTable("Currencies");
 
                     b.HasData(
                         new
@@ -172,7 +172,7 @@ namespace Currencies.Migrations.Migrations
                             Description = "Waluta w USA",
                             IsActive = true,
                             Name = "Dolar",
-                            Symbol = "$"
+                            Symbol = "USD"
                         },
                         new
                         {
@@ -181,7 +181,7 @@ namespace Currencies.Migrations.Migrations
                             Description = "Waluta w niektórych krajach UE",
                             IsActive = true,
                             Name = "Euro",
-                            Symbol = "€"
+                            Symbol = "EUR"
                         },
                         new
                         {
@@ -190,7 +190,7 @@ namespace Currencies.Migrations.Migrations
                             Description = "Waluta w UK",
                             IsActive = true,
                             Name = "Funt",
-                            Symbol = "£"
+                            Symbol = "GBP"
                         },
                         new
                         {
@@ -238,7 +238,7 @@ namespace Currencies.Migrations.Migrations
 
                     b.HasIndex("ToCurrencyID");
 
-                    b.ToTable("ExchangeRate", (string)null);
+                    b.ToTable("ExchangeRate");
                 });
 
             modelBuilder.Entity("Currencies.Models.Entities.Role", b =>
@@ -265,7 +265,7 @@ namespace Currencies.Migrations.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles", (string)null);
+                    b.ToTable("Roles");
 
                     b.HasData(
                         new
@@ -339,7 +339,7 @@ namespace Currencies.Migrations.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserCurrencyAmounts", (string)null);
+                    b.ToTable("UserCurrencyAmounts");
                 });
 
             modelBuilder.Entity("Currencies.Models.Entities.UserExchangeHistory", b =>
@@ -359,19 +359,13 @@ namespace Currencies.Migrations.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("ExchangeTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("PaymentStatus")
                         .HasColumnType("int");
 
-                    b.Property<int>("PaymentType")
+                    b.Property<int?>("PaymentType")
                         .HasColumnType("int");
 
-                    b.Property<int>("RateID")
+                    b.Property<int?>("RateID")
                         .HasColumnType("int");
 
                     b.Property<string>("UserID")
@@ -386,7 +380,7 @@ namespace Currencies.Migrations.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("UserExchangeHistories", (string)null);
+                    b.ToTable("UserExchangeHistories");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -571,9 +565,7 @@ namespace Currencies.Migrations.Migrations
 
                     b.HasOne("Currencies.Models.Entities.ExchangeRate", "Rate")
                         .WithMany()
-                        .HasForeignKey("RateID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("RateID");
 
                     b.HasOne("Currencies.Models.Entities.ApplicationUser", "User")
                         .WithMany("UserExchangeHistory")

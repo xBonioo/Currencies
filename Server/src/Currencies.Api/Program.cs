@@ -18,8 +18,8 @@ using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 var envConfig = new ConfigurationBuilder()
-    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-    //.AddJsonFile("appsettings.Development.json", optional: false, reloadOnChange: true)
+    //.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile("appsettings.Development.json", optional: false, reloadOnChange: true)
     .AddEnvironmentVariables()
     .Build();
 

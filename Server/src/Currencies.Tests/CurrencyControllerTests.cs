@@ -141,7 +141,7 @@ public class CurrencyControllerTests : IClassFixture<BaseTestFixture>
         var id = 0;
 
         GetCurrencyEditFormQuery query = new(id);
-        GetCurrencyEditFormQueryHandler handler = new(_currencyService, _mapper, _dbContext);
+        GetCurrencyEditFormQueryHandler handler = new(_currencyService);
 
         // act
         var result = await handler.Handle(query, new CancellationToken());

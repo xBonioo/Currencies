@@ -40,7 +40,7 @@ public class ErrorHandlingMiddleware : IMiddleware
             var response = new BaseResponse<IEnumerable<string>>
             {
                 ResponseCode = StatusCodes.Status400BadRequest,
-                Message = $"Some server error has occurred."
+                Message = $"Some server error has occurred. {badRequestException.Message}"
             };
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = StatusCodes.Status400BadRequest;
@@ -51,7 +51,7 @@ public class ErrorHandlingMiddleware : IMiddleware
             var response = new BaseResponse<IEnumerable<string>>
             {
                 ResponseCode = StatusCodes.Status404NotFound,
-                Message = $"The item you were looking for was not found."
+                Message = $"The item you were looking for was not found. {notFoundException.Message}"
             };
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = StatusCodes.Status404NotFound;
@@ -68,7 +68,7 @@ public class ErrorHandlingMiddleware : IMiddleware
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
             await context.Response.WriteAsync(JsonSerializer.Serialize(response));
         }
-        catch (Exception e)
+        catch (Exception)
         {
             var response = new BaseResponse<string>
             {

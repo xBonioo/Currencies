@@ -83,21 +83,21 @@ public class TableContext : IdentityDbContext<
                 {
                     Id = 1,
                     Name = "Dolar",
-                    Symbol = "$",
+                    Symbol = "USD",
                     Description = "Waluta w USA"
                 },
                 new Currency
                 {
                     Id = 2,
                     Name = "Euro",
-                    Symbol = "€",
+                    Symbol = "EUR",
                     Description = "Waluta w niektórych krajach UE"
                 },
                 new Currency
                 {
                     Id = 3,
                     Name = "Funt",
-                    Symbol = "£",
+                    Symbol = "GBP",
                     Description = "Waluta w UK"
                 },
                 new Currency
