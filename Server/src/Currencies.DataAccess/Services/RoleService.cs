@@ -30,8 +30,7 @@ public class RoleService : IRoleService
 
         var role = new Role()
         {
-            Name = dto.Name,
-            IsActive = true
+            Name = dto.Name
         };
 
         _dbContext.Roles.Add(role);
@@ -71,7 +70,7 @@ public class RoleService : IRoleService
 
         if (!baseQuery.Any())
         {
-            return null;
+            throw new NotFoundException("Roles not found");
         }
 
         if (!string.IsNullOrEmpty(filter.SearchPhrase))

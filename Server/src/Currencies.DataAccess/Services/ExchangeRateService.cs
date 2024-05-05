@@ -26,7 +26,7 @@ public class ExchangeRateService : IExchangeRateService
     {
         if (currencyExchangeRateList == null || !currencyExchangeRateList.Any())
         {
-            return null;
+            throw new NotFoundException("Exchange rates not found");
         }
 
         var currencies = await _dbContext.Currencies
@@ -41,8 +41,7 @@ public class ExchangeRateService : IExchangeRateService
                 Rate = item.Ask,
                 FromCurrencyID = 4,
                 ToCurrencyID = currencies.FirstOrDefault(x => x.Symbol.Contains(item.Code))!.Id,
-                Direction = Direction.Buy,
-                IsActive = true
+                Direction = Direction.Buy
             };
             result.Add(buyRate);
 
@@ -51,8 +50,7 @@ public class ExchangeRateService : IExchangeRateService
                 Rate = item.Bid,
                 FromCurrencyID = 4,
                 ToCurrencyID = currencies.FirstOrDefault(x => x.Symbol.Contains(item.Code))!.Id,
-                Direction = Direction.Sell,
-                IsActive = true
+                Direction = Direction.Sell
             };
             result.Add(sellRate);
         }

@@ -85,7 +85,7 @@ public class UserCurrencyAmountController : Controller
     /// </summary>
     /// <response code="200">Convert user currency amount.</response>
     /// <response code="404">User currency amount not found or something problem.</response>
-    [HttpPost]
+    [HttpPost("convert")]
     public async Task<ActionResult<BaseResponse<UserCurrencyAmountDto>>> ConvertUserCurrencyAmount([FromBody] ConvertUserCurrencyAmountDto dto)
     {
         var result = await _mediator.Send(new ConvertUserCurrencyAmountCommand(dto));
@@ -134,7 +134,7 @@ public class UserCurrencyAmountController : Controller
     /// </summary>
     /// <response code="201">User currency amount correctly added.</response>
     /// <response code="400">Please insert correct JSON object with parameters.</response>
-    [HttpPost("{id}/add")]
+    [HttpPost("add")]
     public async Task<ActionResult<BaseResponse<UserCurrencyAmountDto>>> AddUserCurrencyAmount([FromBody] BaseUserCurrencyAmountDto dto)
     {
 

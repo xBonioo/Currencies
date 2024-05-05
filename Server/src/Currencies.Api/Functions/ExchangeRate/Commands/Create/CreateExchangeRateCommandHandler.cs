@@ -1,4 +1,5 @@
-﻿using Currencies.Contracts.Interfaces;
+﻿using Currencies.Contracts.Helpers.Exceptions;
+using Currencies.Contracts.Interfaces;
 using Currencies.Contracts.ModelDtos.ExchangeRate;
 using Currencies.Models;
 using MediatR;
@@ -57,7 +58,7 @@ public class CreateExchangeRateCommandHandler : IRequestHandler<CreateExchangeRa
             }
             catch (Exception e)
             {
-                Console.WriteLine($"{e.Message}");
+                throw new BadRequestException(e.Message);
             }
         }
 

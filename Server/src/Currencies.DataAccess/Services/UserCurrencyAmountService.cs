@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Currencies.Common.Enum;
 using Currencies.Contracts.Helpers;
 using Currencies.Contracts.Helpers.Exceptions;
 using Currencies.Contracts.Interfaces;
@@ -23,40 +24,58 @@ public class UserCurrencyAmountService : IUserCurrencyAmountService
 
     public async Task<UserCurrencyAmountDto?> ConvertAsync(ConvertUserCurrencyAmountDto dto, CancellationToken cancellationToken)
     {
-        var toCurrency = await _dbContext.ExchangeRate
-            .AsQueryable()
-            .FirstOrDefaultAsync(x => x.ToCurrencyID == dto.ToCurrencyId, cancellationToken);
+        var accountFrom = await _dbContext.UserCurrencyAmounts
+            .FirstOrDefaultAsync(x => x.CurrencyId == dto.FromCurrencyId && x.UserId == dto.UserId, cancellationToken);
 
-        var fromCurrency = new ExchangeRate();
-        if (toCurrency == null)
+        if (accountFrom == null)
         {
-            toCurrency = await _dbContext.ExchangeRate
-                .AsQueryable()
-                .FirstOrDefaultAsync(x => x.ToCurrencyID == dto.FromCurrencyId, cancellationToken);
-            
-            fromCurrency = await _dbContext.ExchangeRate
-               .AsQueryable()
-               .FirstOrDefaultAsync(x => x.FromCurrencyID == dto.ToCurrencyId, cancellationToken);
-        }
-        else
-        {
-            fromCurrency = await _dbContext.ExchangeRate
-                .AsQueryable()
-                .FirstOrDefaultAsync(x => x.FromCurrencyID == dto.FromCurrencyId, cancellationToken);
+            throw new NotFoundException($"Client doesn't have account in currency id: {dto.FromCurrencyId}");
         }
 
-        if (toCurrency == null || fromCurrency == null)
+        var exchangeRateTo = new ExchangeRate();
+        if (dto.FromCurrencyId == 4)  // From PLN to foreign currency
         {
-            throw new NotFoundException("Currency not found");
+            exchangeRateTo = await _dbContext.ExchangeRate
+                .OrderByDescending(x => x.CreatedOn)
+                .FirstOrDefaultAsync(x => x.FromCurrencyID == dto.FromCurrencyId && x.ToCurrencyID == dto.ToCurrencyId && x.Direction == Direction.Buy, cancellationToken);
+        }
+        else if (dto.ToCurrencyId == 4)  // From foreign currency to PLN
+        {
+            exchangeRateTo = await _dbContext.ExchangeRate
+                .OrderByDescending(x => x.CreatedOn)
+                .FirstOrDefaultAsync(x => x.ToCurrencyID == dto.FromCurrencyId && x.FromCurrencyID == dto.ToCurrencyId && x.Direction == Direction.Sell, cancellationToken);
+        }
+        else  // From one foreign currency to another via PLN
+        {
+            // Convert from the starting currency to PLN
+            var rateToPLN = await _dbContext.ExchangeRate
+                .OrderByDescending(x => x.CreatedOn)
+                .FirstOrDefaultAsync(x => x.FromCurrencyID == 4 && x.ToCurrencyID == dto.FromCurrencyId && x.Direction == Direction.Sell, cancellationToken);
+
+            // Convert from PLN to the target currency
+            var rateFromPLN = await _dbContext.ExchangeRate
+                .OrderByDescending(x => x.CreatedOn)
+                .FirstOrDefaultAsync(x => x.FromCurrencyID == 4 && x.ToCurrencyID == dto.ToCurrencyId && x.Direction == Direction.Buy, cancellationToken);
+
+            if (rateToPLN != null && rateFromPLN != null)
+            {
+                exchangeRateTo = new ExchangeRate()
+                {
+                    Rate = (1 / rateFromPLN.Rate) * rateToPLN.Rate
+                };
+            }
+            else
+            {
+                throw new NotFoundException("Cannot find appropriate exchange rates to perform conversion.");
+            }
         }
 
-        decimal convertedAmount = dto.Amount * (toCurrency.Rate / fromCurrency.Rate);
+        decimal convertedAmount = dto.Amount * exchangeRateTo.Rate;
 
         var accountTo = await _dbContext.UserCurrencyAmounts
-            .AsQueryable()
-            .FirstOrDefaultAsync(x => x.Id == dto.UserToCurrencyAmountAccountId, cancellationToken);
+            .FirstOrDefaultAsync(x => x.CurrencyId == dto.ToCurrencyId && x.UserId == dto.UserId, cancellationToken);
 
-        var result = new UserCurrencyAmountDto();
+        UserCurrencyAmountDto result;
         if (accountTo == null)
         {
             var currencyAmount = new UserCurrencyAmount()
@@ -74,10 +93,7 @@ public class UserCurrencyAmountService : IUserCurrencyAmountService
             result = _mapper.Map<UserCurrencyAmountDto>(accountTo);
         }
 
-        var accountFrom = await _dbContext.UserCurrencyAmounts
-            .AsQueryable()
-            .FirstOrDefaultAsync(x => x.Id == dto.UserFromCurrencyAmountAccountId, cancellationToken);
-        accountFrom!.Amount -= convertedAmount;
+        accountFrom.Amount -= dto.Amount;
 
         if (await _dbContext.SaveChangesAsync(cancellationToken) > 0)
         {
@@ -113,7 +129,7 @@ public class UserCurrencyAmountService : IUserCurrencyAmountService
 
         if (!baseQuery.Any())
         {
-            return null;
+            throw new NotFoundException("User currency accounts not found");
         }
 
         if (!string.IsNullOrEmpty(filter.SearchPhrase))
@@ -147,8 +163,7 @@ public class UserCurrencyAmountService : IUserCurrencyAmountService
         {
             UserId = dto.UserId,
             CurrencyId = dto.CurrencyId,
-            Amount = dto.Amount,
-            IsActive = true
+            Amount = dto.Amount
         };
 
         await _dbContext.UserCurrencyAmounts.AddAsync(user_currency_amount, cancellationToken);
@@ -166,7 +181,7 @@ public class UserCurrencyAmountService : IUserCurrencyAmountService
         var user_currency_amount = await GetByIdAsync(id, cancellationToken);
         if (user_currency_amount == null || !user_currency_amount.IsActive)
         {
-            throw new NotFoundException("Currency not found");
+            throw new NotFoundException("User currency account not found");
         }
 
         user_currency_amount.UserId = dto.UserId;

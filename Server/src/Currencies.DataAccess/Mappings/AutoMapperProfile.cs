@@ -14,12 +14,15 @@ public class AutoMapperProfile : Profile
         CreateMap<CurrencyDto, Currency>();
         CreateMap<Currency, CurrencyDto>();
         CreateMap<Currency, BaseCurrencyDto>();
+
         CreateMap<RoleDto, Role>();
         CreateMap<Role, RoleDto>();
         CreateMap<Role, BaseRoleDto>();
+
         CreateMap<ExchangeRateDto, ExchangeRate>();
         CreateMap<ExchangeRate, ExchangeRateDto>();
         CreateMap<ExchangeRate, BaseExchangeRateDto>();
+
         CreateMap<UserCurrencyAmountDto, UserCurrencyAmount>();
         CreateMap<UserCurrencyAmount, UserCurrencyAmountDto>();
         CreateMap<UserCurrencyAmount, BaseUserCurrencyAmountDto>();

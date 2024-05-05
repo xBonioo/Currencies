@@ -50,7 +50,7 @@ public class CurrencyService : ICurrencyService
         var currency = await GetByIdAsync(id, cancellationToken);
         if (currency == null || !currency.IsActive)
         {
-            throw new NotFoundException("Currency not found");
+            throw new NotFoundException("Currencies not found");
         }
 
         currency.IsActive = false;
@@ -71,7 +71,7 @@ public class CurrencyService : ICurrencyService
 
         if (!baseQuery.Any())
         {
-            return null;
+            throw new NotFoundException("Currency not found");
         }
 
         if (!string.IsNullOrEmpty(filter.SearchPhrase))
