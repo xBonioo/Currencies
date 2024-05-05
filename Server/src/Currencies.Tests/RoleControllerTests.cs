@@ -136,7 +136,7 @@ public class RoleControllerTests : IClassFixture<BaseTestFixture>
         var id = 0;
 
         GetRoleEditFormQuery query = new(id);
-        GetRoleEditFormQueryHandler handler = new(_roleService, _mapper, _dbContext);
+        GetRoleEditFormQueryHandler handler = new(_roleService);
 
         // act
         var result = await handler.Handle(query, new CancellationToken());
