@@ -92,6 +92,15 @@ public class ExchangeRateController : Controller
     [HttpPost]
     public async Task<ActionResult<BaseResponse<List<ExchangeRateDto>>>> CreateExchangeRate([FromBody] DateTime date)
     {
+        if (IsHoliday(date))
+        {
+            return BadRequest(new BaseResponse<ExchangeRateDto>
+            {
+                Message = "The specified date is a non-working day.",
+                ResponseCode = StatusCodes.Status400BadRequest,
+            });
+        }
+
         var result = await _mediator.Send(new CreateExchangeRateCommand(date));
         if (result == null)
         {
@@ -185,4 +194,48 @@ public class ExchangeRateController : Controller
             Data = result
         });
     }
+
+    private bool IsHoliday(DateTime date)
+    {
+        if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday)
+            return true;
+
+        var holidays = new List<DateTime>
+        {
+            new DateTime(date.Year, 1, 1),    // Nowy Rok
+            new DateTime(date.Year, 5, 1),    // Święto Pracy
+            new DateTime(date.Year, 5, 3),    // Święto Konstytucji 3 Maja
+            new DateTime(date.Year, 11, 11),  // Dzień Niepodległości
+            new DateTime(date.Year, 12, 25),  // Pierwszy dzień Bożego Narodzenia
+            new DateTime(date.Year, 12, 26)   // Drugi dzień Bożego Narodzenia
+        };
+
+        holidays.Add(CalculateEasterSunday(date.Year));
+
+        return holidays.Contains(date);
+    }
+
+    private DateTime CalculateEasterSunday(int year)
+    {
+        int day = 0;
+        int month = 0;
+
+        int a = year % 19;
+        int b = year / 100;
+        int c = year % 100;
+        int d = b / 4;
+        int e = b % 4;
+        int f = (b + 8) / 25;
+        int g = (b - f + 1) / 3;
+        int h = (19 * a + b - d - g + 15) % 30;
+        int i = c / 4;
+        int k = c % 4;
+        int l = (32 + 2 * e + 2 * i - h - k) % 7;
+        int m = (a + 11 * h + 22 * l) / 451;
+        month = (h + l - 7 * m + 114) / 31;
+        day = ((h + l - 7 * m + 114) % 31) + 1;
+
+        return new DateTime(year, month, day);
+    }
+
 }
