@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Currencies.Contracts.ModelDtos.User;
-using Currencies.Contracts.ResponseModels;
+using Currencies.Contracts.Response;
 
 namespace Currencies.Api.Functions.User.Commands.SignIn;
 

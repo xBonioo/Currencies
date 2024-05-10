@@ -2,6 +2,7 @@
 
 public class FilterUserExchangeHistoryDto : FilterDto
 {
-    public DateTime From { get; set; }
-    public DateTime To { get; set; }
+    public string UserId { get; set; } = null!;
+    public DateTime? From { get; set; }
+    public DateTime? To { get; set; }
 }

@@ -1,6 +1,5 @@
 ﻿using Currencies.Contracts.ModelDtos.User;
-using Currencies.Contracts.ModelDtos.User.ExchangeHistory;
-using Currencies.Contracts.ResponseModels;
+using Currencies.Contracts.Response;
 
 namespace Currencies.Contracts.Interfaces;
 

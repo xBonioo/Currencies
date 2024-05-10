@@ -1,5 +1,4 @@
 ﻿using Currencies.Contracts.Helpers.Forms;
-using Currencies.Contracts.Helpers;
 using Currencies.DataAccess;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Currencies.Api.Functions.UserCurrencyAmount.Commands.Update;
 using Currencies.Contracts.ModelDtos.User.ExchangeHistory;
 using Currencies.Common.Enum;
-using System;
+using Currencies.Contracts.Response;
 
 namespace Currencies.Api.Controllers;
 

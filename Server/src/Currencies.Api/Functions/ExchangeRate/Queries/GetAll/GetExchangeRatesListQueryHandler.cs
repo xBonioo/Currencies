@@ -1,6 +1,6 @@
-﻿using Currencies.Contracts.Helpers;
-using Currencies.Contracts.Interfaces;
+﻿using Currencies.Contracts.Interfaces;
 using Currencies.Contracts.ModelDtos.ExchangeRate;
+using Currencies.Contracts.Response;
 using MediatR;
 
 namespace Currencies.Api.Functions.ExchangeRate.Queries.GetAll;

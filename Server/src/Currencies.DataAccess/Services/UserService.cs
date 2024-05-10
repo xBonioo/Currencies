@@ -1,13 +1,12 @@
 ﻿using Currencies.Contracts.Interfaces;
 using Currencies.Models;
 using Microsoft.AspNetCore.Identity;
-using Currencies.Contracts.ResponseModels;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using Currencies.Models.Entities;
 using Currencies.Contracts.ModelDtos.User;
 using Microsoft.EntityFrameworkCore;
-using Currencies.Contracts.ModelDtos.User.ExchangeHistory;
+using Currencies.Contracts.Response;
 
 namespace Currencies.DataAccess.Services;
 

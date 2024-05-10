@@ -1,5 +1,5 @@
-﻿using Currencies.Contracts.Helpers;
-using Currencies.Contracts.ModelDtos.Role;
+﻿using Currencies.Contracts.ModelDtos.Role;
+using Currencies.Contracts.Response;
 using Currencies.Models.Entities;
 
 namespace Currencies.Contracts.Interfaces;

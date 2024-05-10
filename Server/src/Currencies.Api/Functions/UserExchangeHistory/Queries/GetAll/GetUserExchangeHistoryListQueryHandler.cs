@@ -1,6 +1,6 @@
-﻿using Currencies.Contracts.Helpers;
-using Currencies.Contracts.Interfaces;
+﻿using Currencies.Contracts.Interfaces;
 using Currencies.Contracts.ModelDtos.User.ExchangeHistory;
+using Currencies.Contracts.Response;
 using MediatR;
 
 namespace Currencies.Api.Functions.UserExchangeHistory.Queries.GetAll;

@@ -1,6 +1,6 @@
 ﻿using MediatR;
-using Currencies.Contracts.Helpers;
 using Currencies.Contracts.ModelDtos.User.CurrencyAmount;
+using Currencies.Contracts.Response;
 
 namespace Currencies.Api.Functions.UserCurrencyAmount.Queries.GetAll;
 

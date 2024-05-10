@@ -1,7 +1,6 @@
 ﻿using MediatR;
-
-using Currencies.Contracts.Helpers;
 using Currencies.Contracts.ModelDtos.User.ExchangeHistory;
+using Currencies.Contracts.Response;
 
 namespace Currencies.Api.Functions.UserExchangeHistory.Queries.GetAll;
 

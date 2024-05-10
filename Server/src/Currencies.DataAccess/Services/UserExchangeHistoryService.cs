@@ -1,6 +1,6 @@
-﻿using Currencies.Contracts.Helpers;
-using Currencies.Contracts.Interfaces;
+﻿using Currencies.Contracts.Interfaces;
 using Currencies.Contracts.ModelDtos.User.ExchangeHistory;
+using Currencies.Contracts.Response;
 using Currencies.Models;
 using Currencies.Models.Entities;
 using Microsoft.EntityFrameworkCore;

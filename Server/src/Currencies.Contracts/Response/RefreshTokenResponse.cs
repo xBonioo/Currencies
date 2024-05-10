@@ -1,6 +1,6 @@
 ﻿using Currencies.Contracts.Helpers;
 
-namespace Currencies.Contracts.ResponseModels;
+namespace Currencies.Contracts.Response;
 
 public class RefreshTokenResponse
 {

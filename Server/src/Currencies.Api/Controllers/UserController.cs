@@ -2,16 +2,17 @@
 using Currencies.Api.Functions.User.Commands.RefreshToken;
 using Currencies.Api.Functions.User.Commands.SignIn;
 using Currencies.Api.Functions.User.Commands.SignOut;
-using Currencies.Contracts.ResponseModels;
 using Currencies.DataAccess;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Currencies.Contracts.Helpers;
 using Currencies.Contracts.ModelDtos.User;
 using Currencies.Contracts.ModelDtos.User.ExchangeHistory;
 using Currencies.Api.Functions.UserExchangeHistory.Queries.GetAll;
 using Currencies.Api.Functions.UserExchangeHistory.Queries.GetSingle;
+using Currencies.Contracts.Requests;
+using Currencies.Contracts.Response;
+using Currencies.Api.Functions.User.Queries.GetUser;
 
 namespace Currencies.Api.Controllers;
 
@@ -19,7 +20,7 @@ namespace Currencies.Api.Controllers;
 /// For information on how to use the various controllers, go to:
 /// 'https wiki-link'
 /// </summary>
-[Authorize]
+//[Authorize]
 [Route("api/user")]
 [ApiController]
 public class UserController : Controller
@@ -158,8 +159,8 @@ public class UserController : Controller
     /// </summary>
     /// <response code="200">Returns all available user exchange histories.</response>
     /// <response code="500">Internal server error.</response>
-    [HttpGet("get-history")]
-    public async Task<ActionResult<BaseResponse<PageResult<UserExchangeHistoryDto>>>> GetAllUserExchangeHistories([FromQuery] FilterUserExchangeHistoryDto filter)
+    [HttpPost("get-history")]
+    public async Task<ActionResult<BaseResponse<PageResult<UserExchangeHistoryDto>>>> GetAllUserExchangeHistories([FromBody] FilterUserExchangeHistoryDto filter)
     {
         var result = await _mediator.Send(new GetUserExchangeHistoryListQuery(filter));
         if (result is null)
@@ -198,6 +199,31 @@ public class UserController : Controller
         }
 
         return Ok(new BaseResponse<UserExchangeHistoryDto>
+        {
+            ResponseCode = StatusCodes.Status200OK,
+            Data = result
+        });
+    }
+
+    /// <summary>
+    /// Retrieves user information
+    /// </summary>
+    /// <response code="200">Returns all available user exchange histories.</response>
+    /// <response code="500">Internal server error.</response>
+    [HttpPost("get-user")]
+    public async Task<ActionResult<BaseResponse<UserDto>>> GetUserInformation([FromBody] GetUserRequest filter)
+    {
+        var result = await _mediator.Send(new GetUserInformationQuery(filter));
+        if (result is null)
+        {
+            return NotFound(new BaseResponse<UserDto>
+            {
+                ResponseCode = StatusCodes.Status404NotFound,
+                Message = $"There's no user exchange histories"
+            });
+        }
+
+        return Ok(new BaseResponse<UserDto>
         {
             ResponseCode = StatusCodes.Status200OK,
             Data = result

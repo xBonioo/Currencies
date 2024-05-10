@@ -1,4 +1,4 @@
-﻿namespace Currencies.Contracts.Helpers;
+﻿namespace Currencies.Contracts.Response;
 
 public class PageResult<T>
 {
