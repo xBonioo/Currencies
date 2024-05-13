@@ -1,6 +1,5 @@
-﻿using Currencies.Contracts.Helpers;
-using Currencies.Contracts.ModelDtos;
-using Currencies.Contracts.ModelDtos.ExchangeRate;
+﻿using Currencies.Contracts.ModelDtos.ExchangeRate;
+using Currencies.Contracts.Response;
 using Currencies.Models.Entities;
 
 namespace Currencies.Contracts.Interfaces;

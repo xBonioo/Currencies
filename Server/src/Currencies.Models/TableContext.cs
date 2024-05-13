@@ -106,6 +106,69 @@ public class TableContext : IdentityDbContext<
                     Name = "Polska złotówka",
                     Symbol = "PLN",
                     Description = "Waluta w Polsce"
+                },
+                new Currency
+                {
+                    Id = 5,
+                    Name = "Dolar australijski",
+                    Symbol = "AUD",
+                    Description = "Waluta w Australii"
+                },
+                new Currency
+                {
+                    Id = 6,
+                    Name = "Forint",
+                    Symbol = "HUF",
+                    Description = "Waluta na Węgrzech"
+                },
+                new Currency
+                {
+                    Id = 7,
+                    Name = "Frank szwajcarski",
+                    Symbol = "CHF",
+                    Description = "Waluta w Szwajcarii"
+                },
+                new Currency
+                {
+                    Id = 8,
+                    Name = "Jen",
+                    Symbol = "JPY",
+                    Description = "Waluta w Japonii"
+                },
+                new Currency
+                {
+                    Id = 9,
+                    Name = "Korona czeska",
+                    Symbol = "CZK",
+                    Description = "Waluta w Czechach"
+                },
+                new Currency
+                {
+                    Id = 10,
+                    Name = "Korona duńska",
+                    Symbol = "DKK",
+                    Description = "Waluta w Danii"
+                },
+                new Currency
+                {
+                    Id = 11,
+                    Name = "Korona norweska",
+                    Symbol = "NOK",
+                    Description = "Waluta w Norwegii"
+                },
+                new Currency
+                {
+                    Id = 12,
+                    Name = "Korona szwedzka",
+                    Symbol = "SEK",
+                    Description = "Waluta w Szwecji"
+                },
+                new Currency
+                {
+                    Id = 13,
+                    Name = "Dolar kanadyjski",
+                    Symbol = "CAD",
+                    Description = "Waluta w Kanadzie"
                 });
     }
 }

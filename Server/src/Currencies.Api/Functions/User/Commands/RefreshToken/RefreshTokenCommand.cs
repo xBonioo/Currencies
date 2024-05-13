@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using Currencies.Contracts.ResponseModels;
+using Currencies.Contracts.Response;
 
 namespace Currencies.Api.Functions.User.Commands.RefreshToken;
 

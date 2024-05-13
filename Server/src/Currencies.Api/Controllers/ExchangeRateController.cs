@@ -1,5 +1,4 @@
 ﻿using Currencies.Contracts.Helpers.Forms;
-using Currencies.Contracts.Helpers;
 using Currencies.Contracts.ModelDtos.ExchangeRate;
 using Currencies.DataAccess;
 using MediatR;
@@ -11,6 +10,7 @@ using Currencies.Api.Functions.ExchangeRate.Queries.GetSingle;
 using Currencies.Api.Functions.ExchangeRate.Commands.Create;
 using Currencies.Api.Functions.ExchangeRate.Commands.Delete;
 using Microsoft.AspNetCore.Authorization;
+using Currencies.Contracts.Response;
 
 namespace Currencies.Api.Controllers;
 
