@@ -13,24 +13,23 @@ class Data {
 export class UserService {
   private apiUrl = 'https://localhost:7050/api/';
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(private http: HttpClient) { }
 
   loginUser(login, password) {
-    return this.http
-      .post<Data>(`${this.apiUrl}user/signin`, {
+    return this.http.post<Data>(`${this.apiUrl}user/signin`, {
         username: login,
         password: password,
       })
-      .subscribe((x) => {
-        this.authService.setToken(x.data.accessToken);
-      });
+  }
+
+  getUserInfo(id) {
+    return this.http.post<Data>(`${this.apiUrl}user/get-user`, {
+      userId: id
+    })
   }
 
   registerUser(registerForm: UserRegister) {
+    console.log(registerForm)
     return this.http.post<Data>(`${this.apiUrl}user/register`, registerForm)
-      .subscribe((x) => {
-        //toastr todo
-        console.log(x)
-      });
   }
 }
