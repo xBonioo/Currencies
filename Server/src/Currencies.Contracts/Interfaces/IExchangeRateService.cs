@@ -10,4 +10,5 @@ public interface IExchangeRateService : IEntityService<ExchangeRate>
     Task<List<ExchangeRateDto?>> CreateAsync(List<CurrencyExchangeRateDto> currencyExchangeRateList, CancellationToken cancellationToken);
     Task<ExchangeRateDto?> UpdateAsync(int id, BaseExchangeRateDto dto, CancellationToken cancellationToken);
     Task<bool> DeleteAsync(int id, CancellationToken cancellationToken);
+    Task<ExchangeRate?> GetByIdFromCurrencyAsync(int fromId, int toId, CancellationToken cancellationToken);
 }

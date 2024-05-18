@@ -11,6 +11,7 @@ using Currencies.Api.Functions.ExchangeRate.Commands.Create;
 using Currencies.Api.Functions.ExchangeRate.Commands.Delete;
 using Microsoft.AspNetCore.Authorization;
 using Currencies.Contracts.Response;
+using Currencies.Api.Functions.ExchangeRate.Queries.GetSingleFromCurrency;
 
 namespace Currencies.Api.Controllers;
 
@@ -64,6 +65,31 @@ public class ExchangeRateController : Controller
     public async Task<ActionResult<BaseResponse<ExchangeRateDto>>> GetExchangeRateById(int id)
     {
         var result = await _mediator.Send(new GetSingleExchangeRateQuery(id));
+        if (result == null)
+        {
+            return NotFound(new BaseResponse<ExchangeRateDto>
+            {
+                ResponseCode = StatusCodes.Status404NotFound,
+                Message = $"There's no exchange rate"
+            });
+        }
+
+        return Ok(new BaseResponse<ExchangeRateDto>
+        {
+            ResponseCode = StatusCodes.Status200OK,
+            Data = result
+        });
+    }
+
+    /// <summary>
+    /// Returns exchange rate by currencies ids.
+    /// </summary>
+    /// <response code="200">Searched exchange rate.</response>
+    /// <response code="404">Exchange rate not found.</response>
+    [HttpGet("from/{fromId}/to/{toId}")]
+    public async Task<ActionResult<BaseResponse<ExchangeRateDto>>> GetExchangeRateByCurrencyId(int fromId, int toId)
+    {
+        var result = await _mediator.Send(new GetSingleExchangeRateFromCurrencyQuery(fromId, toId));
         if (result == null)
         {
             return NotFound(new BaseResponse<ExchangeRateDto>
