@@ -92,7 +92,9 @@ public class ExchangeRateService : IExchangeRateService
     {
         var baseQuery = _dbContext
             .ExchangeRate
-            .AsQueryable();
+            .AsQueryable()
+            .Include(x => x.FromCurrency)
+            .Include(x => x.ToCurrency);
 
         var totalItemCount = baseQuery.Count();
 
@@ -127,10 +129,32 @@ public class ExchangeRateService : IExchangeRateService
         throw new DbUpdateException($"Could not save changes to database at: {nameof(UpdateAsync)}");
     }
 
+    public async Task<ExchangeRate?> GetByIdFromCurrencyAsync(int fromId, int toId, CancellationToken cancellationToken)
+    {
+        var exchangeRate = await _dbContext
+                            .ExchangeRate
+                            .AsQueryable()
+                            .Include(x => x.FromCurrency)
+                            .Include(x => x.ToCurrency)
+                            .Where(x => x.FromCurrencyID == fromId && x.ToCurrencyID == toId)
+                            .OrderByDescending(x => x.CreatedOn)
+                            .FirstOrDefaultAsync(cancellationToken);
+
+        if (exchangeRate == null)
+        {
+            throw new NotFoundException("Exchange rate not found");
+        }
+
+        return exchangeRate;
+    }
+
     public async Task<ExchangeRate?> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
        return await _dbContext
                     .ExchangeRate
+                    .AsQueryable()
+                    .Include(x => x.FromCurrency)
+                    .Include(x => x.ToCurrency)
                     .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 }

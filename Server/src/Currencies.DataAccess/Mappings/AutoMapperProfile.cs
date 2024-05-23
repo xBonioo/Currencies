@@ -5,6 +5,7 @@ using Currencies.Contracts.ModelDtos.ExchangeRate;
 using Currencies.Contracts.ModelDtos.User.CurrencyAmount;
 using Currencies.Models.Entities;
 using Currencies.Contracts.ModelDtos.User;
+using Currencies.Contracts.ModelDtos.User.ExchangeHistory;
 
 namespace Currencies.DataAccess.Mappings;
 
@@ -27,6 +28,10 @@ public class AutoMapperProfile : Profile
         CreateMap<UserCurrencyAmountDto, UserCurrencyAmount>();
         CreateMap<UserCurrencyAmount, UserCurrencyAmountDto>();
         CreateMap<UserCurrencyAmount, BaseUserCurrencyAmountDto>();
+
+        CreateMap<UserExchangeHistoryDto, UserExchangeHistory>();
+        CreateMap<UserExchangeHistory, UserExchangeHistoryDto>();
+        CreateMap<UserExchangeHistory, BaseUserExchangeHistoryDto>();
 
         CreateMap<ApplicationUser, UserDto>();
     }
