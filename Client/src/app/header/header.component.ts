@@ -22,6 +22,7 @@ export class HeaderComponent implements OnInit {
 }
 
   ngOnInit(): void {
+
   }
 
   login(){
@@ -30,5 +31,13 @@ export class HeaderComponent implements OnInit {
 
   register(){
     this.router.navigateByUrl('register')
+  }
+
+  isLoggedIn(){
+    return localStorage.getItem('displayName') != null
+  }
+
+  getUserName(){
+    return localStorage.getItem('displayName');
   }
 }

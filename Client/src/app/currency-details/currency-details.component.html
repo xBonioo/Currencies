@@ -1,1 +1,20 @@
-<p>currency-details works!</p>
+<div class="details-body">
+    <div class="curr-info">
+        <h1>{{currencyInfo.data.symbol}}</h1>
+        <p>{{currencyInfo.data.description}}</p>
+    </div>
+    <div class="trx-button">
+
+    </div>
+    <p-chart class="chart" type="line" [data]="data" [options]="options"></p-chart>
+    <div class="exchange-info">
+        <div class="buy-div">
+            <h2 class="buy-label">Kupno</h2>
+            <p>{{exchangeInfo.data.rate}}</p>
+        </div>
+        <div class="sell-div">
+            <h2 class="sell-label">Sprzedaż</h2>
+            <p>{{exchangeInfo.data.rate}}</p>
+        </div>
+    </div>
+</div>

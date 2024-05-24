@@ -156,7 +156,8 @@ public class UserService : IUserService
         var response = new RefreshTokenResponse
         {
             RefreshToken = newRefreshToken,
-            AccessToken = accessToken
+            AccessToken = accessToken,
+            UserId = user.Id
         };
 
         return response;

@@ -10,11 +10,18 @@ import { CurrenciesComponent } from './currencies/currencies.component';
 import { TableModule } from 'primeng/table';
 import { FormsModule } from '@angular/forms'; 
 import { HttpClientModule } from '@angular/common/http';
-import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
+import { LoginComponent } from './userAuth/login/login.component';
+import { RegisterComponent } from './userAuth/register/register.component';
 import { InputTextModule } from 'primeng/inputtext';
 import { CurrencyDetailsComponent } from './currency-details/currency-details.component';
-
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { AuthService } from './services/auth.service';
+import { CalendarModule } from 'primeng/calendar';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
+import { CommonModule } from '@angular/common';
+import { ChartModule } from 'primeng/chart';
 
 @NgModule({
   declarations: [
@@ -33,9 +40,25 @@ import { CurrencyDetailsComponent } from './currency-details/currency-details.co
     TableModule,
     FormsModule,
     HttpClientModule,
-    InputTextModule
+    InputTextModule,
+    CalendarModule,
+    CommonModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot({
+      timeOut: 10000,
+      positionClass: 'toast-top-right',
+      preventDuplicates: true,
+    }),
+    ChartModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
+    AuthService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
