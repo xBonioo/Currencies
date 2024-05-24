@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Currencies.Common.Enum;
+using Currencies.Contracts.Helpers;
 using Currencies.Contracts.Helpers.Exceptions;
 using Currencies.Contracts.Interfaces;
 using Currencies.Contracts.ModelDtos.Currency;
@@ -7,6 +9,7 @@ using Currencies.Contracts.Response;
 using Currencies.Models;
 using Currencies.Models.Entities;
 using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Currencies.DataAccess.Services;
 
@@ -65,9 +68,24 @@ public class CurrencyService : ICurrencyService
 
     public async Task<PageResult<CurrencyDto>?> GetAllCurrenciesAsync(FilterCurrencyDto filter, CancellationToken cancellationToken)
     {
-        var baseQuery = _dbContext
-            .Currencies
-            .AsQueryable();
+        var baseQuery = from c in _dbContext.Currencies
+                    join er0 in _dbContext.ExchangeRate.Where(er => er.Direction == Direction.Buy && er.IsActive)
+                        on c.Id equals er0.ToCurrencyID into er0Group
+                    from er0 in er0Group.DefaultIfEmpty()
+                    join er1 in _dbContext.ExchangeRate.Where(er => er.Direction == Direction.Sell && er.IsActive)
+                        on c.Id equals er1.ToCurrencyID into er1Group
+                    from er1 in er1Group.DefaultIfEmpty()
+                    where c.IsActive
+                    select new AnonymousTypeModel
+                    {
+                        Name = c.Name,
+                        Symbol = c.Symbol,
+                        Description = c.Description,
+                        Rate_Direction_0 = er0 != null ? er0.Rate : (decimal?)null,
+                        Rate_Direction_1 = er1 != null ? er1.Rate : (decimal?)null,
+                        IsActive = c.IsActive
+                    };
+
 
         if (!baseQuery.Any())
         {
@@ -85,11 +103,12 @@ public class CurrencyService : ICurrencyService
 
         var totalItemCount = baseQuery.Count();
 
-        var itemsDto = await baseQuery
+        var itemsDto = baseQuery
             .Skip(filter.PageSize * (filter.PageNumber - 1))
             .Take(filter.PageSize)
-            .ProjectTo<CurrencyDto>(_mapper.ConfigurationProvider)
-            .ToListAsync(cancellationToken);
+            .AsEnumerable()
+            .Select(x => _mapper.Map<CurrencyDto>(x))
+            .ToList();
 
         return new PageResult<CurrencyDto>(itemsDto, totalItemCount, filter.PageSize, filter.PageNumber);
     }

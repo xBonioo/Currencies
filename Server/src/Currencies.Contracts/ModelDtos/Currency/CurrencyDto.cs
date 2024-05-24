@@ -2,7 +2,8 @@
 
 public class CurrencyDto : BaseCurrencyDto
 {
-    public int Id { get; set; }
+    public decimal Rate_Direction_0 { get; set; }
+    public decimal Rate_Direction_1 { get; set; }
     public DateTime CreatedOn { get; set; }
     public DateTime? ModifiedOn { get; set; }
 }

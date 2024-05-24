@@ -29,6 +29,13 @@ public class ExchangeRateService : IExchangeRateService
             throw new NotFoundException("Exchange rates not found");
         }
 
+
+        var activeRates = _dbContext.ExchangeRate.Where(x => x.IsActive);
+        foreach (var rate in activeRates)
+        {
+            rate.IsActive = false;
+        }
+
         var currencies = await _dbContext.Currencies
             .AsQueryable()
             .ToListAsync(cancellationToken);
@@ -60,7 +67,7 @@ public class ExchangeRateService : IExchangeRateService
             throw new NotFoundException("Exchange rates not found");
         }
 
-        await _dbContext.AddRangeAsync(result, cancellationToken);
+        await _dbContext.ExchangeRate.AddRangeAsync(result, cancellationToken);
 
         if (await _dbContext.SaveChangesAsync(cancellationToken) > 0)
         {
