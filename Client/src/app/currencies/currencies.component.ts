@@ -22,11 +22,12 @@ export class CurrenciesComponent implements OnInit {
 
   ngOnInit(): void {
     this.currenciesService.getCurrencies().subscribe(x=>{
+      console.log(x)
       this.currencies = x.data.items;
     })
   }
 
   currencyDetails(currency){
-    this.router.navigateByUrl(`${currency.id}`)
+    this.router.navigateByUrl(`${currency.toCurrency.id}`)
   }
 }
