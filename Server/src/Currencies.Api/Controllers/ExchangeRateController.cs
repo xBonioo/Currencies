@@ -12,6 +12,7 @@ using Currencies.Api.Functions.ExchangeRate.Commands.Delete;
 using Microsoft.AspNetCore.Authorization;
 using Currencies.Contracts.Response;
 using Currencies.Api.Functions.ExchangeRate.Queries.GetSingleFromCurrency;
+using Newtonsoft.Json;
 
 namespace Currencies.Api.Controllers;
 
@@ -87,23 +88,30 @@ public class ExchangeRateController : Controller
     /// <response code="200">Searched exchange rate.</response>
     /// <response code="404">Exchange rate not found.</response>
     [HttpGet("from/{fromId}/to/{toId}")]
-    public async Task<ActionResult<BaseResponse<ExchangeRateDto>>> GetExchangeRateByCurrencyId(int fromId, int toId)
+    public async Task<IActionResult> GetExchangeRateByCurrencyId(int fromId, int toId)
     {
         var result = await _mediator.Send(new GetSingleExchangeRateFromCurrencyQuery(fromId, toId));
-        if (result == null)
+        if(result == (null, null))
         {
-            return NotFound(new BaseResponse<ExchangeRateDto>
+            return NotFound(new BaseResponse<(ExchangeRateDto, ExchangeRateDto)>
             {
                 ResponseCode = StatusCodes.Status404NotFound,
                 Message = $"There's no exchange rate"
             });
         }
 
-        return Ok(new BaseResponse<ExchangeRateDto>
+        var response = new BaseResponse<(ExchangeRateDto?, ExchangeRateDto?)>
         {
             ResponseCode = StatusCodes.Status200OK,
             Data = result
+        };
+
+        var json = JsonConvert.SerializeObject(response, new JsonSerializerSettings
+        {
+            NullValueHandling = NullValueHandling.Include
         });
+
+        return Ok(json);
     }
 
     /// <summary>
