@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './header/header.component';
+import { HeaderComponent } from './shared/header/header.component';
 import { MenubarModule } from 'primeng/menubar';
 import { ButtonModule } from 'primeng/button';
 import { CurrenciesComponent } from './currencies/currencies.component';
@@ -15,13 +15,16 @@ import { RegisterComponent } from './userAuth/register/register.component';
 import { InputTextModule } from 'primeng/inputtext';
 import { CurrencyDetailsComponent } from './currency-details/currency-details.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AuthInterceptor } from './interceptors/auth.interceptor';
-import { AuthService } from './services/auth.service';
+import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
+import { AuthService } from './shared/services/auth.service';
 import { CalendarModule } from 'primeng/calendar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
 import { ChartModule } from 'primeng/chart';
+import { CurrencyExchangePopupComponent } from './shared/currency-exchange-popup/currency-exchange-popup.component';
+import { DialogModule } from 'primeng/dialog';
+import { UserPageComponent } from './user-page/user-page.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +33,9 @@ import { ChartModule } from 'primeng/chart';
     CurrenciesComponent,
     LoginComponent,
     RegisterComponent,
-    CurrencyDetailsComponent
+    CurrencyDetailsComponent,
+    CurrencyExchangePopupComponent,
+    UserPageComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +54,8 @@ import { ChartModule } from 'primeng/chart';
       positionClass: 'toast-top-right',
       preventDuplicates: true,
     }),
-    ChartModule
+    ChartModule,
+    DialogModule
   ],
   providers: [
     {

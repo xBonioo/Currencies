@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { AuthService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/shared/services/auth.service';
 import { UserService } from '../user.service';
 
 
@@ -29,6 +29,7 @@ export class LoginComponent implements OnInit {
     this.userService.loginUser(this.login, this.password).subscribe((x) => {
       console.log(x);
         this.authService.setToken(x.data.accessToken);
+        localStorage.setItem('id', x.data.userId);
         this.userService.getUserInfo(x.data.userId).subscribe((y)=>{
           localStorage.setItem('displayName', y.data.userName);
         })
