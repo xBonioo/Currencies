@@ -159,8 +159,8 @@ public class UserController : Controller
     /// </summary>
     /// <response code="200">Returns all available user exchange histories.</response>
     /// <response code="500">Internal server error.</response>
-    [HttpPost("get-history")]
-    public async Task<ActionResult<BaseResponse<PageResult<UserExchangeHistoryDto>>>> GetAllUserExchangeHistories([FromBody] FilterUserExchangeHistoryDto filter)
+    [HttpGet("get-history")]
+    public async Task<ActionResult<BaseResponse<PageResult<UserExchangeHistoryDto>>>> GetAllUserExchangeHistories([FromQuery] FilterUserExchangeHistoryDto filter)
     {
         var result = await _mediator.Send(new GetUserExchangeHistoryListQuery(filter));
         if (result is null)
