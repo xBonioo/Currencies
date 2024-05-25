@@ -164,14 +164,23 @@ public class UserCurrencyAmountService : IUserCurrencyAmountService
             return null;
         }
 
-        var user_currency_amount = new UserCurrencyAmount()
+        var user_currency_amount = await _dbContext.UserCurrencyAmounts
+                        .FirstOrDefaultAsync(x => x.CurrencyId == dto.CurrencyId && x.UserId == dto.UserId && x.IsActive, cancellationToken);
+        if (user_currency_amount != null)
         {
-            UserId = dto.UserId,
-            CurrencyId = dto.CurrencyId,
-            Amount = dto.Amount
-        };
+            user_currency_amount.Amount += dto.Amount;
+        }
+        else
+        {
+            user_currency_amount = new UserCurrencyAmount()
+            {
+                UserId = dto.UserId,
+                CurrencyId = dto.CurrencyId,
+                Amount = dto.Amount
+            };
 
-        await _dbContext.UserCurrencyAmounts.AddAsync(user_currency_amount, cancellationToken);
+            await _dbContext.UserCurrencyAmounts.AddAsync(user_currency_amount, cancellationToken);
+        }
 
         if (await _dbContext.SaveChangesAsync(cancellationToken) > 0)
         {
@@ -191,7 +200,7 @@ public class UserCurrencyAmountService : IUserCurrencyAmountService
 
         user_currency_amount.UserId = dto.UserId;
         user_currency_amount.CurrencyId = dto.CurrencyId;
-        user_currency_amount.Amount = dto.Amount;
+        user_currency_amount.Amount += dto.Amount;
         user_currency_amount.IsActive = dto.IsActive;
 
         if ((await _dbContext.SaveChangesAsync(cancellationToken)) > 0)
@@ -200,6 +209,16 @@ public class UserCurrencyAmountService : IUserCurrencyAmountService
         }
 
         throw new DbUpdateException($"Could not save changes to database at: {nameof(UpdateAsync)}");
+    }
+
+    public async Task<List<UserCurrencyAmount>> GetByUserIdAsync(string id, CancellationToken cancellationToken)
+    {
+        var result = await _dbContext
+           .UserCurrencyAmounts
+           .Where(x => x.UserId == id)
+           .ToListAsync(cancellationToken);
+
+        return result;
     }
 
     public async Task<UserCurrencyAmount?> GetByIdAsync(int id, CancellationToken cancellationToken)

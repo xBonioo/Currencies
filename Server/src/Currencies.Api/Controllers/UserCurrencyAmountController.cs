@@ -58,24 +58,24 @@ public class UserCurrencyAmountController : Controller
     }
 
     /// <summary>
-    /// Returns user currency amount by id.
+    /// Returns user currency amount list by user id.
     /// </summary>
     /// <response code="200">Searched user currency amount.</response>
     /// <response code="404">User currency amount not found.</response>
     [HttpGet("{id}")]
-    public async Task<ActionResult<BaseResponse<UserCurrencyAmountDto>>> GetUserCurrencyAmountById(int id)
+    public async Task<ActionResult<BaseResponse<List<UserCurrencyAmountDto>>>> GetUserCurrencyAmountById(string id)
     {
         var result = await _mediator.Send(new GetSingleUserCurrencyAmountQuery(id));
         if (result == null)
         {
-            return NotFound(new BaseResponse<UserCurrencyAmountDto>
+            return NotFound(new BaseResponse<List<UserCurrencyAmountDto>>
             {
                 ResponseCode = StatusCodes.Status404NotFound,
                 Message = $"There's no user currency amount with Id: {id}"
             });
         }
 
-        return Ok(new BaseResponse<UserCurrencyAmountDto>
+        return Ok(new BaseResponse<List<UserCurrencyAmountDto>>
         {
             ResponseCode = StatusCodes.Status200OK,
             Data = result

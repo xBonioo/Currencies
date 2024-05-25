@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Currencies.Api.Functions.UserCurrencyAmount.Queries.GetSingle;
 
-public class GetSinglUserCurrencyAmountQueryHandler : IRequestHandler<GetSingleUserCurrencyAmountQuery, UserCurrencyAmountDto?>
+public class GetSinglUserCurrencyAmountQueryHandler : IRequestHandler<GetSingleUserCurrencyAmountQuery, List<UserCurrencyAmountDto>>
 {
     private readonly IUserCurrencyAmountService _userCurrencyAmountService;
     private readonly IMapper _mapper;
@@ -16,14 +16,14 @@ public class GetSinglUserCurrencyAmountQueryHandler : IRequestHandler<GetSingleU
         _mapper = mapper;
     }
 
-    public async Task<UserCurrencyAmountDto?> Handle(GetSingleUserCurrencyAmountQuery request, CancellationToken cancellationToken)
+    public async Task<List<UserCurrencyAmountDto>> Handle(GetSingleUserCurrencyAmountQuery request, CancellationToken cancellationToken)
     {
-        var result = await _userCurrencyAmountService.GetByIdAsync(request.Id, cancellationToken);
-        if (result == null || !result.IsActive)
+        var result = await _userCurrencyAmountService.GetByUserIdAsync(request.Id, cancellationToken);
+        if (result == null)
         {
             return null;
         }
 
-        return _mapper.Map<UserCurrencyAmountDto>(result);
+        return _mapper.Map<List<UserCurrencyAmountDto>>(result);
     }
 }

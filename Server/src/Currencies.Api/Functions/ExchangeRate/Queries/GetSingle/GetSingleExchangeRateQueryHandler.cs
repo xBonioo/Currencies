@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Currencies.Api.Functions.ExchangeRate.Queries.GetSingle;
 
-public class GetSinglExchangeRateQueryHandler : IRequestHandler<GetSingleExchangeRateQuery, ExchangeRateDto?>
+public class GetSinglExchangeRateQueryHandler : IRequestHandler<GetSingleExchangeRateQuery, List<ExchangeRateDto>>
 {
     private readonly IExchangeRateService _exchangeRateService;
     private readonly IMapper _mapper;
@@ -16,14 +16,14 @@ public class GetSinglExchangeRateQueryHandler : IRequestHandler<GetSingleExchang
         _mapper = mapper;
     }
 
-    public async Task<ExchangeRateDto?> Handle(GetSingleExchangeRateQuery request, CancellationToken cancellationToken)
+    public async Task<List<ExchangeRateDto>> Handle(GetSingleExchangeRateQuery request, CancellationToken cancellationToken)
     {
-        var result = await _exchangeRateService.GetByIdAsync(request.id, cancellationToken);
-        if (result == null || !result.IsActive)
+        var result = await _exchangeRateService.GetByCurrencyIdAsync(request.id, request.direction, cancellationToken);
+        if (result == null)
         {
             return null;
         }
 
-        return _mapper.Map<ExchangeRateDto>(result);
+        return _mapper.Map<List<ExchangeRateDto>>(result);
     }
 }

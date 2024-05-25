@@ -3,4 +3,4 @@ using MediatR;
 
 namespace Currencies.Api.Functions.ExchangeRate.Queries.GetSingle;
 
-public record GetSingleExchangeRateQuery(int id) : IRequest<ExchangeRateDto>;
+public record GetSingleExchangeRateQuery(int id, int direction) : IRequest<List<ExchangeRateDto>>;

@@ -160,6 +160,17 @@ public class ExchangeRateService : IExchangeRateService
         return result;
     }
 
+    public async Task<List<ExchangeRate>> GetByCurrencyIdAsync(int id, int direction, CancellationToken cancellationToken)
+    {
+        return await _dbContext
+                     .ExchangeRate
+                     .AsQueryable()
+                     .Include(x => x.FromCurrency)
+                     .Include(x => x.ToCurrency)
+                     .Where(x => x.ToCurrencyID == id && (int)x.Direction == direction)
+                     .ToListAsync(cancellationToken) ?? new List<ExchangeRate>();
+    }
+
     public async Task<ExchangeRate?> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
        return await _dbContext

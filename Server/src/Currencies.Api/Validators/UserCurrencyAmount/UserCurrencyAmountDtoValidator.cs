@@ -21,12 +21,12 @@ public class UserCurrencyAmountDtoValidator : AbstractValidator<BaseUserCurrency
                 var dto = context.InstanceToValidate as BaseUserCurrencyAmountDto;
                 if (dto != null)
                 {
-                    bool exists = dbContext.UserCurrencyAmounts
-                        .Any(x => x.CurrencyId == dto.CurrencyId && x.UserId == dto.UserId && x.IsActive);
-                    if (exists)
-                    {
-                        context.AddFailure("CurrencyId", "This user already has a currency account with the specified currency ID.");
-                    }
+                    //bool exists = dbContext.UserCurrencyAmounts
+                    //    .Any(x => x.CurrencyId == dto.CurrencyId && x.UserId == dto.UserId && x.IsActive);
+                    //if (exists)
+                    //{
+                    //    context.AddFailure("CurrencyId", "This user already has a currency account with the specified currency ID.");
+                    //}
 
                     bool existsCurrency = dbContext.Currencies
                         .Any(x => x.Id == dto.CurrencyId && x.IsActive);

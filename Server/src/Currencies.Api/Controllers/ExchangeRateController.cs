@@ -58,24 +58,24 @@ public class ExchangeRateController : Controller
     }
 
     /// <summary>
-    /// Returns exchange rate by id.
+    /// Returns exchange rate list by id.
     /// </summary>
     /// <response code="200">Searched exchange rate.</response>
     /// <response code="404">Exchange rate not found.</response>
-    [HttpGet("{id}")]
-    public async Task<ActionResult<BaseResponse<ExchangeRateDto>>> GetExchangeRateById(int id)
+    [HttpGet("{direction}/{id}")]
+    public async Task<ActionResult<BaseResponse<List<ExchangeRateDto>>>> GetExchangeRateById(int id, int direction)
     {
-        var result = await _mediator.Send(new GetSingleExchangeRateQuery(id));
+        var result = await _mediator.Send(new GetSingleExchangeRateQuery(id, direction));
         if (result == null)
         {
-            return NotFound(new BaseResponse<ExchangeRateDto>
+            return NotFound(new BaseResponse<List<ExchangeRateDto>>
             {
                 ResponseCode = StatusCodes.Status404NotFound,
                 Message = $"There's no exchange rate"
             });
         }
 
-        return Ok(new BaseResponse<ExchangeRateDto>
+        return Ok(new BaseResponse<List<ExchangeRateDto>>
         {
             ResponseCode = StatusCodes.Status200OK,
             Data = result

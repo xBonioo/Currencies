@@ -11,4 +11,5 @@ public interface IUserCurrencyAmountService : IEntityService<UserCurrencyAmount>
     Task<bool> DeleteAsync(int id, CancellationToken cancellationToken);
     Task<UserCurrencyAmountDto?> AddAsync(BaseUserCurrencyAmountDto dto, CancellationToken cancellationToken);
     Task<UserCurrencyAmountDto?> UpdateAsync(int id, BaseUserCurrencyAmountDto dto, CancellationToken cancellationToken);
+    Task<List<UserCurrencyAmount>> GetByUserIdAsync(string id, CancellationToken cancellationToken);
 }
