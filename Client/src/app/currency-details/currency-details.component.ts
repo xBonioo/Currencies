@@ -51,15 +51,15 @@ export class CurrencyDetailsComponent implements OnInit {
       }
     })
     this.service.getExchangeInfo(this.route.snapshot.paramMap.get('id')).subscribe(x=>{
-      console.log(x)
       this.exchangeInfo = x
+      
     })
   }
 
   exchange(){
    if(localStorage.getItem('token') == null)
       this.toastr.error("Żeby skorzystać z tej funkcji musisz być zalogowany");
-    this.dialogService.showDialog()
+    this.dialogService.showDialog(this.exchangeInfo)
   }
 
 }

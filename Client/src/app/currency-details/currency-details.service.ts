@@ -19,6 +19,6 @@ export class CurrencyDetailsService {
   }
 
   getExchangeInfo(id){
-    return this.http.get<Data>(`${this.apiUrl}exchange/${id}`)
+    return this.http.get<Data>(`${this.apiUrl}exchange/from/4/to/${id}`)
   }
 }

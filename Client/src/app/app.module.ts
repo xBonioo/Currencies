@@ -24,6 +24,7 @@ import { CommonModule } from '@angular/common';
 import { ChartModule } from 'primeng/chart';
 import { CurrencyExchangePopupComponent } from './shared/currency-exchange-popup/currency-exchange-popup.component';
 import { DialogModule } from 'primeng/dialog';
+import { UserPageComponent } from './user-page/user-page.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { DialogModule } from 'primeng/dialog';
     LoginComponent,
     RegisterComponent,
     CurrencyDetailsComponent,
-    CurrencyExchangePopupComponent
+    CurrencyExchangePopupComponent,
+    UserPageComponent
   ],
   imports: [
     BrowserModule,

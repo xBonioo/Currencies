@@ -1,13 +1,19 @@
-<p-dialog header="Currency Exchange" [(visible)]="display" [modal]="true" [closable]="false" [resizable]="false" [responsive]="true">
+<p-dialog header="Currency Exchange" [(visible)]="display" [modal]="true" [closable]="false" [resizable]="false" [responsive]="true" >
     <div class="p-fluid">
         <div class="p-field-texts">
             <div class="p-field">
                 <label for="currencyFrom">From</label>
-                <input id="currencyFrom" type="text" pInputText [(ngModel)]="currencyFrom">
+                <div class="inputs-from">
+                  <input class="currency-from-input" type="text" pInputText [(ngModel)]="fromAmount">
+                  <input class="currency-from" type="text" pInputText [(ngModel)]="currencyFrom" disabled="true">
+                </div>
             </div>
             <div class="p-field">
                 <label for="currencyTo">To</label>
-                <input id="currencyTo" type="text" pInputText [(ngModel)]="currencyTo">
+                <div class="inputs-from">
+                  <input class="currency-from-input" type="text" pInputText [(ngModel)]="toAmount">
+                  <input class="currency-from" type="text" pInputText [(ngModel)]="currencyTo" disabled="true">
+                </div>
             </div>
         </div>
       <div class="p-field-buttons">

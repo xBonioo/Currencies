@@ -10,10 +10,10 @@
     </ng-template>
     <ng-template pTemplate="body" let-currency>
       <tr (dblclick)="currencyDetails(currency)">
-        <td>{{currency.toCurrency.name}}</td>
-        <td>{{currency.toCurrency.symbol}}</td>
-        <td>5,64</td>
-        <td>5,51</td>
+        <td>{{currency.name}}</td>
+        <td>{{currency.symbol}}</td>
+        <td>{{currency.rate_Direction_0}}</td>
+        <td>{{currency.rate_Direction_1}}</td>
       </tr>
     </ng-template>
   </p-table>

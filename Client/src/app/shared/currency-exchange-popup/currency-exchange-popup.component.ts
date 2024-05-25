@@ -9,13 +9,23 @@ import { DialogService } from '../services/dialog.service';
 export class CurrencyExchangePopupComponent implements OnInit {
   display: boolean = false;
   currencyFrom: string = '';
+  fromAmount: number;
   currencyTo: string = '';
+  toAmount: number;
+  data
 
   constructor(private dialogService: DialogService) {}
 
   ngOnInit() {
     this.dialogService.displayDialog$.subscribe(show => {
       this.display = show;
+    });
+
+    this.dialogService.data$.subscribe(data => {
+      this.data = data
+      this.currencyFrom = this.data?.Data.Item1.FromCurrency.Symbol
+      this.currencyTo = this.data?.Data.Item1.ToCurrency.Symbol
+      console.log(this.data)
     });
   }
 

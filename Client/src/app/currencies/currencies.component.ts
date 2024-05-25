@@ -13,7 +13,7 @@ import { Currency } from './currency.model';
 export class CurrenciesComponent implements OnInit {
 
   filterText: string;
-  currencies: Currency[];
+  currencies
 
   constructor(
     private currenciesService: CurrenciesService,
@@ -21,13 +21,13 @@ export class CurrenciesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.currenciesService.getCurrencies().subscribe(x=>{
+    this.currenciesService.getCurrencies().subscribe(x => {
       console.log(x)
-      this.currencies = x.data.items;
+      this.currencies = x.data.items.filter(obj => obj.symbol != "PLN");
     })
   }
 
-  currencyDetails(currency){
-    this.router.navigateByUrl(`${currency.toCurrency.id}`)
+  currencyDetails(currency) {
+    this.router.navigateByUrl(`${currency.id}`)
   }
 }
