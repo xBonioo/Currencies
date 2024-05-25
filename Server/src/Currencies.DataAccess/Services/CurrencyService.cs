@@ -78,6 +78,7 @@ public class CurrencyService : ICurrencyService
                     where c.IsActive
                     select new AnonymousTypeModel
                     {
+                        Id = c.Id,
                         Name = c.Name,
                         Symbol = c.Symbol,
                         Description = c.Description,

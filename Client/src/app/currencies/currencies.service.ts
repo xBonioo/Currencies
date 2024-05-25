@@ -14,6 +14,6 @@ export class CurrenciesService {
   constructor(private http: HttpClient) { }
 
   getCurrencies() {
-    return this.http.get<Currency>(`${this.apiUrl}currency`);
+    return this.http.get<Currency>(`${this.apiUrl}currency?PageNumber=1&PageSize=50`);
   }
 }

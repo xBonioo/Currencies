@@ -19,6 +19,11 @@ export class CurrencyDetailsService {
   }
 
   getExchangeInfo(id){
-    return this.http.get<Data>(`${this.apiUrl}exchange/${id}`)
+    return this.http.get<Data>(`${this.apiUrl}exchange/from/4/to/${id}`)
+  }
+
+  ExchangeCurrency(convert){
+    console.log("log", convert)
+    return this.http.post<Data>(`${this.apiUrl}user-amount/convert`, convert)
   }
 }

@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { CurrencyExchangePopupComponent } from '../shared/currency-exchange-popup/currency-exchange-popup.component';
+import { DialogService } from '../shared/services/dialog.service';
 import { CurrencyDetailsService } from './currency-details.service';
 
 @Component({
@@ -15,11 +18,14 @@ export class CurrencyDetailsComponent implements OnInit {
   exchangeInfo: any;
   constructor(
     private service: CurrencyDetailsService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private toastr: ToastrService,
+    private dialogService: DialogService
   ) { }
 
   ngOnInit(): void {
     this.service.getCurrencyInfo(this.route.snapshot.paramMap.get('id')).subscribe(x=>{
+      console.log(x)
       this.currencyInfo = x;
       this.data = {
         labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
@@ -46,7 +52,14 @@ export class CurrencyDetailsComponent implements OnInit {
     })
     this.service.getExchangeInfo(this.route.snapshot.paramMap.get('id')).subscribe(x=>{
       this.exchangeInfo = x
+      
     })
+  }
+
+  exchange(){
+   if(localStorage.getItem('token') == null)
+      this.toastr.error("Żeby skorzystać z tej funkcji musisz być zalogowany");
+    this.dialogService.showDialog(this.exchangeInfo)
   }
 
 }
