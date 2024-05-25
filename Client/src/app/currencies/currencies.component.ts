@@ -28,6 +28,6 @@ export class CurrenciesComponent implements OnInit {
   }
 
   currencyDetails(currency) {
-    this.router.navigateByUrl(`${currency.id}`)
+    this.router.navigateByUrl(`/details/${currency.id}`)
   }
 }

@@ -11,7 +11,7 @@
             <div class="p-field">
                 <label for="currencyTo">To</label>
                 <div class="inputs-from">
-                  <input class="currency-from-input" type="text" pInputText [(ngModel)]="toAmount">
+                  <input class="currency-from-input" type="text" pInputText [value]="fromAmount * data?.Data.Item1.Rate" disabled="true">
                   <input class="currency-from" type="text" pInputText [(ngModel)]="currencyTo" disabled="true">
                 </div>
             </div>

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CurrencyDetailsService } from 'src/app/currency-details/currency-details.service';
 import { DialogService } from '../services/dialog.service';
 
 @Component({
@@ -9,12 +10,15 @@ import { DialogService } from '../services/dialog.service';
 export class CurrencyExchangePopupComponent implements OnInit {
   display: boolean = false;
   currencyFrom: string = '';
-  fromAmount: number;
+  fromAmount: number = 0;
   currencyTo: string = '';
   toAmount: number;
   data
 
-  constructor(private dialogService: DialogService) {}
+  constructor(
+    private dialogService: DialogService,
+    private currencyDetailsService: CurrencyDetailsService
+  ) { }
 
   ngOnInit() {
     this.dialogService.displayDialog$.subscribe(show => {
@@ -35,6 +39,9 @@ export class CurrencyExchangePopupComponent implements OnInit {
 
   exchangeCurrency() {
     console.log(`Exchanging from ${this.currencyFrom} to ${this.currencyTo}`);
+    this.currencyDetailsService.ExchangeCurrency({userId: localStorage.getItem('id'),  fromCurrencyId: this.data.Data.Item1.FromCurrency.Id, toCurrencyId: this.data.Data.Item1.ToCurrency.Id, amount: this.fromAmount}).subscribe(
+      x=> console.log(x)
+    )
     this.hideDialog();
   }
 }

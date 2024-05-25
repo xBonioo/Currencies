@@ -29,6 +29,7 @@ export class LoginComponent implements OnInit {
     this.userService.loginUser(this.login, this.password).subscribe((x) => {
       console.log(x);
         this.authService.setToken(x.data.accessToken);
+        localStorage.setItem('id', x.data.userId);
         this.userService.getUserInfo(x.data.userId).subscribe((y)=>{
           localStorage.setItem('displayName', y.data.userName);
         })
