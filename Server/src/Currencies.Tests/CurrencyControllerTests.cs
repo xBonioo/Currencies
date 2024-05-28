@@ -1,5 +1,4 @@
-﻿using Currencies.Contracts.Helpers;
-using Currencies.Contracts.Interfaces;
+﻿using Currencies.Contracts.Interfaces;
 using Currencies.Contracts.ModelDtos.Currency;
 using Currencies.DataAccess.Services;
 using Currencies.Models;
@@ -13,7 +12,7 @@ using AutoMapper;
 using Currencies.DataAccess.Mappings;
 using Currencies.Contracts.Helpers.Forms;
 using Currencies.Api.Functions.Currency.Queries.GetEditForm;
-using Currencies.Models.Entities;
+using Currencies.Contracts.Response;
 
 namespace Currencies.Tests;
 

@@ -1,5 +1,4 @@
-﻿using Currencies.Contracts.Helpers;
-using Currencies.Contracts.Interfaces;
+﻿using Currencies.Contracts.Interfaces;
 using Currencies.DataAccess.Services;
 using Currencies.Models;
 using Xunit;
@@ -13,6 +12,7 @@ using Currencies.Api.Functions.Role.Commands.Create;
 using Currencies.Api.Functions.Role.Commands.Update;
 using Currencies.Api.Functions.Role.Commands.Delete;
 using Currencies.Api.Functions.Role.Queries.GetEditForm;
+using Currencies.Contracts.Response;
 
 namespace Currencies.Tests;
 

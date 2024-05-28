@@ -1,4 +1,5 @@
-﻿using Currencies.Common.Infrastructure;
+﻿using Currencies.Common.Enum;
+using Currencies.Common.Infrastructure;
 using Currencies.Models.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -170,5 +171,53 @@ public class TableContext : IdentityDbContext<
                     Symbol = "CAD",
                     Description = "Waluta w Kanadzie"
                 });
+
+        modelBuilder.Entity<ApplicationUser>().HasData(
+            new ApplicationUser
+            {
+                Id = "679381f2-06a1-4e22-beda-179e8e9e3236",
+                RoleId = 1,
+                UserName = "TestUser1",
+                NormalizedUserName = "TESTUSER1",
+                Email = "test1@mail.com",
+                NormalizedEmail = "TEST1@MAIL.COM",
+                PasswordHash = "AQAAAAEAACcQAAAAEIR44hzbnj/pCIqsHG4vIPm/ARO5F+qPlxQp9Wjhn+EBi/q73B+RlmXZNV+yUOvgPQ==",
+                Adres = "Warszawa,",
+                IdentityNumber = 997,
+                IDNumber = "EZ12345",
+                IDExpiryDate = new DateTime(2030, 01, 01),
+                IDIssueDate = new DateTime(2020, 01, 01)
+            });
+
+        modelBuilder.Entity<ExchangeRate>().HasData(
+            new ExchangeRate
+            {
+                Id = 1,
+                FromCurrencyID = 4,
+                ToCurrencyID = 1,
+                Rate = 4,
+                Direction = Direction.Buy
+}           );
+
+        modelBuilder.Entity<UserCurrencyAmount>().HasData(
+            new UserCurrencyAmount
+            {
+                Id = 1,
+                UserId = "679381f2-06a1-4e22-beda-179e8e9e3236",
+                CurrencyId = 4,
+                Amount = 100
+            });
+
+        modelBuilder.Entity<UserExchangeHistory>().HasData(
+            new UserExchangeHistory
+            {
+                Id = 1,
+                UserID = "679381f2-06a1-4e22-beda-179e8e9e3236",
+                RateID = 1,
+                Amount = 20,
+                AccountID = 1,
+                PaymentStatus = PaymentStatus.Completed,
+                PaymentType = PaymentType.Blik
+            });
     }
 }
