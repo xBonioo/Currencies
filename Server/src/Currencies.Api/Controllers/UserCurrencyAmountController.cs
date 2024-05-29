@@ -131,7 +131,7 @@ public class UserCurrencyAmountController : Controller
     /// </summary>
     /// <response code="200">User currency amount edit form correctly response.</response>
     [HttpGet("{id}/edit-form")]
-    public async Task<ActionResult<BaseResponse<ExchangeRateEditForm>>> GetUserCurrencyAmountEditForm(int id)
+    public async Task<ActionResult<BaseResponse<UserCurrencyAmountEditForm>>> GetUserCurrencyAmountEditForm(int id)
     {
         var result = await _mediator.Send(new GetUserCurrencyAmountEditFormQuery(id));
         if (result == null)
