@@ -33,12 +33,13 @@ export class LoginComponent implements OnInit {
         this.userService.getUserInfo(x.data.userId).subscribe((y)=>{
           localStorage.setItem('displayName', y.data.userName);
         })
+        this.toastr.success(x.message)
         this.router.navigateByUrl('#')
       },
     error => {
-      console.log(error)
-      this.toastr.error(error.error.message);
+      error.error.BaseResponseError.forEach(element => {
+        this.toastr.error(element.Code);
+      });
     });
-    
   }
 }

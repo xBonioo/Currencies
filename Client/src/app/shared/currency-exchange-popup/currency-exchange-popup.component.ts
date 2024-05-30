@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { CurrencyDetailsService } from 'src/app/currency-details/currency-details.service';
 import { DialogService } from '../services/dialog.service';
 
@@ -12,12 +13,14 @@ export class CurrencyExchangePopupComponent implements OnInit {
   currencyFrom: string = '';
   fromAmount: number = 0;
   currencyTo: string = '';
-  toAmount: number;
+  foreignCurr: string
   data
+  buyingCurrency
 
   constructor(
     private dialogService: DialogService,
-    private currencyDetailsService: CurrencyDetailsService
+    private currencyDetailsService: CurrencyDetailsService,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit() {
@@ -29,7 +32,8 @@ export class CurrencyExchangePopupComponent implements OnInit {
       this.data = data
       this.currencyFrom = this.data?.Data.Item1.FromCurrency.Symbol
       this.currencyTo = this.data?.Data.Item1.ToCurrency.Symbol
-      console.log(this.data)
+      this.foreignCurr = this.currencyTo
+      this.buyingCurrency = true
     });
   }
 
@@ -37,10 +41,22 @@ export class CurrencyExchangePopupComponent implements OnInit {
     this.dialogService.hideDialog();
   }
 
+  swap(){
+    this.buyingCurrency = !this.buyingCurrency;
+    let tmp = this.currencyFrom;
+    this.currencyFrom = this.currencyTo;
+    this.currencyTo = tmp;
+  }
+
+  toAmount(){
+    let rate = this.buyingCurrency ? this.data?.Data.Item1.Rate : this.data?.Data.Item2.Rate
+    return this.fromAmount * rate
+  }
+
   exchangeCurrency() {
     console.log(`Exchanging from ${this.currencyFrom} to ${this.currencyTo}`);
-    this.currencyDetailsService.ExchangeCurrency({userId: localStorage.getItem('id'),  fromCurrencyId: this.data.Data.Item1.FromCurrency.Id, toCurrencyId: this.data.Data.Item1.ToCurrency.Id, amount: this.fromAmount}).subscribe(
-      x=> console.log(x)
+    this.currencyDetailsService.exchangeCurrency({ userId: localStorage.getItem('id'), fromCurrencyId: this.data.Data.Item1.FromCurrency.Id, toCurrencyId: this.data.Data.Item1.ToCurrency.Id, amount: this.fromAmount }).subscribe(
+      x => this.toastr.success("Wymiana zakończona pomyślnie")
     )
     this.hideDialog();
   }

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { MenuItem } from 'primeng/api';
+import { UserService } from 'src/app/userAuth/user.service';
 import { AppService } from '../../app.service';
 
 @Component({
@@ -15,7 +17,9 @@ export class HeaderComponent implements OnInit {
   
   constructor(
     private appService: AppService,
-    private router: Router
+    private router: Router,
+    private userService: UserService,
+    private toastr: ToastrService
   ) {
      this.menuItems = [
   ];
@@ -39,5 +43,12 @@ export class HeaderComponent implements OnInit {
 
   getUserName(){
     return localStorage.getItem('displayName');
+  }
+
+  logout(){
+    this.userService.logoutUser().subscribe(e => {
+      localStorage.clear()
+      this.toastr.info(e.message)
+    })
   }
 }

@@ -17,4 +17,3 @@ export class AppService {
     return this.http.post(`${this.apiUrl}user/signin`, obj);
   }
 }
-//https://localhost:7050/api/currency?PageNumber=1&PageSize=5

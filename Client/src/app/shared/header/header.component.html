@@ -9,7 +9,7 @@
         </div>
         <div *ngIf="isLoggedIn()">
             <p-button class="button" [label]="getUserName()"  icon="pi pi-user" routerLink="/user"></p-button>
-            <p-button class="button"  icon="pi pi-sign-out" title="Wyloguj"></p-button>
+            <p-button class="button"  icon="pi pi-sign-out" title="Wyloguj" (onClick)="logout()"></p-button>
         </div>
     </ng-template>
 </p-menubar>

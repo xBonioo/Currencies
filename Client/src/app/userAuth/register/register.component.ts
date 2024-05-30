@@ -28,7 +28,9 @@ pesl:string;
       this.router.navigateByUrl('login');
     },
     error => {
-      this.toastr.error(JSON.stringify(error.title));
+      error.error.BaseResponseError.forEach(element => {
+        this.toastr.error(element.Code);
+      });
     });
   }
 }
