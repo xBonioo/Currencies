@@ -25,7 +25,6 @@ export class UserPageComponent implements OnInit {
       this.userInfo = x.data;
     })
     userSevice.getAccounts(this.userId).subscribe(x=>{
-      console.log(x)
       this.currencies = x.data
     })
    }

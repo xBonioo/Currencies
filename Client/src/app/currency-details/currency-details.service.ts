@@ -23,7 +23,6 @@ export class CurrencyDetailsService {
   }
 
   exchangeCurrency(convert){
-    console.log("log", convert)
     return this.http.post<Data>(`${this.apiUrl}user-amount/convert`, convert)
   }
 

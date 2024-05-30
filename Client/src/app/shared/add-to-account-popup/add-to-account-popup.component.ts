@@ -48,7 +48,6 @@ export class AddToAccountPopupComponent implements OnInit {
       window.location.reload();
     },
   error => {
-    console.log(error.error.BaseResponseError)
     error.error.BaseResponseError.forEach(element => {
       this.toastr.error(element.Code);
     });
