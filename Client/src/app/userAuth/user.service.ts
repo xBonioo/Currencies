@@ -5,6 +5,7 @@ import { UserRegister } from './register/register.model';
 
 class Data {
   data: any;
+  message: any;
 }
 
 @Injectable({
@@ -22,14 +23,31 @@ export class UserService {
       })
   }
 
+  logoutUser() {
+    return this.http.post<Data>(`${this.apiUrl}user/signout`, null)
+  }
+
   getUserInfo(id) {
     return this.http.post<Data>(`${this.apiUrl}user/get-user`, {
       userId: id
     })
   }
 
+  getUserAmount(id) {
+    return this.http.post<Data>(`${this.apiUrl}user/get-user`, {
+      userId: id
+    })
+  }
+
   registerUser(registerForm: UserRegister) {
-    console.log(registerForm)
     return this.http.post<Data>(`${this.apiUrl}user/register`, registerForm)
+  }
+
+  getAccounts(id) {
+    return this.http.get<Data>(`${this.apiUrl}user-amount/${id}`)
+  }
+
+  addToAccount(obj){
+    return this.http.post<Data>(`${this.apiUrl}user-amount/add`, obj)
   }
 }

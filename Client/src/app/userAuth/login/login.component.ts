@@ -27,18 +27,18 @@ export class LoginComponent implements OnInit {
 
   loginUser(){
     this.userService.loginUser(this.login, this.password).subscribe((x) => {
-      console.log(x);
         this.authService.setToken(x.data.accessToken);
         localStorage.setItem('id', x.data.userId);
         this.userService.getUserInfo(x.data.userId).subscribe((y)=>{
           localStorage.setItem('displayName', y.data.userName);
         })
+        this.toastr.success(x.message)
         this.router.navigateByUrl('#')
       },
     error => {
-      console.log(error)
-      this.toastr.error(error.error.message);
+      error.error.BaseResponseError.forEach(element => {
+        this.toastr.error(element.Code);
+      });
     });
-    
   }
 }

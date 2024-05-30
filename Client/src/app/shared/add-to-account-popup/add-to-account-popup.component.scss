@@ -1,14 +1,16 @@
 .p-field-texts{
     display: flex;
+    width: 100%;
 }
 
 .p-field{
     margin: 0.5rem 0.5rem;
-    width: 50%
+    width: 100%
 }
 
 .p-field-buttons{
     display: flex;
+    width: 100%;
 }
 
 .dialog-button{
@@ -24,12 +26,23 @@
     margin-left: 0.25rem
 }
 
-.swap-button{
-    height: 35px;
+.inputs-from{
+    display: flex;
+    margin: 1rem 0;
 }
 
-.swap-div{
-    display: flex;
-    align-items: center;
-    margin-top: 22px
+.amount{
+    width: 100%;
+}
+
+.add-money{
+    width: 20vw;
+}
+
+.dialog-button{
+    width: 50%;
+}
+
+.dialog-dropdown{
+    margin-left: 1rem;
 }

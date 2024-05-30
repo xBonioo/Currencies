@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CurrenciesService } from './currencies.service';
-import { Currency } from './currency.model';
-
 
 
 @Component({
@@ -22,7 +20,6 @@ export class CurrenciesComponent implements OnInit {
 
   ngOnInit(): void {
     this.currenciesService.getCurrencies().subscribe(x => {
-      console.log(x)
       this.currencies = x.data.items.filter(obj => obj.symbol != "PLN");
     })
   }

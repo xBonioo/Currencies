@@ -20,11 +20,14 @@ import { AuthService } from './shared/services/auth.service';
 import { CalendarModule } from 'primeng/calendar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { ChartModule } from 'primeng/chart';
 import { CurrencyExchangePopupComponent } from './shared/currency-exchange-popup/currency-exchange-popup.component';
 import { DialogModule } from 'primeng/dialog';
 import { UserPageComponent } from './user-page/user-page.component';
+import { AddToAccountPopupComponent } from './shared/add-to-account-popup/add-to-account-popup.component';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputSwitchModule } from 'primeng/inputswitch';
 
 @NgModule({
   declarations: [
@@ -35,7 +38,8 @@ import { UserPageComponent } from './user-page/user-page.component';
     RegisterComponent,
     CurrencyDetailsComponent,
     CurrencyExchangePopupComponent,
-    UserPageComponent
+    UserPageComponent,
+    AddToAccountPopupComponent
   ],
   imports: [
     BrowserModule,
@@ -55,7 +59,9 @@ import { UserPageComponent } from './user-page/user-page.component';
       preventDuplicates: true,
     }),
     ChartModule,
-    DialogModule
+    DialogModule,
+    DropdownModule,
+    InputSwitchModule
   ],
   providers: [
     {
@@ -63,7 +69,8 @@ import { UserPageComponent } from './user-page/user-page.component';
       useClass: AuthInterceptor,
       multi: true
     },
-    AuthService
+    AuthService,
+    DatePipe
   ],
   bootstrap: [AppComponent]
 })
