@@ -55,8 +55,15 @@ export class CurrencyExchangePopupComponent implements OnInit {
 
   exchangeCurrency() {
     this.currencyDetailsService.exchangeCurrency({ userId: localStorage.getItem('id'), fromCurrencyId: this.data.Data.Item1.FromCurrency.Id, toCurrencyId: this.data.Data.Item1.ToCurrency.Id, amount: this.fromAmount }).subscribe(
-      x => this.toastr.success("Wymiana zakończona pomyślnie")
+      x =>{
+        this.toastr.success("Wymiana zakończona pomyślnie");
+        this.hideDialog();
+      },
+      error =>{
+        this.toastr.error(error.error.Message);
+        this.hideDialog();
+      }
     )
-    this.hideDialog();
+    
   }
 }

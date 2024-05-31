@@ -50,4 +50,8 @@ export class UserService {
   addToAccount(obj){
     return this.http.post<Data>(`${this.apiUrl}user-amount/add`, obj)
   }
+
+  refreshToken(token){
+    return this.http.post<Data>(`${this.apiUrl}user/refreshtoken`, {refreshToken: token})
+  }
 }
