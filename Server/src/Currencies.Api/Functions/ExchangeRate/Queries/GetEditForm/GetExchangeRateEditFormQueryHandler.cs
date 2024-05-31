@@ -20,7 +20,42 @@ public class GetExchangeRateEditFormQueryHandler : IRequestHandler<GetExchangeRa
         var exchangeRate = await _exchangeRateService.GetByIdAsync(request.id, cancellationToken);
         if (exchangeRate == null || !exchangeRate.IsActive)
         {
-            return null;
+            var createForm = new ExchangeRateEditForm()
+            {
+                FromCurrencyId = new IntegerControl()
+                {
+                    IsRequired = true,
+                    Value = 0,
+                    MinValue = 1,
+                    MaxValue = 15
+                },
+                ToCurrencyId = new IntegerControl()
+                {
+                    IsRequired = true,
+                    Value = 0,
+                    MinValue = 1,
+                    MaxValue = 15
+                },
+                Rate = new DecimalControl()
+                {
+                    IsRequired = true,
+                    Value = 0,
+                    MinValue = 0.1m,
+                    MaxValue = 24
+                },
+                Direction = new EnumControl<Direction>()
+                {
+                    IsRequired = true,
+                    Value = null
+                },
+                IsActive = new BoolControl()
+                {
+                    IsRequired = true,
+                    Value = true
+                }
+            };
+
+            return createForm;
         }
 
         var editForm = new ExchangeRateEditForm()
