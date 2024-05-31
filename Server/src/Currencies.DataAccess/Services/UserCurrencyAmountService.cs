@@ -32,6 +32,11 @@ public class UserCurrencyAmountService : IUserCurrencyAmountService
             throw new NotFoundException($"Client doesn't have account in currency id: {dto.FromCurrencyId}");
         }
 
+        if(accountFrom.Amount - dto.Amount < 0)
+        {
+            throw new BadRequestException("Brak środków na koncie");
+        }
+
         var exchangeRateTo = new ExchangeRate();
         int? rateId = null;
         if (dto.FromCurrencyId == 4)  // From PLN to foreign currency

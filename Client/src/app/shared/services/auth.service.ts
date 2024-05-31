@@ -15,4 +15,8 @@ export class AuthService {
     }
     return token;
   }
+
+  logout(){
+    localStorage.clear()
+  }
 }

@@ -12,7 +12,7 @@ class Data {
   providedIn: 'root',
 })
 export class UserService {
-  private apiUrl = 'https://localhost:7050/api/';
+  private apiUrl = 'http://localhost:5000/api/';
 
   constructor(private http: HttpClient) { }
 
@@ -49,5 +49,9 @@ export class UserService {
 
   addToAccount(obj){
     return this.http.post<Data>(`${this.apiUrl}user-amount/add`, obj)
+  }
+
+  refreshToken(token){
+    return this.http.post<Data>(`${this.apiUrl}user/refreshtoken`, {refreshToken: token})
   }
 }
