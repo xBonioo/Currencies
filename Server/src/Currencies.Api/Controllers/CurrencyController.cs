@@ -35,6 +35,7 @@ public class CurrencyController : Controller
     /// </summary>
     /// <response code="200">Returns all available currencies.</response>
     /// <response code="500">Internal server error.</response>
+    [AllowAnonymous]
     [HttpGet]
     public async Task<ActionResult<BaseResponse<PageResult<CurrencyDto>>>> GetAllCurrencies([FromQuery] FilterCurrencyDto filter)
     {
@@ -60,6 +61,7 @@ public class CurrencyController : Controller
     /// </summary>
     /// <response code="200">Searched currency.</response>
     /// <response code="404">Currency not found.</response>
+    [AllowAnonymous]
     [HttpGet("{id}")]
     public async Task<ActionResult<BaseResponse<CurrencyDto>>> GetCurrencyById(int id)
     {

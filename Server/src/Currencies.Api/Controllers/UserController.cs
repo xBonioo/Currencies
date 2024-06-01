@@ -20,7 +20,7 @@ namespace Currencies.Api.Controllers;
 /// For information on how to use the various controllers, go to:
 /// 'https wiki-link'
 /// </summary>
-[Authorize]
+//[Authorize]
 [Route("api/user")]
 [ApiController]
 public class UserController : Controller
@@ -37,7 +37,6 @@ public class UserController : Controller
     /// </summary>
     /// <param name="registerUser">JSON object with properties defining a user to create</param>
     /// <response code="201">User was created successfully and confirmation email was sent.</response>
-    /// <response code="401">Something wrong with given tokens propably</response>
     /// <response code="500">Confirmation link could not be created.</response>
     [AllowAnonymous]
     [HttpPost("register")]
@@ -60,10 +59,9 @@ public class UserController : Controller
     /// <summary>
     /// Action to sign in a user by username and password
     /// </summary>
-    /// <param name="dto">JSON object with username, password and confirmed password</param>
+    /// <param name="dto">JSON object with username and password</param>
     /// <response code="200">Successfully signed in</response>
     /// <response code="400">Username or password is not valid</response>
-    /// <response code="401">Something wrong with given tokens propably</response>
     /// <response code="500">Internal server error</response>
     [AllowAnonymous]
     [HttpPost("signin")]
