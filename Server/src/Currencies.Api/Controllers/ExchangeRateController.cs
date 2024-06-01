@@ -125,6 +125,7 @@ public class ExchangeRateController : Controller
     /// <response code="400">Bad request - the input parameters are invalid (e.g., wrong date format or unsupported currency code).</response>
     /// <response code="404">Not found - no exchange rates found for the provided currency and date.</response>
     /// <response code="500">Internal server error - error during processing the request.</response>
+    [AllowAnonymous]
     [HttpPost]
     public async Task<ActionResult<BaseResponse<List<ExchangeRateDto>>>> CreateExchangeRate([FromBody] DateTime date)
     {
