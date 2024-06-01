@@ -36,9 +36,7 @@ export class LoginComponent implements OnInit {
         this.router.navigateByUrl('#')
       },
     error => {
-      error.error.BaseResponseError.forEach(element => {
-        this.toastr.error(element.Code);
-      });
+        this.toastr.error('Błędny login lub hasło');
     });
   }
 }

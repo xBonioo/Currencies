@@ -21,7 +21,6 @@ pesl:string;
   ngOnInit(): void {}
 
   register(){
-    this.user.confirmPassword = this.user.password
     this.user.identityNumber =  Number.parseInt(this.pesl)
     this.service.registerUser(this.user).subscribe((x) => {
       this.toastr.success("Konto utworzone pomyślnie, możesz się zalogować");
