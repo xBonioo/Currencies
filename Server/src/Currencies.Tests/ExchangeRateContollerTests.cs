@@ -96,7 +96,7 @@ public class ExchangeRateControllerTests : IClassFixture<BaseTestFixture>
             IsActive = true
         };
 
-        CreateExchangeRateCommand command = new(DateTime.Now);
+        CreateExchangeRateCommand command = new(new DateTime(2024, 5, 31));
         CreateExchangeRateCommandHandler handler = new(_exchangeRateService, _dbContext);
 
         // act
