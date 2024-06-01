@@ -14,7 +14,11 @@ Projekt ma na celu stworzenie wielowarstowowej aplikacji do wymiany walut online
 - otworzy się strona Swagger
 
 #### Frontend: 
-- ...
+- pobierz repozytorium na swój komputer
+- otwórz folder `Client` w Visual Studio Code
+- wykonaj komende `npm install` w celu zainstalowania paczek
+- wykonaj komende `ng serve` w celu uruchomienia aplikacji
+- aplikacja będzie dostępna pod `http://localhost:4200/`
 
 #### Baza danych:
 - zainstaluj SQL Server
