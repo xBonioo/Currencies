@@ -62,6 +62,7 @@ public class ExchangeRateController : Controller
     /// </summary>
     /// <response code="200">Searched exchange rate.</response>
     /// <response code="404">Exchange rate not found.</response>
+    [AllowAnonymous]
     [HttpGet("{direction}/{id}")]
     public async Task<ActionResult<BaseResponse<List<ExchangeRateDto>>>> GetExchangeRateById(int id, int direction)
     {
@@ -87,6 +88,7 @@ public class ExchangeRateController : Controller
     /// </summary>
     /// <response code="200">Searched exchange rate.</response>
     /// <response code="404">Exchange rate not found.</response>
+    [AllowAnonymous]
     [HttpGet("from/{fromId}/to/{toId}")]
     public async Task<IActionResult> GetExchangeRateByCurrencyId(int fromId, int toId)
     {
