@@ -20,7 +20,7 @@ namespace Currencies.Api.Controllers;
 /// For information on how to use the various controllers, go to:
 /// 'https wiki-link'
 /// </summary>
-//[Authorize]
+[Authorize]
 [Route("api/user")]
 [ApiController]
 public class UserController : Controller

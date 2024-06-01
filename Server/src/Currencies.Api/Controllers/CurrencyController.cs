@@ -18,7 +18,7 @@ namespace Currencies.Api.Controllers;
 /// For information on how to use the various controllers, go to:
 /// 'https wiki-link'
 /// </summary>
-//[Authorize]
+[Authorize]
 [Route("api/currency")]
 [ApiController]
 public class CurrencyController : Controller
