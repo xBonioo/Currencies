@@ -30,13 +30,13 @@ public class DatabaseManager
     {
         using var scope = app.Services.CreateScope();
         var services = scope.ServiceProvider;
-        var _dbContext = services.GetRequiredService<TableContext>();
-        if (!_dbContext.Database.CanConnect())
+        var dbContext = services.GetRequiredService<TableContext>();
+        if (!dbContext.Database.CanConnect())
         {
             return;
         }
 
-        var db = _dbContext.Database;
+        var db = dbContext.Database;
         try
         {
             var pendingMigrations = db.GetPendingMigrations();

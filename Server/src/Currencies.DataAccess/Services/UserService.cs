@@ -110,57 +110,67 @@ public class UserService : IUserService
 
     public async Task<RefreshTokenResponse?> SignInUserAsync(SignInDto signInDto, CancellationToken cancellationToken)
     {
-        var user = await _userManager.Users
-                        .Include(u => u.Role)
-                        .FirstOrDefaultAsync(u => u.UserName == signInDto.Username);
-
-        if (user is null)
+        try
         {
-            return null;
-        }
+            var user = await _userManager.Users
+                            .Include(u => u.Role)
+                            .FirstOrDefaultAsync(u => u.UserName == signInDto.Username);
 
-        var signInResult = await _signInManager.PasswordSignInAsync(user, signInDto.Password, false, false);
-
-        if (!signInResult.Succeeded)
-        {
-            return null;
-        }
-
-        var claims = new[]
-        {
-            new Claim(JwtRegisteredClaimNames.Sub, user.Id),
-            new Claim(ClaimTypes.Name, user.UserName),
-            new Claim(ClaimTypes.Role, user.Role.Name)
-        };
-
-        var accessToken = _tokenService.GenerateAccessToken(claims);
-        var newRefreshToken = _tokenService.GenerateRefreshToken();
-        var userRefreshTokenRecord = _dbContext.UserTokens.FirstOrDefault(u => u.UserId == user.Id);
-        if (userRefreshTokenRecord is null)
-        {
-            _dbContext.UserTokens.Add(new TokenUser
+            if (user is null)
             {
-                UserId = user.Id,
-                LoginProvider = "Own",
-                Name = "RefreshToken",
-                Value = newRefreshToken.Token,
-                ValidUntil = newRefreshToken.ValidUntil,
-            });
-        }
-        else
-        {
-            userRefreshTokenRecord.Value = newRefreshToken.Token;
-            userRefreshTokenRecord.ValidUntil = newRefreshToken.ValidUntil;
-        }
-        await _dbContext.SaveChangesAsync(cancellationToken);
-        var response = new RefreshTokenResponse
-        {
-            RefreshToken = newRefreshToken,
-            AccessToken = accessToken,
-            UserId = user.Id
-        };
+                return null;
+            }
 
-        return response;
+            var signInResult = await _signInManager.PasswordSignInAsync(user, signInDto.Password, false, false);
+
+            if (!signInResult.Succeeded)
+            {
+                return null;
+            }
+
+            var claims = new[]
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id),
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.Role, user.Role.Name)
+            };
+
+            var accessToken = _tokenService.GenerateAccessToken(claims);
+            var newRefreshToken = _tokenService.GenerateRefreshToken();
+            var userRefreshTokenRecord = _dbContext.UserTokens.FirstOrDefault(u => u.UserId == user.Id);
+            if (userRefreshTokenRecord is null)
+            {
+                _dbContext.UserTokens.Add(new TokenUser
+                {
+                    UserId = user.Id,
+                    LoginProvider = "Own",
+                    Name = "RefreshToken",
+                    Value = newRefreshToken.Token,
+                    ValidUntil = newRefreshToken.ValidUntil,
+                });
+            }
+            else
+            {
+                userRefreshTokenRecord.Value = newRefreshToken.Token;
+                userRefreshTokenRecord.ValidUntil = newRefreshToken.ValidUntil;
+            }
+            await _dbContext.SaveChangesAsync(cancellationToken);
+            var response = new RefreshTokenResponse
+            {
+                RefreshToken = newRefreshToken,
+                AccessToken = accessToken,
+                UserId = user.Id
+            };
+
+            return response;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            // TODO: błąd z logowaniem
+        }
+
+        return null;
     }
 
     public async Task<bool> SignOutUserAsync(string accessToken, CancellationToken cancellationToken)

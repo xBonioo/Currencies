@@ -18,8 +18,8 @@ using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 var envConfig = new ConfigurationBuilder()
-    //.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-    .AddJsonFile("appsettings.Development.json", optional: false, reloadOnChange: true)
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    //.AddJsonFile("appsettings.Development.json", optional: false, reloadOnChange: true)
     .AddEnvironmentVariables()
     .Build();
 
@@ -86,7 +86,7 @@ builder.Services.AddScoped<ErrorHandlingMiddleware>();
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()

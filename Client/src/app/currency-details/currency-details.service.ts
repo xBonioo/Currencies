@@ -10,7 +10,7 @@ class Data {
   providedIn: 'root',
 })
 export class CurrencyDetailsService {
-  private apiUrl = 'http://localhost:5000/api/';
+  private apiUrl = 'https://localhost:7050/api/';
 
   constructor(private http: HttpClient) { }
   
