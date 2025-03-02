@@ -3,16 +3,15 @@ using Currencies.DataAccess.Services;
 using Currencies.Models;
 using Xunit;
 using AutoMapper;
+using Currencies.Api.Modules.UserExchangeHistory.Queries.GetAll;
+using Currencies.Api.Modules.UserExchangeHistory.Queries.GetSingle;
 using Currencies.DataAccess.Mappings;
 using Currencies.Contracts.Response;
 using Currencies.Contracts.ModelDtos;
 using Currencies.Models.Entities;
 using Microsoft.AspNetCore.Identity;
-using Currencies.Api.Functions.UserExchangeHistory.Queries.GetAll;
 using Currencies.Contracts.ModelDtos.User.ExchangeHistory;
-using Currencies.Api.Functions.UserExchangeHistory.Queries.GetSingle;
 using Currencies.Contracts.ModelDtos.User;
-using Currencies.Api.Functions.User.Commands.Register;
 
 namespace Currencies.Tests;
 

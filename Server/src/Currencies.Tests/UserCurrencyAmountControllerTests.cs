@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using Currencies.Api.Functions.UserCurrencyAmount.Commands.Create;
-using Currencies.Api.Functions.UserCurrencyAmount.Commands.Delete;
-using Currencies.Api.Functions.UserCurrencyAmount.Commands.Update;
-using Currencies.Api.Functions.UserCurrencyAmount.Queries.GetAll;
-using Currencies.Api.Functions.UserCurrencyAmount.Queries.GetEditForm;
-using Currencies.Api.Functions.UserCurrencyAmount.Queries.GetSingle;
+using Currencies.Api.Modules.UserCurrencyAmount.Commands.Create;
+using Currencies.Api.Modules.UserCurrencyAmount.Commands.Delete;
+using Currencies.Api.Modules.UserCurrencyAmount.Commands.Update;
+using Currencies.Api.Modules.UserCurrencyAmount.Queries.GetAll;
+using Currencies.Api.Modules.UserCurrencyAmount.Queries.GetEditForm;
+using Currencies.Api.Modules.UserCurrencyAmount.Queries.GetSingle;
 using Currencies.Contracts.Helpers.Forms;
 using Currencies.Contracts.Interfaces;
 using Currencies.Contracts.ModelDtos.User.CurrencyAmount;

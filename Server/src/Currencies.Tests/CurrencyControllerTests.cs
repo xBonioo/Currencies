@@ -2,16 +2,16 @@
 using Currencies.Contracts.ModelDtos.Currency;
 using Currencies.DataAccess.Services;
 using Currencies.Models;
-using Currencies.Api.Functions.Currency.Queries.GetAll;
-using Currencies.Api.Functions.Currency.Queries.GetSingle;
-using Currencies.Api.Functions.Currency.Commands.Create;
-using Currencies.Api.Functions.Currency.Commands.Update;
-using Currencies.Api.Functions.Currency.Commands.Delete;
 using Xunit;
 using AutoMapper;
+using Currencies.Api.Modules.Currency.Commands.Create;
+using Currencies.Api.Modules.Currency.Commands.Delete;
+using Currencies.Api.Modules.Currency.Commands.Update;
+using Currencies.Api.Modules.Currency.Queries.GetAll;
+using Currencies.Api.Modules.Currency.Queries.GetEditForm;
+using Currencies.Api.Modules.Currency.Queries.GetSingle;
 using Currencies.DataAccess.Mappings;
 using Currencies.Contracts.Helpers.Forms;
-using Currencies.Api.Functions.Currency.Queries.GetEditForm;
 using Currencies.Contracts.Response;
 
 namespace Currencies.Tests;
