@@ -33,10 +33,10 @@ public class CreateExchangeRateCommandHandler : IRequestHandler<CreateExchangeRa
             var apiUrl = $"https://api.nbp.pl/api/exchangerates/rates/c/{currency.Symbol}/{request.Date:yyyy-MM-dd}/?format=json";
             try
             {
-                var response = await httpClient.GetAsync(apiUrl);
+                var response = await httpClient.GetAsync(apiUrl, cancellationToken);
                 if (response.IsSuccessStatusCode)
                 {
-                    var jsonResponse = await response.Content.ReadAsStringAsync();
+                    var jsonResponse = await response.Content.ReadAsStringAsync(cancellationToken);
                     using (JsonDocument doc = JsonDocument.Parse(jsonResponse))
                     {
                         var root = doc.RootElement;

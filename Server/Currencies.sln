@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Currencies.WebApi", "src\Currencies.WebApi\Currencies.WebApi.csproj", "{7F03DCA9-84AE-4CFF-8B89-1F675C3774C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Currencies.Api", "src\Currencies.Api\Currencies.Api.csproj", "{7F03DCA9-84AE-4CFF-8B89-1F675C3774C1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D6198A88-2F28-4DBD-ADD2-A4DC21C3D34E}"
 EndProject

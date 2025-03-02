@@ -29,7 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Currencies.WebApi\Currencies.WebApi.csproj" />
+    <ProjectReference Include="..\Currencies.Api\Currencies.Api.csproj" />
     <ProjectReference Include="..\Currencies.Contracts\Currencies.Contracts.csproj" />
     <ProjectReference Include="..\Currencies.DataAccess\Currencies.DataAccess.csproj" />
     <ProjectReference Include="..\Currencies.Models\Currencies.Models.csproj" />
