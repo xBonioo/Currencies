@@ -11,20 +11,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Currencies.DataAccess.Services;
 
-public class UserCurrencyAmountService : IUserCurrencyAmountService
+public class UserCurrencyAmountService(TableContext dbContext, IMapper mapper) : IUserCurrencyAmountService
 {
-    private readonly TableContext _dbContext;
-    private readonly IMapper _mapper;
-
-    public UserCurrencyAmountService(TableContext dbContext, IMapper mapper)
-    {
-        _dbContext = dbContext;
-        _mapper = mapper;
-    }
-
     public async Task<UserCurrencyAmountDto?> ConvertAsync(ConvertUserCurrencyAmountDto dto, CancellationToken cancellationToken)
     {
-        var accountFrom = await _dbContext.UserCurrencyAmounts
+        var accountFrom = await dbContext.UserCurrencyAmounts
             .FirstOrDefaultAsync(x => x.CurrencyId == dto.FromCurrencyId && x.UserId == dto.UserId, cancellationToken);
 
         if (accountFrom == null)
@@ -41,14 +32,14 @@ public class UserCurrencyAmountService : IUserCurrencyAmountService
         int? rateId = null;
         if (dto.FromCurrencyId == 4)  // From PLN to foreign currency
         {
-            exchangeRateTo = await _dbContext.ExchangeRate
+            exchangeRateTo = await dbContext.ExchangeRate
                 .OrderByDescending(x => x.CreatedOn)
                 .FirstOrDefaultAsync(x => x.FromCurrencyID == dto.FromCurrencyId && x.ToCurrencyID == dto.ToCurrencyId && x.Direction == Direction.Buy, cancellationToken);
             rateId = exchangeRateTo!.Id;
         }
         else if (dto.ToCurrencyId == 4)  // From foreign currency to PLN
         {
-            exchangeRateTo = await _dbContext.ExchangeRate
+            exchangeRateTo = await dbContext.ExchangeRate
                 .OrderByDescending(x => x.CreatedOn)
                 .FirstOrDefaultAsync(x => x.ToCurrencyID == dto.FromCurrencyId && x.FromCurrencyID == dto.ToCurrencyId && x.Direction == Direction.Sell, cancellationToken);
             rateId = exchangeRateTo!.Id;
@@ -56,12 +47,12 @@ public class UserCurrencyAmountService : IUserCurrencyAmountService
         else  // From one foreign currency to another via PLN
         {
             // Convert from the starting currency to PLN
-            var rateToPLN = await _dbContext.ExchangeRate
+            var rateToPLN = await dbContext.ExchangeRate
                 .OrderByDescending(x => x.CreatedOn)
                 .FirstOrDefaultAsync(x => x.FromCurrencyID == 4 && x.ToCurrencyID == dto.FromCurrencyId && x.Direction == Direction.Sell, cancellationToken);
 
             // Convert from PLN to the target currency
-            var rateFromPLN = await _dbContext.ExchangeRate
+            var rateFromPLN = await dbContext.ExchangeRate
                 .OrderByDescending(x => x.CreatedOn)
                 .FirstOrDefaultAsync(x => x.FromCurrencyID == 4 && x.ToCurrencyID == dto.ToCurrencyId && x.Direction == Direction.Buy, cancellationToken);
 
@@ -80,7 +71,7 @@ public class UserCurrencyAmountService : IUserCurrencyAmountService
 
         decimal convertedAmount = dto.Amount * exchangeRateTo.Rate;
 
-        var accountTo = await _dbContext.UserCurrencyAmounts
+        var accountTo = await dbContext.UserCurrencyAmounts
             .FirstOrDefaultAsync(x => x.CurrencyId == dto.ToCurrencyId && x.UserId == dto.UserId, cancellationToken);
 
         UserCurrencyAmountDto result;
@@ -92,20 +83,20 @@ public class UserCurrencyAmountService : IUserCurrencyAmountService
                 Amount = convertedAmount,
                 UserId = dto.UserId
             };
-            await _dbContext.UserCurrencyAmounts.AddAsync(currencyAmount, cancellationToken);
-            result = _mapper.Map<UserCurrencyAmountDto>(currencyAmount);
+            await dbContext.UserCurrencyAmounts.AddAsync(currencyAmount, cancellationToken);
+            result = mapper.Map<UserCurrencyAmountDto>(currencyAmount);
             result.RateId = rateId;
         }
         else
         {
             accountTo.Amount += convertedAmount;
-            result = _mapper.Map<UserCurrencyAmountDto>(accountTo);
+            result = mapper.Map<UserCurrencyAmountDto>(accountTo);
             result.RateId = rateId;
         }
 
         accountFrom.Amount -= dto.Amount;
 
-        if (await _dbContext.SaveChangesAsync(cancellationToken) > 0)
+        if (await dbContext.SaveChangesAsync(cancellationToken) > 0)
         {
             return result;
         }
@@ -123,7 +114,7 @@ public class UserCurrencyAmountService : IUserCurrencyAmountService
 
         user_currency_amount.IsActive = false;
 
-        if ((await _dbContext.SaveChangesAsync(cancellationToken)) > 0)
+        if ((await dbContext.SaveChangesAsync(cancellationToken)) > 0)
         {
             return true;
         }
@@ -133,7 +124,7 @@ public class UserCurrencyAmountService : IUserCurrencyAmountService
 
     public async Task<PageResult<UserCurrencyAmountDto>?> GetAllUserCurrencyAmountsAsync(FilterUserCurrencyAmountDto filter, CancellationToken cancellationToken)
     {
-        var baseQuery = _dbContext
+        var baseQuery = dbContext
           .UserCurrencyAmounts
           .AsQueryable();
 
@@ -156,7 +147,7 @@ public class UserCurrencyAmountService : IUserCurrencyAmountService
         var itemsDto = await baseQuery
             .Skip(filter.PageSize * (filter.PageNumber - 1))
             .Take(filter.PageSize)
-            .ProjectTo<UserCurrencyAmountDto>(_mapper.ConfigurationProvider)
+            .ProjectTo<UserCurrencyAmountDto>(mapper.ConfigurationProvider)
             .ToListAsync(cancellationToken);
 
         return new PageResult<UserCurrencyAmountDto>(itemsDto, totalItemCount, filter.PageSize, filter.PageNumber);
@@ -169,7 +160,7 @@ public class UserCurrencyAmountService : IUserCurrencyAmountService
             return null;
         }
 
-        var user_currency_amount = await _dbContext.UserCurrencyAmounts
+        var user_currency_amount = await dbContext.UserCurrencyAmounts
                         .FirstOrDefaultAsync(x => x.CurrencyId == dto.CurrencyId && x.UserId == dto.UserId && x.IsActive, cancellationToken);
         if (user_currency_amount != null)
         {
@@ -184,12 +175,12 @@ public class UserCurrencyAmountService : IUserCurrencyAmountService
                 Amount = dto.Amount
             };
 
-            await _dbContext.UserCurrencyAmounts.AddAsync(user_currency_amount, cancellationToken);
+            await dbContext.UserCurrencyAmounts.AddAsync(user_currency_amount, cancellationToken);
         }
 
-        if (await _dbContext.SaveChangesAsync(cancellationToken) > 0)
+        if (await dbContext.SaveChangesAsync(cancellationToken) > 0)
         {
-            return _mapper.Map<UserCurrencyAmountDto>(user_currency_amount);
+            return mapper.Map<UserCurrencyAmountDto>(user_currency_amount);
         }
 
         throw new DbUpdateException($"Could not save changes to database at: {nameof(AddAsync)}");
@@ -208,9 +199,9 @@ public class UserCurrencyAmountService : IUserCurrencyAmountService
         user_currency_amount.Amount += dto.Amount;
         user_currency_amount.IsActive = dto.IsActive;
 
-        if ((await _dbContext.SaveChangesAsync(cancellationToken)) > 0)
+        if ((await dbContext.SaveChangesAsync(cancellationToken)) > 0)
         {
-            return _mapper.Map<UserCurrencyAmountDto>(user_currency_amount);
+            return mapper.Map<UserCurrencyAmountDto>(user_currency_amount);
         }
 
         throw new DbUpdateException($"Could not save changes to database at: {nameof(UpdateAsync)}");
@@ -218,7 +209,7 @@ public class UserCurrencyAmountService : IUserCurrencyAmountService
 
     public async Task<List<UserCurrencyAmount>> GetByUserIdAsync(string id, CancellationToken cancellationToken)
     {
-        var result = await _dbContext
+        var result = await dbContext
            .UserCurrencyAmounts
            .Where(x => x.UserId == id)
            .ToListAsync(cancellationToken);
@@ -228,7 +219,7 @@ public class UserCurrencyAmountService : IUserCurrencyAmountService
 
     public async Task<UserCurrencyAmount?> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
-        var result = await _dbContext
+        var result = await dbContext
            .UserCurrencyAmounts
            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 

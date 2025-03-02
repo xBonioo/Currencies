@@ -13,17 +13,8 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Currencies.DataAccess.Services;
 
-public class CurrencyService : ICurrencyService
+public class CurrencyService(TableContext dbContext, IMapper mapper) : ICurrencyService
 {
-    private readonly TableContext _dbContext;
-    private readonly IMapper _mapper;
-
-    public CurrencyService(TableContext dbContext, IMapper mapper)
-    {
-        _dbContext = dbContext;
-        _mapper = mapper;
-    }
-
     public async Task<CurrencyDto?> CreateAsync(BaseCurrencyDto dto, CancellationToken cancellationToken)
     {
         if (dto == null)
@@ -38,11 +29,11 @@ public class CurrencyService : ICurrencyService
             Description = dto.Description
         };
 
-        _dbContext.Currencies.Add(currency);
+        dbContext.Currencies.Add(currency);
 
-        if (await _dbContext.SaveChangesAsync(cancellationToken) > 0)
+        if (await dbContext.SaveChangesAsync(cancellationToken) > 0)
         {
-            return _mapper.Map<CurrencyDto>(currency);
+            return mapper.Map<CurrencyDto>(currency);
         }
 
         throw new DbUpdateException($"Could not save changes to database at: {nameof(CreateAsync)}");
@@ -58,7 +49,7 @@ public class CurrencyService : ICurrencyService
 
         currency.IsActive = false;
 
-        if ((await _dbContext.SaveChangesAsync(cancellationToken)) > 0)
+        if ((await dbContext.SaveChangesAsync(cancellationToken)) > 0)
         {
             return true;
         }
@@ -68,11 +59,11 @@ public class CurrencyService : ICurrencyService
 
     public async Task<PageResult<CurrencyDto>?> GetAllCurrenciesAsync(FilterCurrencyDto filter, CancellationToken cancellationToken)
     {
-        var baseQuery = from c in _dbContext.Currencies
-                    join er0 in _dbContext.ExchangeRate.Where(er => er.Direction == Direction.Buy && er.IsActive)
+        var baseQuery = from c in dbContext.Currencies
+                    join er0 in dbContext.ExchangeRate.Where(er => er.Direction == Direction.Buy && er.IsActive)
                         on c.Id equals er0.ToCurrencyID into er0Group
                     from er0 in er0Group.DefaultIfEmpty()
-                    join er1 in _dbContext.ExchangeRate.Where(er => er.Direction == Direction.Sell && er.IsActive)
+                    join er1 in dbContext.ExchangeRate.Where(er => er.Direction == Direction.Sell && er.IsActive)
                         on c.Id equals er1.ToCurrencyID into er1Group
                     from er1 in er1Group.DefaultIfEmpty()
                     where c.IsActive
@@ -108,7 +99,7 @@ public class CurrencyService : ICurrencyService
             .Skip(filter.PageSize * (filter.PageNumber - 1))
             .Take(filter.PageSize)
             .AsEnumerable()
-            .Select(x => _mapper.Map<CurrencyDto>(x))
+            .Select(x => mapper.Map<CurrencyDto>(x))
             .ToList();
 
         return new PageResult<CurrencyDto>(itemsDto, totalItemCount, filter.PageSize, filter.PageNumber);
@@ -127,9 +118,9 @@ public class CurrencyService : ICurrencyService
         currency.Description = dto.Description;
         currency.IsActive = dto.IsActive;
 
-        if ((await _dbContext.SaveChangesAsync(cancellationToken)) > 0)
+        if ((await dbContext.SaveChangesAsync(cancellationToken)) > 0)
         {
-            return _mapper.Map<CurrencyDto>(currency);
+            return mapper.Map<CurrencyDto>(currency);
         }
 
         throw new DbUpdateException($"Could not save changes to database at: {nameof(UpdateAsync)}");
@@ -137,7 +128,7 @@ public class CurrencyService : ICurrencyService
 
     public async Task<Currency?> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
-        var result = await _dbContext
+        var result = await dbContext
             .Currencies
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 

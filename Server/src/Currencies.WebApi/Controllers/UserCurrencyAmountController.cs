@@ -25,15 +25,8 @@ namespace Currencies.Api.Controllers;
 [Authorize]
 [Route("api/user-amount")]
 [ApiController]
-public class UserCurrencyAmountController : Controller
+public class UserCurrencyAmountController(IMediator mediator) : Controller
 {
-    private readonly IMediator _mediator;
-
-    public UserCurrencyAmountController(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
-
     /// <summary>
     /// Retrieves all available user currency amounts.
     /// </summary>
@@ -42,7 +35,7 @@ public class UserCurrencyAmountController : Controller
     [HttpGet]
     public async Task<ActionResult<BaseResponse<PageResult<UserCurrencyAmountDto>>>> GetAllUserCurrencyAmounts([FromQuery] FilterUserCurrencyAmountDto filter)
     {
-        var result = await _mediator.Send(new GetUserCurrencyAmountsListQuery(filter));
+        var result = await mediator.Send(new GetUserCurrencyAmountsListQuery(filter));
         if (result == null)
         {
             return NotFound(new BaseResponse<PageResult<UserCurrencyAmountDto>>
@@ -67,7 +60,7 @@ public class UserCurrencyAmountController : Controller
     [HttpGet("{id}")]
     public async Task<ActionResult<BaseResponse<List<UserCurrencyAmountDto>>>> GetUserCurrencyAmountById(string id)
     {
-        var result = await _mediator.Send(new GetSingleUserCurrencyAmountQuery(id));
+        var result = await mediator.Send(new GetSingleUserCurrencyAmountQuery(id));
         if (result == null)
         {
             return NotFound(new BaseResponse<List<UserCurrencyAmountDto>>
@@ -92,7 +85,7 @@ public class UserCurrencyAmountController : Controller
     [HttpPost("convert")]
     public async Task<ActionResult<BaseResponse<UserCurrencyAmountDto>>> ConvertUserCurrencyAmount([FromBody] ConvertUserCurrencyAmountDto dto)
     {
-        var result = await _mediator.Send(new ConvertUserCurrencyAmountCommand(dto));
+        var result = await mediator.Send(new ConvertUserCurrencyAmountCommand(dto));
         if (result == null)
         {
             return NotFound(new BaseResponse<UserCurrencyAmountDto>
@@ -102,7 +95,7 @@ public class UserCurrencyAmountController : Controller
             });
         }
 
-        var history = await _mediator.Send(new AddUserExchangeHistoryCommand(new UserExchangeHistoryDto()
+        var history = await mediator.Send(new AddUserExchangeHistoryCommand(new UserExchangeHistoryDto()
         {
             UserID = dto.UserId,
             RateID = result.RateId,
@@ -135,7 +128,7 @@ public class UserCurrencyAmountController : Controller
     [HttpGet("{id}/edit-form")]
     public async Task<ActionResult<BaseResponse<UserCurrencyAmountEditForm>>> GetUserCurrencyAmountEditForm(int id)
     {
-        var result = await _mediator.Send(new GetUserCurrencyAmountEditFormQuery(id));
+        var result = await mediator.Send(new GetUserCurrencyAmountEditFormQuery(id));
         if (result == null)
         {
             return NotFound(new BaseResponse<UserCurrencyAmountEditForm>
@@ -160,7 +153,7 @@ public class UserCurrencyAmountController : Controller
     [HttpPost("add")]
     public async Task<ActionResult<BaseResponse<UserCurrencyAmountDto>>> AddUserCurrencyAmount([FromBody] BaseUserCurrencyAmountDto dto)
     {
-        var result = await _mediator.Send(new CreateUserCurrencyAmountCommand(dto));
+        var result = await mediator.Send(new CreateUserCurrencyAmountCommand(dto));
         if (result == null)
         {
             return BadRequest(new BaseResponse<UserCurrencyAmountDto>
@@ -174,7 +167,7 @@ public class UserCurrencyAmountController : Controller
         Array values = Enum.GetValues(typeof(PaymentType));
         PaymentType randomPaymentType = (PaymentType)values.GetValue(random.Next(values.Length));
 
-        var history = await _mediator.Send(new AddUserExchangeHistoryCommand(new UserExchangeHistoryDto()
+        var history = await mediator.Send(new AddUserExchangeHistoryCommand(new UserExchangeHistoryDto()
         {
             UserID = dto.UserId,
             RateID = result.RateId,
@@ -210,7 +203,7 @@ public class UserCurrencyAmountController : Controller
     [HttpPost("{id}/edit")]
     public async Task<ActionResult<BaseResponse<UserCurrencyAmountDto>>> UpdateUserCurrencyAmount(int id, [FromBody] BaseUserCurrencyAmountDto dto)
     {
-        var result = await _mediator.Send(new UpdateUserCurrencyAmountCommand(id, dto));
+        var result = await mediator.Send(new UpdateUserCurrencyAmountCommand(id, dto));
         if (result == null)
         {
             return NotFound(new BaseResponse<UserCurrencyAmountDto>
@@ -236,7 +229,7 @@ public class UserCurrencyAmountController : Controller
     [HttpDelete("{id}/delete")]
     public async Task<ActionResult<BaseResponse<bool>>> DeleteUserCurrencyAmount(int id)
     {
-        var result = await _mediator.Send(new DeleteUserCurrencyAmountCommand(id));
+        var result = await mediator.Send(new DeleteUserCurrencyAmountCommand(id));
         if (!result)
         {
             return NotFound(new BaseResponse<bool>
