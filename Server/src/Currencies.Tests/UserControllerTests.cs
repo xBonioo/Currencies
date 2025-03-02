@@ -12,6 +12,7 @@ using Currencies.Models.Entities;
 using Microsoft.AspNetCore.Identity;
 using Currencies.Contracts.ModelDtos.User.ExchangeHistory;
 using Currencies.Contracts.ModelDtos.User;
+using Microsoft.Extensions.Logging;
 
 namespace Currencies.Tests;
 
@@ -24,6 +25,7 @@ public class UserControllerTests : IClassFixture<BaseTestFixture>
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly ITokenService _tokenService;
     private readonly IUserExchangeHistoryService _userExchangeHistoryService;
+    private readonly ILogger<UserService> _logger;
 
     public UserControllerTests(BaseTestFixture fixture)
     {
@@ -33,7 +35,7 @@ public class UserControllerTests : IClassFixture<BaseTestFixture>
             mc.AddProfile(new AutoMapperProfile());
         });
         _mapper = mappingConfig.CreateMapper();
-        _userService = new UserService(_userManager, _signInManager, _dbContext, _tokenService);
+        _userService = new UserService(_userManager, _signInManager, _dbContext, _tokenService, _logger);
         _userExchangeHistoryService = new UserExchangeHistoryService(_dbContext, _mapper);
     }
 

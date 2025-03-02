@@ -7,6 +7,7 @@ using Currencies.Models.Entities;
 using Currencies.Contracts.ModelDtos.User;
 using Microsoft.EntityFrameworkCore;
 using Currencies.Contracts.Response;
+using Microsoft.Extensions.Logging;
 
 namespace Currencies.DataAccess.Services;
 
@@ -14,7 +15,8 @@ public class UserService(
     UserManager<ApplicationUser> userManager,
     SignInManager<ApplicationUser> signInManager,
     TableContext dbContext,
-    ITokenService tokenService)
+    ITokenService tokenService,
+    ILogger<UserService> logger)
     : IUserService
 {
     public async Task<UserDto> RegisterUserAsync(RegisterUserDto registerUserDto, CancellationToken cancellationToken)
@@ -157,8 +159,7 @@ public class UserService(
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            // TODO: błąd z logowaniem
+            logger.LogError($"{e.Message}");
         }
 
         return null;

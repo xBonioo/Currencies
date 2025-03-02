@@ -15,6 +15,7 @@ using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
+using NLog.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 var envConfig = new ConfigurationBuilder()
@@ -161,6 +162,10 @@ builder.Services.AddAuthorization(options =>
 
     options.DefaultPolicy = defaultPolicyBuilder.Build();
 });
+
+// Konfiguracja NLog
+builder.Logging.ClearProviders();
+builder.Host.UseNLog();
 
 var app = builder.Build();
 databaseManager.ApplyMigrations(app);
